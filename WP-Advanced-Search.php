@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.1
+Version: 1.1.5
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -21,12 +21,12 @@ add_action('plugins_loaded', 'WP_Advanced_Search_Lang');
 
 // Fonction lancée lors de l'activation ou de la desactivation de l'extension
 register_activation_hook( __FILE__, 'WP_Advanced_Search_install' );
-register_deactivation_hook( __FILE__, 'WP_Advanced_Search_desinstall' );
+//register_deactivation_hook( __FILE__, 'WP_Advanced_Search_desinstall' );
 
 function WP_Advanced_Search_install() {	
 	global $wpdb, $table_WP_Advanced_Search;
 	// Création de la table de base
-	$sql = "CREATE TABLE $table_WP_Advanced_Search (
+	$sql = "CREATE TABLE IF NOT EXISTS $table_WP_Advanced_Search (
 		id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		db VARCHAR(50) NOT NULL,
 		tables VARCHAR(30) NOT NULL,
@@ -114,6 +114,23 @@ function WP_Advanced_Search_install() {
 		);
 		$champ = wp_parse_args($instance, $defaut);
 		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
+	}
+
+	// Mise à jour du plugin
+	$tmpdata = $wpdb->get_results("SHOW COLUMNS FROM $table_WP_Advanced_Search");
+    foreach($tmpdata as $tmp) {
+		$fields[] = $tmp->Field;
+	}
+	$newColumn = array('postType','ResultText','ErrorText');
+    if(!in_array($newColumn,$fields)) {
+		$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)");
+		$defautUpgrade = array(
+			"postType" => 'pagepost',
+			"ResultText" => 'Résultats de la recherche :',
+			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
+		);
+		$champ = wp_parse_args($instance, $defautUpgrade);
+		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']),array('id' => 1));
 	}
 }
 function WP_Advanced_Search_desinstall() {
@@ -213,6 +230,25 @@ function WP_Advanced_Search_Pagination_CSS($bool) {
 	}
 	add_action('wp_enqueue_scripts', 'WP_Advanced_Search_Pagination_CSS');
 }
+/*
+function WP_Advanced_Search_Upgrade() {
+	global $wpdb, $table_WP_Advanced_Search;
+	// Création de la table de base
+	$sql = "ALTER TABLE $table_WP_Advanced_Search ADD COLUMN postType VARCHAR(8) NOT NULL, ResultText TEXT,	ErrorText TEXT);";
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	dbDelta($sql);
+	
+	// Insertion de valeurs par défaut (premier enregistrement)
+	$defaut = array(
+		"postType" => 'pagepost',
+		"ResultText" => 'Résultats de la recherche :',
+		"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
+	);
+	$champ = wp_parse_args($instance, $defaut);
+	$default = $wpdb->insert($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
+}
+add_action('init', 'WP_Advanced_Search_Upgrade');
+*/
 
 // Inclusion des options de réglages
 include('WP-Advanced-Search-Options.php');

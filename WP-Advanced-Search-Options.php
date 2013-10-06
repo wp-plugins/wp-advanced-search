@@ -19,7 +19,6 @@ function WP_Advanced_Search_FullText() {
 	echo '<script type="text/javascript">alert("'.__('Index FULLTEXT créés avec succès !\nVous pouvez utiliser le type FULLTEXT dorénavant...','WP-Advanced-Search').'");</script>';
 }
 
-
 // Mise à jour des données par défaut
 function WP_Advanced_Search_update() {
 	global $wpdb, $table_WP_Advanced_Search; // insérer les variables globales
@@ -305,7 +304,7 @@ function WP_Advanced_Search_Callback() {
                     <label for="wp_advanced_search_orderColumn"><strong><?php _e('Colonne de classement','WP-Advanced-Search'); ?></strong></label><br />
                     <select name="wp_advanced_search_orderColumn" id="wp_advanced_search_orderColumn" style="width:60%;border:1px solid #ccc;">
                     	<?php
-							$columns = $wpdb->get_results("SELECT column_name FROM information_schema.columns WHERE table_name = '".$select->tables."'");							
+							$columns = $wpdb->get_results("SELECT column_name FROM information_schema.COLUMNS WHERE table_name = '".$select->tables."'");							
 							$numberColumn = count($columns,1);
 							for($i=0; $i < $numberColumn; $i++) {
 								foreach($columns[$i] as $column => $value) {
