@@ -313,7 +313,7 @@ class moteurRecherche {
 	/*-- N.B. : la fonction ajoute la colonne de classement si elle n'existe pas ! ----*/
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
 	/*---------------------------------------------------------------------------------*/
-	function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = 'AND post_status = \'publish\'') {
+	function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '') {
 		// Récupération des colonnes de sélections
 		if(empty($colonnesSelect)) {
 			$selectColumn = "*";

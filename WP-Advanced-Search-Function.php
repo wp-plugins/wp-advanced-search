@@ -60,10 +60,10 @@ function WP_Advanced_Search() {
 			global $select, $wpdb, $moteur, $wp_rewrite;
 
 			$output = '<div class="WPAdvancedSearch">'."\n";
-			$output .= '<h3>Résultats de la recherche : <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
+			$output .= '<h3>'.__($select->ResultText,'WP-Advanced-Search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
 
 			if($nbResults == 0) {
-				$output .= '<p class="WPErrorSearch">'.__('Aucun résultat, veuillez effectuer une autre recherche !','WP-Advanced-Search').'</p>'."\n";	
+				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'WP-Advanced-Search').'</p>'."\n";	
 			} else {
 				$nb = 0;
 				if(isset($_GET['page'])) {
@@ -175,8 +175,12 @@ function WP_Advanced_Search() {
 						if($select->ArticleOK == "excerpt") {
 							$output .= '<div class="WPtextSearch">'."\n";
 							$output .= $key['post_excerpt'];
-							$output .= '<p class="WPReadMoreSearch"><a href="'.$key['guid'].'">'.__('Lire la suite...','WP-Advanced-Search').'</a></p>'."\n";
 							$output .= '</div>'."\n";
+						} else if($select->ArticleOK == "excerptmore") {
+							$output .= '<div class="WPtextSearch">'."\n";
+							$output .= $key['post_excerpt'];
+							$output .= '<p class="WPReadMoreSearch"><a href="'.$key['guid'].'">'.__('Lire la suite...','WP-Advanced-Search').'</a></p>'."\n";
+							$output .= '</div>'."\n";							
 						} else {
 							$output .= '<div class="WPtextSearch">'.$key['post_content'].'</div>'."\n";
 						}
@@ -206,11 +210,22 @@ function WP_Advanced_Search() {
 			echo $output;
 		}
 		
-		// Lancement de la fonction d'affichage
-		if($select->NumberPerPage == 0) {
-			$moteur->moteurAffichage('affichage', '', array(false, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'));
+		// Récupération du type de contenu à afficher
+		if($select->postType == "post") {
+			$wpAdaptation = "AND post_type = 'post' AND post_status = 'publish'";
+		} else if($select->postType == "page") {
+			$wpAdaptation = "AND post_type = 'page' AND post_status = 'publish'";
+		} else if($select->postType == "pagepost") {
+			$wpAdaptation = "AND (post_type = 'page' OR post_type = 'post') AND post_status = 'publish'";
 		} else {
-			$moteur->moteurAffichage('affichage', '', array(true, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'));
+			$wpAdaptation = "AND post_status = 'publish'";
+		}
+		
+		// Lancement de la fonction d'affichage	
+		if($select->NumberPerPage == 0) {
+			$moteur->moteurAffichage('affichage', '', array(false, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation);
+		} else {
+			$moteur->moteurAffichage('affichage', '', array(true, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation);
 			$paginationValide = true;
 		}
 		

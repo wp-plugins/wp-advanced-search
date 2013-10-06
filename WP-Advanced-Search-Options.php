@@ -27,6 +27,8 @@ function WP_Advanced_Search_update() {
 	// Réglages de base
 	$wp_advanced_search_table			= $_POST['wp_advanced_search_table'];
 	$wp_advanced_search_name			= $_POST['wp_advanced_search_name'];
+	$wp_advanced_search_resulttext		= $_POST['wp_advanced_search_resulttext'];
+	$wp_advanced_search_errortext		= $_POST['wp_advanced_search_errortext'];
 	$wp_advanced_search_colonneswhere	= $_POST['wp_advanced_search_colonneswhere'];
 	$wp_advanced_search_typesearch		= $_POST['wp_advanced_search_typesearch'];
 	$wp_advanced_search_encoding		= $_POST['wp_advanced_search_encoding'];
@@ -34,6 +36,7 @@ function WP_Advanced_Search_update() {
 	$wp_advanced_search_accents			= $_POST['wp_advanced_search_accents'];
 	$wp_advanced_search_exclusionwords	= $_POST['wp_advanced_search_exclusionwords'];
 	$wp_advanced_search_stopwords		= $_POST['wp_advanced_search_stopwords'];
+	$wp_advanced_search_posttype		= $_POST['wp_advanced_search_posttype'];
 	
 	// Options d'affichage
 	$wp_advanced_search_numberOK		= $_POST['wp_advanced_search_numberOK'];
@@ -104,7 +107,10 @@ function WP_Advanced_Search_update() {
 			"paginationFirstPage" => $wp_advanced_search_pagination_firstpage,
 			"paginationLastPage" => $wp_advanced_search_pagination_lastpage,
 			"paginationPrevText" => $wp_advanced_search_pagination_prevtext,
-			"paginationNextText" => $wp_advanced_search_pagination_nexttext
+			"paginationNextText" => $wp_advanced_search_pagination_nexttext,
+			"postType" => $wp_advanced_search_posttype,
+			"ResultText" => $wp_advanced_search_resulttext,
+			"ErrorText" => $wp_advanced_search_errortext
 		), 
 		array('id' => 1)
 	);
@@ -180,6 +186,16 @@ function WP_Advanced_Search_Callback() {
                 <td><input value="<?php echo $select->nameField; ?>" name="wp_advanced_search_name" id="wp_advanced_search_name" type="text" style="width:100%;border:1px solid #ccc;" /></td>
             </tr>
         </table>
+        <table>
+            <tr>
+            	<td><label for="wp_advanced_search_resulttext"><strong><?php _e('Texte pour la requête recherchée','WP-Advanced-Search'); ?></strong></label></td>
+                <td><input value="<?php echo $select->ResultText; ?>" name="wp_advanced_search_resulttext" id="wp_advanced_search_resulttext" type="text" style="width:250%;border:1px solid #ccc;" /></td>
+            </tr>
+            <tr>
+            	<td><label for="wp_advanced_search_errortext"><strong><?php _e('Texte affiché si aucun résultat','WP-Advanced-Search'); ?></strong></label></td>
+                <td><input value="<?php echo $select->ErrorText; ?>" name="wp_advanced_search_errortext" id="wp_advanced_search_errortext" type="text" style="width:250%;border:1px solid #ccc;" /></td>
+            </tr>
+        </table>
         
         <table cols="4" width="100%">
         	<tr valign="top">
@@ -198,6 +214,15 @@ function WP_Advanced_Search_Callback() {
                         <option value="LIKE" <?php if($select->typeSearch == 'LIKE') { echo 'selected="selected"'; } ?>><?php _e('LIKE','WP-Advanced-Search'); ?></option>
                     </select>
                     <br/><em><?php _e('<a href="#" onclick="','WP-Advanced-Search'); ?>getElementById('WP-Advanced-Search-Form').submit()<?php _e('">Installez les index FULLTEXT</a> pour que la recherche<br/>FULLTEXT fonctionne bien...','WP-Advanced-Search'); ?></em>
+                </p>
+                <p>
+                    <label for="wp_advanced_search_posttype"><strong><?php _e('Type de contenus pour la recherche ?','WP-Advanced-Search'); ?></strong></label><br />
+                    <select name="wp_advanced_search_posttype" id="wp_advanced_search_posttype" style="width:60%;border:1px solid #ccc;">
+                        <option value="post" <?php if($select->postType == 'post') { echo 'selected="selected"'; } ?>><?php _e('Articles','WP-Advanced-Search'); ?></option>
+                        <option value="page" <?php if($select->postType == 'page') { echo 'selected="selected"'; } ?>><?php _e('Pages','WP-Advanced-Search'); ?></option>
+                        <option value="pagepost" <?php if($select->postType == 'pagepost') { echo 'selected="selected"'; } ?>><?php _e('Articles + Pages','WP-Advanced-Search'); ?></option>
+                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?>><?php _e('Tout','WP-Advanced-Search'); ?></option>
+                    </select>
                 </p>
                 <p>
                     <label for="wp_advanced_search_encoding"><strong><?php _e('Choix de l\'encodage des caractères','WP-Advanced-Search'); ?></strong></label><br />

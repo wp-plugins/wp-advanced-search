@@ -7,7 +7,7 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 3.6.1
-Stable Tag: 1.0
+Stable Tag: 1.1
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
 
@@ -50,12 +50,14 @@ Some examples of existing options:
 <p><em>En fran&ccedil;ais</em></p>
 <p>1. Recopier le contenu de l'archive dans le r&eacute;pertoire des extensions (wp-content/plugins) et activer dans le panneau des extensions du backoffice de Wordpress.<br/>
 2. R&eacute;gler les param&egrave;tres dans les options de l'extension.<br/>
-3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
+3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+N.B. : Pensez à installer les index FULLTEXT si vous utilisez ce mode de recherche (lien en dessous du choix du type de recherche)</p>
 
 <p><em>For English people</em></p>
 <p>1. Copy the content of the archive in "wp-content/plugins" and activate the plugin.<br/>
 2. Adjust the settings in the options.<br/>
-3. Replace the display loop search page (search.php) by <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
+3. Replace the display loop search page (search.php) by <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+NB: Remember to install the FULLTEXT index if you use this method of research (link below choosing the type of research)</p>
 
 == Screenshots ==
 
@@ -66,7 +68,7 @@ Some examples of existing options:
 
 == Changelog ==
 
-= Version 1.0 (05/08/2013) =
+= Version 1.0 (05/10/2013) =
 
 - Premi&egrave;re version du moteur de recherche (first version of advanced search engine)
 - Possibilit&eacute; de d&eacute;sactiver chaque &eacute;l&eacutement (all options can be disabled)
@@ -74,3 +76,10 @@ Some examples of existing options:
 - Possibilit&eacute; d'ajouter une pagination automatique (ability to add an automatic pagination)
 - Possibilit&eacute; de mettre les mots recherch&eacute;s en gras (ability to put search words in bold)
 - Ajout d'un syst&egrave;me de traduction (fran&ccedil;ais et anglais par d&eacute;faut) (French and English translation included)
+
+= Version 1.1 (06/10/2013) =
+
+- Correction de petits bugs (Fixed small bugs)
+- Ajout du type de contenus &agrave; prendre en compte : pages, articles, les deux ou tout (Adding the type of content to consider: pages, sections, or both)
+- Possibilit&eacute; de modifier la phrase d'erreur (Ability to change the error sentence)
+- Possibilit&eacute; de modifier la phrase qui rappelle la requête recherchée (Ability to change the sentence that reminds the search query)

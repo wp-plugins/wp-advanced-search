@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.0
+Version: 1.1
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -61,7 +61,10 @@ function WP_Advanced_Search_install() {
 		paginationFirstPage VARCHAR(50) NOT NULL,
 		paginationLastPage VARCHAR(50) NOT NULL,
 		paginationPrevText VARCHAR(50) NOT NULL,
-		paginationNextText VARCHAR(50) NOT NULL
+		paginationNextText VARCHAR(50) NOT NULL,
+		postType VARCHAR(8) NOT NULL,
+		ResultText TEXT,
+		ErrorText TEXT
 		);";
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($sql);
@@ -75,7 +78,7 @@ function WP_Advanced_Search_install() {
 			"tables" => $wpdb->posts,
 			"nameField" => 's',
 			"colonnesWhere" => 'post_title, post_content, post_excerpt',
-			"typeSearch" => "FULLTEXT",
+			"typeSearch" => "REGEXP",
 			"encoding" => "utf-8",
 			"exactSearch" => true,
 			"accents" => false,
@@ -105,9 +108,12 @@ function WP_Advanced_Search_install() {
 			"paginationLastPage" => "Dernière page",
 			"paginationPrevText" => "&laquo; Précédent",
 			"paginationNextText" => "Suivant &raquo;",
+			"postType" => 'pagepost',
+			"ResultText" => 'Résultats de la recherche :',
+			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
 		);
 		$champ = wp_parse_args($instance, $defaut);
-		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText']));
+		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
 	}
 }
 function WP_Advanced_Search_desinstall() {
