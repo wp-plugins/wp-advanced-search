@@ -25,6 +25,7 @@ Quelques exemples d'options existantes :
 <li>Ajout d'une pagination automatique</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
 <li>Gestion des blocs &agrave; afficher dans les SERP</li>
+<li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
 <li>...</li>
 </ul>
 </p>
@@ -41,6 +42,7 @@ Some examples of existing options:
 <li>Adding an automatic pagination</li>
 <li>Highlight search terms, or not</li>
 <li>Manage blocks to display in the SERP</li>
+<li>Ability to write an exact search with words in quotation marks</li>
 <li>...</li>
 </ul>
 </p>
