@@ -53,7 +53,7 @@ Some examples of existing options:
 <p>1. Recopier le contenu de l'archive dans le r&eacute;pertoire des extensions (wp-content/plugins) et activer dans le panneau des extensions du backoffice de Wordpress.<br/>
 2. R&eacute;gler les param&egrave;tres dans les options de l'extension.<br/>
 3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
-N.B. : Pensez à installer les index FULLTEXT si vous utilisez ce mode de recherche (lien en dessous du choix du type de recherche)</p>
+N.B. : Pensez &agrave; installer les index FULLTEXT si vous utilisez ce mode de recherche (lien en dessous du choix du type de recherche)</p>
 
 <p><em>For English people</em></p>
 <p>1. Copy the content of the archive in "wp-content/plugins" and activate the plugin.<br/>
@@ -84,4 +84,4 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 - Correction de petits bugs (Fixed small bugs)
 - Ajout du type de contenus &agrave; prendre en compte : pages, articles, les deux ou tout (Adding the type of content to consider: pages, sections, or both)
 - Possibilit&eacute; de modifier la phrase d'erreur (Ability to change the error sentence)
-- Possibilit&eacute; de modifier la phrase qui rappelle la requête recherchée (Ability to change the sentence that reminds the search query)
+- Possibilit&eacute; de modifier la phrase qui rappelle la requ&ecirc;te recherch&eacute;e (Ability to change the sentence that reminds the search query)
