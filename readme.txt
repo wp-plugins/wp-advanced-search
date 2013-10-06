@@ -85,3 +85,7 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 - Ajout du type de contenus &agrave; prendre en compte : pages, articles, les deux ou tout (Adding the type of content to consider: pages, sections, or both)
 - Possibilit&eacute; de modifier la phrase d'erreur (Ability to change the error sentence)
 - Possibilit&eacute; de modifier la phrase qui rappelle la requ&ecirc;te recherch&eacute;e (Ability to change the sentence that reminds the search query)
+
+= Version 1.1.5 (06/10/2013) =
+
+- Corrige quelques bugs de mise &agrave; jour (fix some bugs with upgrade)

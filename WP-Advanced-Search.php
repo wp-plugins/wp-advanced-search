@@ -9,8 +9,9 @@ Author URI: http://blog.internet-formation.fr
 */
 
 // Instanciation des variables globales
-global $wpdb, $table_WP_Advanced_Search;
+global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
+$WP_Advanced_Search_Version = "1.5";
 
 // Gestion des langues
 function WP_Advanced_Search_Lang() {
@@ -20,11 +21,13 @@ function WP_Advanced_Search_Lang() {
 add_action('plugins_loaded', 'WP_Advanced_Search_Lang');
 
 // Fonction lancée lors de l'activation ou de la desactivation de l'extension
-register_activation_hook( __FILE__, 'WP_Advanced_Search_install' );
-//register_deactivation_hook( __FILE__, 'WP_Advanced_Search_desinstall' );
+register_activation_hook( __FILE__, 'WP_Advanced_Search_install');
+register_activation_hook( __FILE__, 'WP_Advanced_Search_install_data');
+register_deactivation_hook( __FILE__, 'WP_Advanced_Search_desinstall');
 
 function WP_Advanced_Search_install() {	
-	global $wpdb, $table_WP_Advanced_Search;
+	global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
+	
 	// Création de la table de base
 	$sql = "CREATE TABLE IF NOT EXISTS $table_WP_Advanced_Search (
 		id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -66,9 +69,50 @@ function WP_Advanced_Search_install() {
 		ResultText TEXT,
 		ErrorText TEXT
 		);";
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	require_once(ABSPATH.'wp-admin/includes/upgrade.php');
 	dbDelta($sql);
+
+	add_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
 	
+	global $wpdb;
+	$installed_ver = get_option("wp_advanced_search_version");
+	if($installed_ver != $WP_Advanced_Search_Version) {
+		$sqlUpgrade = "ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)";
+		require_once(ABSPATH.'wp-admin/includes/upgrade.php' );
+		dbDelta($sqlUpgrade);
+		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
+		$defautUpgrade = array(
+			"postType" => 'pagepost',
+			"ResultText" => 'Résultats de la recherche :',
+			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
+		);
+		$champ = wp_parse_args($instance, $defautUpgrade);
+		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']),array('id' => 1));
+	}
+	
+	/*
+	// Mise à jour du plugin
+	$tmpdata = $wpdb->get_results("SHOW COLUMNS FROM $table_WP_Advanced_Search");
+    foreach($tmpdata as $tmp) {
+		$fields[] = $tmp->Field;
+	}
+	$newColumn = array('postType','ResultText','ErrorText');
+    if(!in_array($newColumn,$fields)) {
+		$sqlUpgrade = "ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)";
+		$defautUpgrade = array(
+			"postType" => 'pagepost',
+			"ResultText" => 'Résultats de la recherche :',
+			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
+		);
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sqlUpgrade);
+		$champ = wp_parse_args($instance, $defautUpgrade);
+		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']),array('id' => 1));
+	}
+	*/
+}
+function WP_Advanced_Search_install_data() {		
+	global $wpdb, $table_WP_Advanced_Search;
 	// Récupération automatique du nom de la base de données
 	$databaseNameSearch = $wpdb->get_results("SELECT DATABASE()");
 	foreach($databaseNameSearch[0] as $databaseSearch) {
@@ -115,26 +159,8 @@ function WP_Advanced_Search_install() {
 		$champ = wp_parse_args($instance, $defaut);
 		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
 	}
-
-	// Mise à jour du plugin
-	$tmpdata = $wpdb->get_results("SHOW COLUMNS FROM $table_WP_Advanced_Search");
-    foreach($tmpdata as $tmp) {
-		$fields[] = $tmp->Field;
-	}
-	$newColumn = array('postType','ResultText','ErrorText');
-    if(!in_array($newColumn,$fields)) {
-		$sqlUpgrade = "ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)";
-		$defautUpgrade = array(
-			"postType" => 'pagepost',
-			"ResultText" => 'Résultats de la recherche :',
-			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
-		);
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sqlUpgrade);
-		$champ = wp_parse_args($instance, $defautUpgrade);
-		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']),array('id' => 1));
-	}
 }
+
 function WP_Advanced_Search_desinstall() {
 	global $wpdb, $table_WP_Advanced_Search;
 	// Suppression de la table de base
