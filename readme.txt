@@ -31,7 +31,7 @@ Quelques exemples d'options existantes :
 
 <p><em>For English people</em></p>
 <p><strong>WP-Advanced-Search</strong> works in English and in French<br/>
-<strong>WP-Advanced-Search works with a simple code &lt;?php WP_Advanced_Search (); ?&gt; to add to the search page of WordPress (search.php). Everything is fully configurable in the settings of WordPress (sub-menu 'Advanced Search').</p>
+<strong>WP-Advanced-Search</strong> works with a simple code &lt;?php WP_Advanced_Search (); ?&gt; to add to the search page of WordPress (search.php). Everything is fully configurable in the settings of WordPress (sub-menu 'Advanced Search').</p>
 <p>
 Some examples of existing options:
 <ul>
