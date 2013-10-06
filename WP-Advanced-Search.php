@@ -11,7 +11,7 @@ Author URI: http://blog.internet-formation.fr
 // Instanciation des variables globales
 global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
-$WP_Advanced_Search_Version = "1.5";
+$WP_Advanced_Search_Version = "1.1.5";
 
 // Gestion des langues
 function WP_Advanced_Search_Lang() {
