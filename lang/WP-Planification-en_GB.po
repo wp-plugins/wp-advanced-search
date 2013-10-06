@@ -1,0 +1,872 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP_Advanced_Search\n"
+"POT-Creation-Date: 2013-10-05 20:57+0100\n"
+"PO-Revision-Date: 2013-10-05 20:57+0100\n"
+"Last-Translator: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
+"Language-Team: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: plurals=2;plural=n>1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: C:\\Users\\Carter\\Desktop\\WP-Advanced-Search\n"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:66
+msgid "Aucun résultat, veuillez effectuer une autre recherche !"
+msgstr "No results, please try another search!"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:114
+msgid "Publié le "
+msgstr "Published"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:121
+msgid "par "
+msgstr "by"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:130
+msgid "dans "
+msgstr "in"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:163
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Function.php:178
+msgid "Lire la suite..."
+msgstr "Read more ..."
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:19
+msgid ""
+"Index FULLTEXT créés avec succès !\\nVous pouvez utiliser le type FULLTEXT "
+"dorénavant..."
+msgstr ""
+"FULLTEXT indexes created successfully!\\nYou can use the FULLTEXT type "
+"now ..."
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:118
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:437
+msgid "Enregistrer"
+msgstr "Update"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:132
+msgid "Aide et réglages de WP-Advanced-Search."
+msgstr "WP-Advanced-Search settings."
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:133
+msgid ""
+"<strong>WP-Advanced-Search</strong> permet d'activer un moteur de recherche "
+"puissant pour WordPress"
+msgstr ""
+"<strong>WP-Advanced-Search</strong> enables a powerful search engine for "
+"WordPress"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:134
+msgid ""
+"Plusieurs types de recherche (\"LIKE\", \"REGEXP\" ou \"FULLTEXT\"), "
+"algorithme de pertinence, mise en surbrillance des mots recherchés, "
+"pagination, affichage paramétrable..."
+msgstr ""
+"Several types of research (\"LIKE\", \"REGEXP\" or \"FULLTEXT\"), relevancy "
+"algorithm, highlighting search terms, pagination, configurable display ..."
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:135
+msgid "Tout est entièrement modulable pour obtenir des résultats précis !"
+msgstr "Everything is fully configurable for accurate results!"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:137
+msgid "Préparez le formulaire de recherche (search-form.php)"
+msgstr "Prepare the search form (search-form.php)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:138
+msgid "Préparez la page de résultats (search.php)"
+msgstr "Prepare the results page (search.php)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:139
+msgid "Paramétrez le moteur ci-dessous"
+msgstr "Set the search engine below"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:140
+msgid ""
+"Ajouter le code <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong> pour "
+"afficher les résultats"
+msgstr ""
+"Add code <strong>&lt;?php WP_Advanced_Search (); ?&gt;</strong> to display "
+"the results"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:142
+msgid ""
+"<em>N.B. : n'hésitez pas à contacter <a href=\"http://blog.internet-"
+"formation.fr\" target=\"_blank\">Mathieu Chartier</a>, le créateur du "
+"plugin, pour de plus amples informations.</em>"
+msgstr ""
+"<em> N.B. : contact <a href=\"http://blog.internet-formation.fr\" target="
+"\"_blank\">Mathieu Chartier</a>, the creator of the plugin, for more "
+"information.</ em>"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:145
+msgid "Paramètres de l'extension"
+msgstr "Plugin settings"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:159
+msgid "Table de recherche"
+msgstr "Search table"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:179
+msgid "Attribut \"name\" du champ de recherche"
+msgstr "Attribute \"name\" field search"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:187
+msgid "Options générales du moteur"
+msgstr "General search engine options"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:189
+msgid "Colonnes de la table dans lesquelles rechercher"
+msgstr "Table columns to search"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:191
+msgid "Séparez les valeurs par des virgules"
+msgstr "Separate values with commas"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:194
+msgid "Ordre et options d'affichage"
+msgstr "Display order"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:196
+msgid "FULLTEXT"
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:197
+msgid "REGEXP"
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:198
+msgid "LIKE"
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:200
+msgid "<a href=\"#\" onclick=\""
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:200
+msgid ""
+"\">Installez les index FULLTEXT</a> pour que la recherche<br/>FULLTEXT "
+"fonctionne bien..."
+msgstr ""
+"\">Install the FULLTEXT index</a> for research<br/>FULLTEXT works well ..."
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:203
+msgid "Choix de l'encodage des caractères"
+msgstr "Choice of character encoding"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:205
+msgid "UTF-8"
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:206
+msgid "ISO-8859-1 (Latin-1)"
+msgstr ""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:210
+msgid "Recherche exacte ou approchante ?"
+msgstr "Exact Search or approaching Search?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:212
+msgid "Exacte"
+msgstr "Exact"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:213
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:254
+msgid "Approchante"
+msgstr "Approaching"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:216
+msgid "Options de formatage des requêtes"
+msgstr "Formatting options for search queries"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:218
+msgid "Activer les \"stop words\" ?"
+msgstr "Enable \"stop words\"?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:220
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:227
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:262
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:275
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:305
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:329
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:336
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:348
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:355
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:362
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:378
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:388
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:408
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:415
+msgid "Oui"
+msgstr "Yes"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:221
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:228
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:263
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:276
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:306
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:330
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:337
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:349
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:356
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:363
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:379
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:389
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:409
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:416
+msgid "Non"
+msgstr "No"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:225
+msgid "Suppression des accents de la requête ?"
+msgstr "Removing accents in the query?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:230
+msgid "Utile si les contenus sont sans accent<br/>dans la base de données"
+msgstr "Useful if the words are not emphasized<br/>in the database"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:233
+msgid "Exclure les mots courts ?"
+msgstr "Exclude short words?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:235
+msgid "Désactivé"
+msgstr "Disabled"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:236
+msgid "< 1 caractère"
+msgstr "< 1 character"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:237
+msgid "< 2 caractères"
+msgstr "< 2 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:238
+msgid "< 3 caractères"
+msgstr "< 3 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:239
+msgid "< 4 caractères"
+msgstr "< 4 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:240
+msgid "< 5 caractères"
+msgstr "< 5 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:241
+msgid "< 6 caractères"
+msgstr "< 6 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:242
+msgid "< 7 caractères"
+msgstr "< 7 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:243
+msgid "< 8 caractères"
+msgstr "< 7 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:244
+msgid "< 9 caractères"
+msgstr "< 9 characters"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:249
+msgid "Options de rendu"
+msgstr "Display Options"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:251
+msgid "Mise en surbrillance des mots clés"
+msgstr "Highlight keywords search"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:253
+msgid "Précise"
+msgstr "Precise"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:255
+msgid "Aucune mise en gras"
+msgstr "No bolding"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:257
+msgid ""
+"\"Précise\" pour la chaîne exacte, \"Approchante\" pour le mot contenant une "
+"chaîne (si recherche LIKE)"
+msgstr ""
+"\"Precise\" for the exact string, \"approaching\" for the word containing a "
+"string (if LIKE search)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:260
+msgid "Numéroter les résultats ?"
+msgstr "Number the search results?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:267
+msgid "Nombre de résultats par page"
+msgstr "Number of results per page"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:269
+msgid "0 ou vide pour tout afficher dans une page sans pagination"
+msgstr "0 or blank to display all in one page without pagination"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:271
+msgid "Ordre des résultats"
+msgstr "Order search results"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:273
+msgid "Ordonner les résultats ?"
+msgstr "Sort results?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:280
+msgid "Colonne de classement"
+msgstr "Order Column"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:296
+msgid "Croissant ou décroissant ?"
+msgstr "Ascending or descending?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:298
+msgid "Croissant (ASC)"
+msgstr "Ascending (ASC)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:299
+msgid "Décroissant (DESC)"
+msgstr "Descending (DESC)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:303
+msgid "Algorithme de pertinence ?"
+msgstr "relevance algorithm?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:308
+msgid ""
+"L'algorithme de pertinence affiche en ordre décroissant les résultats qui "
+"ont le plus de correspondances avec la requête"
+msgstr ""
+"The relevancy algorithm displays the results in descending order with the "
+"most connections with the request"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:312
+msgid "Blocs à afficher"
+msgstr "Block to display"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:314
+msgid "Style CSS pour les blocs"
+msgstr "Block stylesheet CSS"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:316
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:395
+msgid "Aucun style CSS"
+msgstr "No CSS"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:317
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:396
+msgid "Feuille CSS Vide"
+msgstr "Empty stylesheet CSS"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:318
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:397
+msgid "Bleu"
+msgstr "Blue"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:319
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:398
+msgid "Rouge"
+msgstr "Red"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:320
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:399
+msgid "Vert"
+msgstr "Green"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:321
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:400
+msgid "Gris"
+msgstr "Grey"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:322
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:401
+msgid "Noir"
+msgstr "Black"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:323
+msgid "Blanc (discret)"
+msgstr "White (sober)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:327
+msgid "Affichage du titre ?"
+msgstr "Display title?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:334
+msgid "Affichage de la date ?"
+msgstr "Display date?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:341
+msgid "Formatage de la date (si active)"
+msgstr "Date format (if enabled)"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:343
+msgid ""
+"<a href=\"http://php.net/manual/fr/function.date.php\" target=\"_blank"
+"\">Voir documentation PHP sur les dates</a></em><br/><em>(ex : \"l j F Y\" "
+"pour \"mardi 25 juin 2013\")"
+msgstr ""
+"<a href=\"http://php.net/manual/fr/function.date.php\" target=\"_blank\">See "
+"the documentation of PHP about dates</a></em><br/><em>(for example: \"l, F "
+"j, Y\" to \"Tuesday, June 25, 2013\")"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:346
+msgid "Affichage du nom de l'auteur ?"
+msgstr "Display author name?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:353
+msgid "Affichage de la catégorie de l'article ?"
+msgstr "Display category?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:360
+msgid "Affichage du nombre de commentaires ?"
+msgstr "Display number of comments?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:367
+msgid "Affichage de l'article ou l'extrait ?"
+msgstr "Show the article or the excerpt?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:369
+msgid "Aucun des deux"
+msgstr "Neither"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:370
+msgid "Extrait"
+msgstr "The excerpt"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:371
+msgid "Extrait + \"Lire la suite...\""
+msgstr "Excerpt + \"Read more...\""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:372
+msgid "Article complet"
+msgstr "The article"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:376
+msgid "Affichage de l'image à la Une ?"
+msgstr "Display post thumbnails?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:384
+msgid "Options pour la pagination"
+msgstr "Options for pagination"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:386
+msgid "Activer la pagination"
+msgstr "Enabled pagination"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:393
+msgid "Style CSS pour la pagination"
+msgstr "Pagination stylesheet CSS"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:402
+msgid "Blanc"
+msgstr "White"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:406
+msgid "Affichage de \"première page\" et \"dernière page\" ?"
+msgstr "Display \"first page\" and \"last page\"?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:413
+msgid "Affichage de \"précédent\" et \"suivant\" ?"
+msgstr "Display \"previous\" and \"next\"?"
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:420
+msgid "Texte pour \"première page\""
+msgstr "Text for \"first page\""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:424
+msgid "Texte pour \"dernière page\""
+msgstr "Text for \"last page\""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:428
+msgid "Texte pour \"précédent\""
+msgstr "Text for \"previous\""
+
+#: C:\Users\Carter\Desktop\WP-Advanced-Search/WP-Advanced-Search-Options.php:432
+msgid "Texte pour \"suivant\""
+msgstr "Text for \"next\""
+
+#~ msgid "Prochains événements"
+#~ msgstr "Next events"
+
+#~ msgid "WP-Planification-ReadMore"
+#~ msgstr "WP-Planification-ReadMore"
+
+#~ msgid "Aucun événement"
+#~ msgstr "No event"
+
+#~ msgid "Aucun événement pour le moment"
+#~ msgstr "No event now"
+
+#~ msgid ""
+#~ "<strong>WP-Planification</strong> est un plugin permettant d'afficher des "
+#~ "publications futures comme bon vous semble."
+#~ msgstr ""
+#~ "<strong>WP-Planification</strong> is a plugin for displaying scheduled "
+#~ "publications as you wish."
+
+#~ msgid ""
+#~ "Le fonctionnement est simple : il suffit de <strong>planifier une date de "
+#~ "publication à venir</strong> pour que la page ou l'article soit affiché "
+#~ "par le plugin (widget ou shortcode selon votre choix)."
+#~ msgstr ""
+#~ "Operation is simple: just <strong>schedule a release date coming</strong> "
+#~ "for the page or post is displayed by the plugin (widget or shortcode)."
+
+#~ msgid ""
+#~ "Ajoutez librement la date (ou non), le lien (ou non), un contenu (page ou "
+#~ "article) ou un extrait (ou non) ainsi qu'une image à la Une (ou non)..."
+#~ msgstr ""
+#~ "Add as you want the date (or not), the link (or not), the content (page "
+#~ "or article) or the excerpt (or not) or a post thumbnails (or not) ..."
+
+#~ msgid "Deux options d'utilisation :"
+#~ msgstr "Two options:"
+
+#~ msgid "<strong>Widget</strong> entièrement modulable"
+#~ msgstr "<strong>Widget</strong> fully configurable"
+
+#~ msgid ""
+#~ "<strong>Shortcode [planification]</strong> à ajouter dans les articles ou "
+#~ "pages"
+#~ msgstr "<strong>Shortcode [planification]</strong> to add in posts or pages"
+
+#~ msgid "Afficher le bloc de planification"
+#~ msgstr "Display the scheduled block"
+
+#~ msgid "Titre du bloc (shortcode)"
+#~ msgstr "Block title (for shortcode)"
+
+#~ msgid "Laisser vide pour masquer le titre..."
+#~ msgstr "Empty to hide the title."
+
+#~ msgid "Options d'affichage"
+#~ msgstr "Display options"
+
+#~ msgid "Ordre d'affichage des blocs"
+#~ msgstr "Display order"
+
+#~ msgid "Date-Titre seul"
+#~ msgstr "Only Date-Title"
+
+#~ msgid "Extrait-Article seul"
+#~ msgstr "Only Excerpt-Article"
+
+#~ msgid "Image seule"
+#~ msgstr "Only post thumbnails"
+
+#~ msgid "Date-Titre => Extrait-Article"
+#~ msgstr "Date-Title => Excerpt-Article"
+
+#~ msgid "Extrait-Article => Date-Titre"
+#~ msgstr "Excerpt-Article => Date-Title"
+
+#~ msgid "Date-Titre => Image"
+#~ msgstr "Date-Title => Image"
+
+#~ msgid "Image => Date-Titre"
+#~ msgstr "Image => Date-Title"
+
+#~ msgid "Image => Extrait-Article"
+#~ msgstr "Image => Excerpt-Article"
+
+#~ msgid "Extrait-Article => Image"
+#~ msgstr "Excerpt-Article => Image"
+
+#~ msgid "Date-Titre => Image => Extrait-Article"
+#~ msgstr "Date-Title => Image => Excerpt-Article"
+
+#~ msgid "Date-Titre => Extrait-Article => Image"
+#~ msgstr "Date-Title => Excerpt-Article => Image"
+
+#~ msgid "Extrait-Article => Date-Titre => Image"
+#~ msgstr "Excerpt-Article => Date-Title => Image"
+
+#~ msgid "Extrait-Article => Image => Date-Titre"
+#~ msgstr "Excerpt-Article => Image => Date-Title"
+
+#~ msgid "Image => Date-Titre => Extrait-Article"
+#~ msgstr "Image => Date-Title => Excerpt-Article"
+
+#~ msgid "Image => Extrait-Article => Date-Titre"
+#~ msgstr "Image => Excerpt-Article => Date-Title"
+
+#~ msgid "Ne rien afficher..."
+#~ msgstr "No display ..."
+
+#~ msgid "Date + Lien"
+#~ msgstr "Date + Link"
+
+#~ msgid "Lien + Date"
+#~ msgstr "Link + Date"
+
+#~ msgid "Date seule"
+#~ msgstr "Only date"
+
+#~ msgid "Lien seul"
+#~ msgstr "Only link or text"
+
+#~ msgid "Aucun"
+#~ msgstr "None"
+
+#~ msgid "Afficher un lien \"Lire la suite...\""
+#~ msgstr "Show a link \"Read more ...\""
+
+#~ msgid "Texte du \"Lire la suite...\" (si actif)"
+#~ msgstr "Text for the \"Read more ...\" (if enabled)"
+
+#~ msgid "Activer les images à la Une pour afficher la vignette"
+#~ msgstr "Enable post thumbnails to show the image"
+
+#~ msgid ""
+#~ "N.B. : add_theme_support('post-thumbnails'); dans functions.php pour "
+#~ "activer l'option"
+#~ msgstr ""
+#~ "NB: add_theme_support ('post-thumbnails') in functions.php to enable"
+
+#~ msgid "Mise en page HTML"
+#~ msgstr "HTML Layout"
+
+#~ msgid "Séparateur entre la date et le titre *"
+#~ msgstr "Separator between the date and the title *"
+
+#~ msgid "Séparateur pour l'article ou l'extrait *"
+#~ msgstr "Separator for the article or the excerpt *"
+
+#~ msgid "Séparateur pour l'image à la Une *"
+#~ msgstr "Separator for the post thumbnails *"
+
+#~ msgid "* Code HTML accepté"
+#~ msgstr "* HTML accepted"
+
+#~ msgid "Balises d'encadrement du conteneur général"
+#~ msgstr "Tags for the global block"
+
+#~ msgid "Balises d'encadrement du bloc \"Date + Titre\""
+#~ msgstr "Tags for the block \"Date + Title\""
+
+#~ msgid "Balises d'encadrement de la date"
+#~ msgstr "Tags for the dates:"
+
+#~ msgid "Balises d'encadrement du texte (lien)"
+#~ msgstr "Tags for the text or link"
+
+#~ msgid "Remplacer \"a\" pour rendre le lien inactif..."
+#~ msgstr "Replace \"a\" to make the link active ..."
+
+#~ msgid "Balises d'encadrement du contenu ou de l'extrait"
+#~ msgstr "Tags for the content or the excerpt"
+
+#~ msgid "Balises d'encadrement du \"Lire la suite...\""
+#~ msgstr "Tags for the text \"read more ...\""
+
+#~ msgid "Balises d'encadrement de l'image à la Une"
+#~ msgstr "Tags for the post thumbnails"
+
+#~ msgid "Faire un \"clear\" après le bloc ?"
+#~ msgstr "Add a \"clear\" after the block ?"
+
+#~ msgid "Autres options"
+#~ msgstr "Other options"
+
+#~ msgid "Nombre de publications affichées"
+#~ msgstr "Number of schedules publications"
+
+#~ msgid "Type de contenu à publier"
+#~ msgstr "Content type"
+
+#~ msgid "post"
+#~ msgstr "post"
+
+#~ msgid "page"
+#~ msgstr "page"
+
+#~ msgid "Les deux"
+#~ msgstr "Both"
+
+#~ msgid "Colonne cible"
+#~ msgstr "Target Column"
+
+#~ msgid "post_date"
+#~ msgstr "post_date"
+
+#~ msgid "post_date_gmt"
+#~ msgstr "post_date_gmt"
+
+#~ msgid "Colonne utilisée pour le classement"
+#~ msgstr "Order Column"
+
+#~ msgid "Ordre d'affichage"
+#~ msgstr "Display order"
+
+#~ msgid "Affichage si aucune publication future n'existe"
+#~ msgstr "Display if there is no scheduled publication"
+
+#~ msgid "Titre affiché si aucune planification *"
+#~ msgstr "Title if there is no scheduled publication *"
+
+#~ msgid "Phrase affichée si aucune planification *"
+#~ msgstr "Text if there is no scheduled publication *"
+
+#~ msgid ""
+#~ "* Laisser les deux champs vides pour masquer le bloc quand aucune "
+#~ "planification n'existe"
+#~ msgstr ""
+#~ "* Leave both fields blank to hide the block when nothing is scheduled"
+
+#~ msgid "Choix des classes CSS"
+#~ msgstr "Choice of CSS classes"
+
+#~ msgid "Ajout de la feuille de style par défaut ?"
+#~ msgstr "Add stylesheet CSS by défault ?"
+
+#~ msgid "Aucune feuille"
+#~ msgstr "No CSS"
+
+#~ msgid "Feuille vide personnalisable (style-empty.css)"
+#~ msgstr "Empty CSS customizable (style-empty.css)"
+
+#~ msgid "Style sobre"
+#~ msgstr "Sober style"
+
+#~ msgid "Dominante en noir"
+#~ msgstr "Dominant color black"
+
+#~ msgid "Dominante en gris"
+#~ msgstr "Dominant color grey"
+
+#~ msgid "Dominante en bleu"
+#~ msgstr "Dominant color blue"
+
+#~ msgid "Dominante en rouge"
+#~ msgstr "Dominant color red"
+
+#~ msgid "Dominante en vert"
+#~ msgstr "Dominant color green"
+
+#~ msgid "Dominante en noir sans bordures"
+#~ msgstr "Dominant color black without border"
+
+#~ msgid "Dominante en gris sans bordures"
+#~ msgstr "Dominant color grey without border"
+
+#~ msgid "Dominante en bleu sans bordures"
+#~ msgstr "Dominant color blue without border"
+
+#~ msgid "Dominante en rouge sans bordures"
+#~ msgstr "Dominant color red without border"
+
+#~ msgid "Dominante en vert sans bordures"
+#~ msgstr "Dominant color green without border"
+
+#~ msgid "Classe du bloc global"
+#~ msgstr "Global block - Class CSS"
+
+#~ msgid "Classe du bloc \"date + lien...\""
+#~ msgstr "Block \"date + link\" - Class CSS"
+
+#~ msgid "Classe de la date"
+#~ msgstr "Dates - Class CSS"
+
+#~ msgid "Classe du lien (URL) ou du texte"
+#~ msgstr "Link or text - Class CSS"
+
+#~ msgid "Classe du bloc de contenu (extrait ou article)"
+#~ msgstr "Class content block (excerpt or article)"
+
+#~ msgid "Classe du bloc \"Lire la suite...\""
+#~ msgstr "Block \"date + link\" - Class CSS"
+
+#~ msgid "Classe de l'image à la Une"
+#~ msgstr "Class of the post thumbnails"
+
+#~ msgid "WP-Planification"
+#~ msgstr "WP-Planification"
+
+#~ msgid ""
+#~ "Afficher des publications et événements futurs (en cas de planification "
+#~ "d'articles ou de pages)"
+#~ msgstr ""
+#~ "Show publications and future events (for scheduled articles or pages)"
+
+#~ msgid "Consultez la page de réglages pour tout paramétrer en détail..."
+#~ msgstr "Check the settings page to set everything in detail ..."
+
+#~ msgid "Titre"
+#~ msgstr "Title"
+
+#~ msgid "1"
+#~ msgstr "1"
+
+#~ msgid "l j F Y"
+#~ msgstr "l j F Y"
+
+#~ msgid " : "
+#~ msgstr " : "
+
+#~ msgid "div"
+#~ msgstr "div"
+
+#~ msgid "p"
+#~ msgstr "p"
+
+#~ msgid "span"
+#~ msgstr "span"
+
+#~ msgid "ASC"
+#~ msgstr "ASC"
+
+#~ msgid "Style CSS défini ?"
+#~ msgstr "Default stylesheet ?"
+
+#~ msgid "Voir documentation PHP sur les dates"
+#~ msgstr "See the documentation of PHP about dates"
+
+#~ msgid "(ex : \"l j F Y\" pour \"mardi 25 juin 2013\")"
+#~ msgstr "(for example: \"l, F j, Y\" to \"Tuesday, June 25, 2013\")"
+
+#~ msgid "Séparateur"
+#~ msgstr "Separator"
+
+#~ msgid "Code HTML accepté"
+#~ msgstr "HTML accepted"
+
+#~ msgid "Balises d'encadrement du bloc"
+#~ msgstr "Tags for the global block:"
+
+#~ msgid "(div, section, aside...)"
+#~ msgstr "(div, section, aside...)"
+
+#~ msgid "Balises du bloc \"Date + Lien\""
+#~ msgstr "Tags for the block \"Date + Title\":"
+
+#~ msgid "Si aucun événément"
+#~ msgstr "If no event..."
+
+#~ msgid "Titre si aucun événement"
+#~ msgstr "Title if no event"
+
+#~ msgid "Phrase si aucun événement"
+#~ msgstr "Text if no event"
+
+#~ msgid "Options BDD"
+#~ msgstr "Database settings"
+
+#~ msgid "Ordre d\\affichage"
+#~ msgstr "Display order"
+
+#~ msgid "Balises d'encadrement de la date :"
+#~ msgstr "Tags for the dates:"
+
+#~ msgid ""
+#~ "Laisser vide pour tout afficher (ou au choix : post, page, attachment...)"
+#~ msgstr "Let blank to show all (or choice: post, page, attachment...)"
+
+#~ msgid "Colonne cible : "
+#~ msgstr "Target Column:"
