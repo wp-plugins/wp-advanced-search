@@ -15,7 +15,7 @@ Stable Tag: 1.0
 
 <p><em>En fran&ccedil;ais</em></p>
 <p><strong>WP-Advanced-Search</strong> fonctionne en anglais et en fran&ccedil;ais<br/>
-<strong>WP-Advanced-Search</strong> fonctionne avec un code court <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong> à ajouter dans la page de recherche du thème WordPress (search.php). <strong>Tout est enti&egrave;rement param&eacute;trable</strong> dans les r&eacute;glages de WordPress (sous-menu 'Advanced Search').</p>
+<strong>WP-Advanced-Search</strong> fonctionne avec un code court <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong> &agrave; ajouter dans la page de recherche du th&egrave;me WordPress (search.php). <strong>Tout est enti&egrave;rement param&eacute;trable</strong> dans les r&eacute;glages de WordPress (sous-menu 'Advanced Search').</p>
 <p>
 Quelques exemples d'options existantes :
 <ul>
@@ -50,12 +50,12 @@ Some examples of existing options:
 <p><em>En fran&ccedil;ais</em></p>
 <p>1. Recopier le contenu de l'archive dans le r&eacute;pertoire des extensions (wp-content/plugins) et activer dans le panneau des extensions du backoffice de Wordpress.<br/>
 2. R&eacute;gler les param&egrave;tres dans les options de l'extension.<br/>
-3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
+3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
 
 <p><em>For English people</em></p>
 <p>1. Copy the content of the archive in "wp-content/plugins" and activate the plugin.<br/>
 2. Adjust the settings in the options.<br/>
-3. Replace the display loop search page (search.php) by <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
+3. Replace the display loop search page (search.php) by <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.</p>
 
 == Screenshots ==
 
