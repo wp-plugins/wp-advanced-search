@@ -123,12 +123,14 @@ function WP_Advanced_Search_install() {
 	}
 	$newColumn = array('postType','ResultText','ErrorText');
     if(!in_array($newColumn,$fields)) {
-		$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)");
+		$sqlUpgrade = "ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT, ErrorText TEXT)";
 		$defautUpgrade = array(
 			"postType" => 'pagepost',
 			"ResultText" => 'Résultats de la recherche :',
 			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
 		);
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sqlUpgrade);
 		$champ = wp_parse_args($instance, $defautUpgrade);
 		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']),array('id' => 1));
 	}
