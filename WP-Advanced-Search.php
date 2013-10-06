@@ -181,13 +181,13 @@ function WP_Advanced_Search_desinstall() {
 	$wpdb->query("DROP TABLE IF EXISTS $table_WP_Advanced_Search");
 }
 // Quand le plugin est mise à jour, on relance la fonction
-function WP_Advanced_Search_Update() {
+function WP_Advanced_Search_Upgrade() {
     global $WP_Advanced_Search_Version;
     if (get_site_option('wp_advanced_search_version') != $WP_Advanced_Search_Version) {
         WP_Advanced_Search_install();
     }
 }
-add_action('plugins_loaded', 'WP_Advanced_Search_Update');
+add_action('plugins_loaded', 'WP_Advanced_Search_Upgrade');
 
 
 // Ajout d'une page de sous-menu
