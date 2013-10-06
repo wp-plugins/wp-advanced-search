@@ -11,6 +11,8 @@ Author URI: http://blog.internet-formation.fr
 // Instanciation des variables globales
 global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
+
+// Version du plugin
 $WP_Advanced_Search_Version = "1.1.5";
 
 // Gestion des langues
@@ -172,12 +174,21 @@ function WP_Advanced_Search_install_data() {
 		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
 	}
 }
-
+// Quand ça désactive l'extension, la table est supprimée...
 function WP_Advanced_Search_desinstall() {
 	global $wpdb, $table_WP_Advanced_Search;
 	// Suppression de la table de base
 	$wpdb->query("DROP TABLE IF EXISTS $table_WP_Advanced_Search");
 }
+// Quand le plugin est mise à jour, on relance la fonction
+function WP_Advanced_Search_Update() {
+    global $WP_Advanced_Search_Version;
+    if (get_site_option('wp_advanced_search_version') != $WP_Advanced_Search_Version) {
+        WP_Advanced_Search_install();
+    }
+}
+add_action('plugins_loaded', 'WP_Advanced_Search_Update');
+
 
 // Ajout d'une page de sous-menu
 function WP_Advanced_Search_admin() {
