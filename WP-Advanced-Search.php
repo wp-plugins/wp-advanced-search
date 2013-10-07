@@ -76,55 +76,6 @@ function WP_Advanced_Search_install() {
 	
 	// Prise en compte de la version en cours
 	add_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
-
-	// Récupération de la version en cours (pour voir si mise à jour...)
-	$installed_ver = get_option("wp_advanced_search_version");
-	if($installed_ver != $WP_Advanced_Search_Version) {
-		echo "salut10";
-		$sql = "CREATE TABLE IF NOT EXISTS $table_WP_Advanced_Search (
-			id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			db VARCHAR(50) NOT NULL,
-			tables VARCHAR(30) NOT NULL,
-			nameField VARCHAR(30) NOT NULL,
-			colonnesWhere TEXT NOT NULL, 
-			typeSearch VARCHAR(8) NOT NULL,
-			encoding VARCHAR(25) NOT NULL,
-			exactSearch BOOLEAN NOT NULL,
-			accents BOOLEAN NOT NULL,
-			exclusionWords TEXT,
-			stopWords BOOLEAN NOT NULL,
-			NumberOK BOOLEAN NOT NULL,
-			NumberPerPage INT(2),
-			Style VARCHAR(10) NOT NULL,
-			formatageDate VARCHAR(25),
-			DateOK BOOLEAN NOT NULL,
-			AuthorOK BOOLEAN NOT NULL,
-			CategoryOK BOOLEAN NOT NULL,
-			TitleOK BOOLEAN NOT NULL,
-			ArticleOK VARCHAR(12) NOT NULL,
-			CommentOK BOOLEAN NOT NULL,
-			ImageOK BOOLEAN NOT NULL,
-			strongWords VARCHAR(10) NOT NULL,
-			OrderOK BOOLEAN NOT NULL,
-			OrderColumn VARCHAR(25) NOT NULL,
-			AscDesc VARCHAR(4) NOT NULL,
-			AlgoOK BOOLEAN NOT NULL,
-			paginationActive BOOLEAN NOT NULL,
-			paginationStyle VARCHAR(30) NOT NULL,
-			paginationFirstLast BOOLEAN NOT NULL,
-			paginationPrevNext BOOLEAN NOT NULL,
-			paginationFirstPage VARCHAR(50) NOT NULL,
-			paginationLastPage VARCHAR(50) NOT NULL,
-			paginationPrevText VARCHAR(50) NOT NULL,
-			paginationNextText VARCHAR(50) NOT NULL,
-			postType VARCHAR(8) NOT NULL,
-			ResultText TEXT,
-			ErrorText TEXT
-			);";
-		require_once(ABSPATH.'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
-	}
 }
 function WP_Advanced_Search_install_data() {		
 	global $wpdb, $table_WP_Advanced_Search;
@@ -184,15 +135,32 @@ function WP_Advanced_Search_desinstall() {
 // Quand le plugin est mise à jour, on relance la fonction
 function WP_Advanced_Search_Upgrade() {
     global $WP_Advanced_Search_Version;
-	echo "salut";
     if(get_site_option('wp_advanced_search_version') != $WP_Advanced_Search_Version) {
-		echo "salut1";
-        WP_Advanced_Search_install();
-		WP_Advanced_Search_install_data();
+        WP_Advanced_Search_install_update();
     }
 }
 add_action('plugins_loaded', 'WP_Advanced_Search_Upgrade');
+// Fonction d'update v1.0 vers 1.1.6
+function WP_Advanced_Search_install_update() {
+	global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;	
+	// Récupération de la version en cours (pour voir si mise à jour...)
+	$installed_ver = get_option("wp_advanced_search_version");
 
+	if($installed_ver != $WP_Advanced_Search_Version) {
+		$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (postType VARCHAR(8) NOT NULL, ResultText TEXT,	ErrorText TEXT)");
+		
+		// Mise à jour des des nouvelles valeurs par défaut
+		$defautUpgrade = array(
+			"postType" => 'pagepost',
+			"ResultText" => 'Résultats de la recherche :',
+			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
+		);
+		$chp = wp_parse_args($instance, $defautUpgrade);
+		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('postType' => $chp['postType'], 'ResultText' => $chp['ResultText'], 'ErrorText' => $chp['ErrorText']), array('id' => 1));
+		// Mise à jour de la version
+		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
+	}
+}
 
 // Ajout d'une page de sous-menu
 function WP_Advanced_Search_admin() {
