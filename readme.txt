@@ -9,7 +9,7 @@ Requires at least: 2.5
 Tested up to: 3.6.1
 Stable Tag: 1.1.5
 
-"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
+"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
 == Description ==
 
