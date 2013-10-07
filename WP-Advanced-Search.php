@@ -253,25 +253,6 @@ function WP_Advanced_Search_Pagination_CSS($bool) {
 	}
 	add_action('wp_enqueue_scripts', 'WP_Advanced_Search_Pagination_CSS');
 }
-/*
-function WP_Advanced_Search_Upgrade() {
-	global $wpdb, $table_WP_Advanced_Search;
-	// Création de la table de base
-	$sql = "ALTER TABLE $table_WP_Advanced_Search ADD COLUMN postType VARCHAR(8) NOT NULL, ResultText TEXT,	ErrorText TEXT);";
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
-	
-	// Insertion de valeurs par défaut (premier enregistrement)
-	$defaut = array(
-		"postType" => 'pagepost',
-		"ResultText" => 'Résultats de la recherche :',
-		"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
-	);
-	$champ = wp_parse_args($instance, $defaut);
-	$default = $wpdb->insert($table_WP_Advanced_Search, array('postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
-}
-add_action('init', 'WP_Advanced_Search_Upgrade');
-*/
 
 // Inclusion des options de réglages
 include('WP-Advanced-Search-Options.php');
