@@ -80,6 +80,7 @@ function WP_Advanced_Search_install() {
 	// Récupération de la version en cours (pour voir si mise à jour...)
 	$installed_ver = get_option("wp_advanced_search_version");
 	if($installed_ver != $WP_Advanced_Search_Version) {
+		echo "salut10";
 		$sql = "CREATE TABLE IF NOT EXISTS $table_WP_Advanced_Search (
 			id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			db VARCHAR(50) NOT NULL,
@@ -183,7 +184,9 @@ function WP_Advanced_Search_desinstall() {
 // Quand le plugin est mise à jour, on relance la fonction
 function WP_Advanced_Search_Upgrade() {
     global $WP_Advanced_Search_Version;
+	echo "salut";
     if(get_site_option('wp_advanced_search_version') != $WP_Advanced_Search_Version) {
+		echo "salut1";
         WP_Advanced_Search_install();
 		WP_Advanced_Search_install_data();
     }
