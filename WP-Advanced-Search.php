@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.1.5
+Version: 1.2
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "1.1.5";
+$WP_Advanced_Search_Version = "1.2";
 
 // Gestion des langues
 function WP_Advanced_Search_Lang() {
@@ -132,6 +132,7 @@ function WP_Advanced_Search_desinstall() {
 	// Suppression de la table de base
 	$wpdb->query("DROP TABLE IF EXISTS $table_WP_Advanced_Search");
 }
+/*
 // Quand le plugin est mise à jour, on relance la fonction
 function WP_Advanced_Search_Upgrade() {
     global $WP_Advanced_Search_Version;
@@ -140,6 +141,7 @@ function WP_Advanced_Search_Upgrade() {
     }
 }
 add_action('plugins_loaded', 'WP_Advanced_Search_Upgrade');
+
 // Fonction d'update v1.0 vers 1.1.6
 function WP_Advanced_Search_install_update() {
 	global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;	
@@ -161,6 +163,7 @@ function WP_Advanced_Search_install_update() {
 		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
 	}
 }
+*/
 
 // Ajout d'une page de sous-menu
 function WP_Advanced_Search_admin() {

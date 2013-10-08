@@ -39,7 +39,13 @@ function WP_Advanced_Search() {
 		$colonnesWhere = explode(',',$select->colonnesWhere);
 	}
 	if($select->stopWords == true) {
-		include('class.inc/stopwords.php');
+		// Récupération de la langue par défaut et des stopwords adaptés
+		if (WPLANG == '') {
+			$lang = "fr_FR";
+		} else {
+			$lang = WPLANG;
+		}
+		include('class.inc/stopwords/stopwords-'.$lang.'.php');
 	} else {
 		$stopwords = '';	
 	}
@@ -147,11 +153,15 @@ function WP_Advanced_Search() {
 					// Affichage conditionné de l'article, de l'extrait et de l'image à la Une
 					if(($select->ArticleOK == "excerpt" || $select->ArticleOK == "excerptmore" || $select->ArticleOK == "article") && $select->ImageOK == true) {
 						$output .= '<div class="WPBlockContent">'."\n";
-
+						
+						$output .= get_the_post_thumbnail($key['ID'],'thumbnail');
+						/*
+						$ImageOK = $wpdb->get_results("SELECT * FROM ".$tableCible." AS p INNER JOIN ".$tableMeta." AS m1 ON (m1.post_id = '".$key['ID']."' AND m1.meta_value = p.ID AND m1.meta_key = '_thumbnail_id' AND p.post_type = 'attachment')");
 						foreach($ImageOK as $img) {
 							$imageThumb = '<img src="'.$img->guid.'" alt="'.$img->post_title.'" />'."\n"; // Image à la Une
 							$output .= $imageThumb;
 						}
+						*/
 						
 						if($select->ArticleOK == "excerpt") {
 							$output .= '<div class="WPtextSearch">'."\n";
@@ -191,11 +201,7 @@ function WP_Advanced_Search() {
 					} else if($select->ArticleOK == "aucun" && $select->ImageOK == true) {
 						$output .= '<div class="WPBlockContent">'."\n";
 						
-						$ImageOK = $wpdb->get_results("SELECT * FROM ".$tableCible." AS p INNER JOIN ".$tableMeta." AS m1 ON (m1.post_id = '".$key['ID']."' AND m1.meta_value = p.ID AND m1.meta_key = '_thumbnail_id' AND p.post_type = 'attachment')");
-						foreach($ImageOK as $img) {
-							$imageThumb = '<img src="'.$img->guid.'" alt="'.$img->post_title.'" />'."\n"; // Image à la Une
-							$output .= $imageThumb;
-						}
+						$output .= get_the_post_thumbnail($key['ID'],'thumbnail');
 						$output .= '<p class="clearBlock"></p>'."\n";
 						$output .= '</div>'."\n";
 					}
