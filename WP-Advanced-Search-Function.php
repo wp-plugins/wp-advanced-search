@@ -69,6 +69,7 @@ function WP_Advanced_Search() {
 			$output .= '<h3>'.__($select->ResultText,'WP-Advanced-Search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
 
 			if($nbResults == 0) {
+				$output .= "<div class=\"WPBlockSearch\">\n";	
 				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'WP-Advanced-Search').'</p>'."\n";	
 			} else {
 				$nb = 0;
@@ -95,6 +96,8 @@ function WP_Advanced_Search() {
 					$CategoryOK = $wpdb->get_results("SELECT name FROM ".$tableTerms." AS terms LEFT JOIN ".$tableTaxonomy." AS tax ON (terms.term_id = tax.term_id AND tax.taxonomy = 'category') INNER JOIN ".$tableRelationship." AS rel ON (tax.term_taxonomy_id = rel.term_taxonomy_id) WHERE rel.object_id = '".$key['ID']."'");
 					$AuthorOK = $wpdb->get_results("SELECT users.ID, user_nicename, display_name FROM ".$tableUsers." AS users INNER JOIN ".$tableCible." AS p ON users.ID = p.post_author WHERE p.ID = '".$key['ID']."'");
 
+					$output .= "<div class=\"WPBlockSearch\">\n";
+
 					// Affichage conditionné de la date et du titre
 					if($select->TitleOK == true && $select->NumberOK == true) {
 						$output .= '<p class="WPFirstSearch">'."\n";
@@ -113,41 +116,151 @@ function WP_Advanced_Search() {
 
 					// Affichage d'un bloc pour date + auteur + categorie + commentaires
 					$output .= '<p class="WPSecondSearch">'."\n";
-						
-						// Affichage conditionné de la date
-						if($select->DateOK == true) {
-							$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
-							$output .= '<span class="WPdateSearch">'.__('Publié le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+						if($select->BlocOrder == "D-A-C") // Ordre : Date - Auteur - Catégorie
+						{
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('Publié le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+						} else // Ordre : Date - Catégorie - Auteur
+						if($select->BlocOrder == "D-C-A") {
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('Publié le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+						} else // Ordre : Auteur - Catégorie - Date
+						if($select->BlocOrder == "A-C-D") {
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('Publié par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
+						} else // Ordre : Auteur - Date - Catégorie - Commentaires
+						if($select->BlocOrder == "A-D-C") {
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('Publié par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+						} else // Ordre : Catégorie - Date - Auteur
+						if($select->BlocOrder == "C-D-A") {
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('Publié dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+						} else // Ordre : Catégorie - Date - Auteur
+						if($select->BlocOrder == "C-A-D") {
+							// Affichage conditionné de la catégorie
+							if($select->CategoryOK == true) {
+								foreach($CategoryOK as $ctg) {
+									$categoryID = get_cat_ID($ctg->name);
+									$categoryURL = get_category_link($categoryID);
+									$output .= '<span class="WPcategorySearch">'.__('Publié dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de l'auteur
+							if($select->AuthorOK == true) {
+								foreach($AuthorOK as $author) {
+									$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
+									$output .= '<span class="WPauthorSearch">'.__('par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
+								}
+							}
+							// Affichage conditionné de la date
+							if($select->DateOK == true) {
+								$dateInfo = mysql2date($select->formatageDate, $key['post_date']);
+								$output .= '<span class="WPdateSearch">'.__('le ','WP-Advanced-Search').$dateInfo.'</span>'."\n";
+							}
 						}
+							
+							// Affichage conditionné des commentaires
+							if($select->CommentOK == true) {
+								if($key['comment_count'] == 0) {
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">Aucun commentaire</a></span>'."\n";
+								} else if($key['comment_count'] == 1) {
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaire</a></span>'."\n";
+								} else {
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaires</a></span>'."\n";
+								}
+							}
 
-						// Affichage conditionné de l'auteur
-						if($select->AuthorOK == true) {
-							foreach($AuthorOK as $author) {
-								$authorURL = get_author_posts_url($author->ID, $author->user_nicename);
-								$output .= '<span class="WPauthorSearch">'.__('par ','WP-Advanced-Search').'<a href="'.esc_url($authorURL).'">'.$author->display_name.'</a></span>'."\n";
-							}
-						}	
-						
-						// Affichage conditionné de la catégorie
-						if($select->CategoryOK == true) {
-							foreach($CategoryOK as $ctg) {
-								$categoryID = get_cat_ID($ctg->name);
-								$categoryURL = get_category_link($categoryID);
-								$output .= '<span class="WPcategorySearch">'.__('dans ','WP-Advanced-Search').'<a href="'.esc_url($categoryURL).'">'.$ctg->name.'</a></span>'."\n";
-							}
-						}					
-						
-						// Affichage conditionné des commentaires
-						if($select->CommentOK == true) {
-							if($key['comment_count'] == 0) {
-								$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">Aucun commentaire</a></span>'."\n";
-							} else if($key['comment_count'] == 1) {
-								$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaire</a></span>'."\n";
-							} else {
-								$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaires</a></span>'."\n";
-							}
-						}
-						
 					$output .= '</p>'."\n";
 					
 					// Affichage conditionné de l'article, de l'extrait et de l'image à la Une
@@ -205,6 +318,7 @@ function WP_Advanced_Search() {
 						$output .= '<p class="clearBlock"></p>'."\n";
 						$output .= '</div>'."\n";
 					}
+					$output .= "</div>\n";
 				}
 				// Utilisation ou non du surlignage
 				//if($select->strongWords != 'aucun') {

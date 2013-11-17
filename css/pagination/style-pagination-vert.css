@@ -1,7 +1,0 @@
-.pagination-block {margin:1.5em 0 0 0; line-height:2em;}
-.pagination-block a, .pagination-block span {padding:0.2em 0.5em 0.3em;}
-.pagination-block a {border:1px solid #95c000; border-radius:5px; color:#95c000; text-decoration:none;}
-.pagination-block a:hover {border:1px solid #95c000; background:#95c000; color:#fff;}
-.pagination-block .precsuiv {font-weight:bold;}
-.pagination-block span.pagination-disabled {border:1px solid #ccc; border-radius:5px; color:#ccc;}
-.pagination-block span.pagination-current {border:1px solid #95c000; background:#95c000; border-radius:5px; color:#ffffff; font-weight:bold;}
