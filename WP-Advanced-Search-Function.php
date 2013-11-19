@@ -321,10 +321,10 @@ function WP_Advanced_Search() {
 					$output .= "</div>\n";
 				}
 				// Utilisation ou non du surlignage
-				//if($select->strongWords != 'aucun') {
-					$strong = new surlignageMot($words, $output, $select->strongWords);
+				if($select->strongWords != 'aucun') {
+					$strong = new surlignageMot($words, $output, $select->strongWords, $select->exactSearch, $select->typeSearch);
 					$output = $strong->contenu;
-				//}
+				}
 			}
 			$output .= "</div>\n";
 			echo $output;

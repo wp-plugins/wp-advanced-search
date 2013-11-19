@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.5
+Version: 1.6
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "1.5";
+$WP_Advanced_Search_Version = "1.6";
 
 function WP_Advanced_Search_Lang() {
 	load_plugin_textdomain('WP-Advanced-Search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
@@ -142,13 +142,13 @@ function WP_Advanced_Search_Upgrade() {
 }
 add_action('plugins_loaded', 'WP_Advanced_Search_Upgrade');
 
-// Fonction d'update v1.2 vers 1.5
+// Fonction d'update v1.2 vers 1.6
 function WP_Advanced_Search_install_update() {
 	global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;	
 	// Récupération de la version en cours (pour voir si mise à jour...)
 	$installed_ver = get_option("wp_advanced_search_version");
 
-	if($installed_ver != $WP_Advanced_Search_Version) {
+	if($installed_ver != "1.5" && $installed_ver != $WP_Advanced_Search_Version) {
 		$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (BlocOrder VARCHAR(10))");
 		
 		// Mise à jour des des nouvelles valeurs par défaut

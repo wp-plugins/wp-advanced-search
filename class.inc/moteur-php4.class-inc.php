@@ -555,24 +555,29 @@ class moteurRecherche {
 	}
 }
 
-/*------------------------------------------------------------------------*/
-/*------------------- Class pour surligne les mots -----------------------*/
-/*-- Structure : faire new surlignageMot() dans la fonction d'affichage --*/
-//-- 3 arguments :
+/*------------------------------------------------------------------------------------------------*/
+/*-------------------------------- Class pour surligne les mots ----------------------------------*/
+/*------------ Structure : faire new surlignageMot() dans la fonction d'affichage ----------------*/
+//-- 5 arguments :
 //-- -> 1. Tableau des mots à surligner
 //-- -> 2. Texte dans lequel s'applique le surlignage
 //-- -> 3. Type de surlignage :
-//--         -> "exact" pour la chaîne tapée précise (par défaut)
-//--         -> "total" ou "complet" pour les mots complets
-/*------------------------------------------------------------------------*/
+//--        -> "exact" pour la chaîne tapée précise (par défaut)
+//--        -> "total" ou "complet" pour les mots complets
+//-- -> 4. Exactitude du surlignage :
+//-- 		-> true pour surligner le mot précis (selon le type de recherche)
+//--		-> false pour surligner le mot contenant une chaîne précise (selon le type de recherche)
+//-- -> 5. Type de recherche : FULLTEXT, REGEXP ou LIKE en valeur
+//--		-> N.B. : il détermine aussi la précision du surlignage (FULLTEXT est le plus précis)
+/*--------------------------------------------------------------------------------------------------*/
 class surlignageMot {
 	var $contenu;
 	
-	/*-------------------------------------------------------------------*/
-	/*-------- Méthode de surlignage avec 3 arguments -------------------*/
-	/*-------- $gras = new surlignageMot($mots, $texte, 'exact'); -------*/
-	/*-------------------------------------------------------------------*/
-	function surlignageMot($mots, &$contenu, $typeSurlignage = "exact") {
+	/*----------------------------------------------------------------------------------*/
+	/*----------------------- Méthode de surlignage avec 5 arguments -------------------*/
+	/*------ $gras = new surlignageMot($mots, $texte, 'exact', true, "FULLTEXT"); ------*/
+	/*----------------------------------------------------------------------------------*/
+	function surlignageMot($mots, &$contenu, $typeSurlignage = "exact", $exact = true, $typeRecherche = "FULLTEXT") {
 		foreach($mots as $mot) {			
 			// Permet d'afficher les expressions entre guillemets en gras
 			if(preg_match('/"(.*)"/i', $mot)) {
@@ -584,10 +589,12 @@ class surlignageMot {
 			}
 						
 			// Adapte le surlignage des mots selon les besoins (chaîne exacte, mot complet ou sans)
-			if($typeSurlignage == "exact") {
-				$contenu = preg_replace('/('.$mot.'){1,'.strlen($mot).'}/i', '<b>$1</b>', $contenu);
+			if($typeSurlignage == "exact" && (($exact == true && $typeRecherche != "LIKE") || ($exact == false && $typeRecherche == "FULLTEXT"))) {
+				$contenu = preg_replace('/([[:blank:]<>])('.$mot.')([[:blank:]<>])/i', '$1<b>$2</b>$3', $contenu);
+			} else if($typeSurlignage == "exact" && (($exact == true && $typeRecherche == "LIKE") || ($exact == false) && $typeRecherche != "FULLTEXT")) {
+				$contenu = preg_replace('/('.$mot.'{1,'.strlen($mot).'})/i', '<b>$1</b>', $contenu);
 			} else if($typeSurlignage == "total" || $typeSurlignage == "complet") {
-				$contenu = preg_replace('/([^[:blank:]]*'.$mot.'{1}[^[:blank:]]*)/i', '<b>$1</b>', $contenu);
+				$contenu = preg_replace('/([[:blank:]<>])([^[:blank:]<>]*'.$mot.'[^[:blank:]<>]*)([[:blank:]])/i', '$1<b>$2</b>$3', $contenu);
 			}
 			
 			// Nettoyage des balises <hn> inféctées par la mise en gras
