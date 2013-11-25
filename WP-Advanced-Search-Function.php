@@ -70,12 +70,20 @@ function WP_Advanced_Search() {
 
 			if($nbResults == 0) {
 				$output .= "<div class=\"WPBlockSearch\">\n";	
-				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'WP-Advanced-Search').'</p>'."\n";	
+				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'WP-Advanced-Search').'</p>'."\n";
+				$output .= "</div>\n";
 			} else {
 				$nb = 0;
 				if(isset($_GET['page'])) {
 					$nb = $nb + ($select->NumberPerPage * ($_GET['page']-1));
 				}
+
+				// Afficher le nombre de résultats
+				if($select->nbResultsOK == true) {
+					$affichageResultats = new affichageResultats();
+					$output .= $affichageResultats->nbResultats(array(__('résultat','WP-Advanced-Search'), __('résultats','WP-Advanced-Search')), __('pour votre recherche','WP-Advanced-Search'), __(' à ','WP-Advanced-Search'));
+				}
+
 				while($key = mysql_fetch_assoc($query)) { // On lance la boucle d'affichage des résultats
 					// Récupération du numéro du résultat
 					$nb++;
@@ -349,7 +357,7 @@ function WP_Advanced_Search() {
 			$paginationValide = true;
 		}
 		
-				// Lancement de la fonction de pagination si elle est activée...
+		// Lancement de la fonction de pagination si elle est activée...
 		if($select->paginationActive == true && $paginationValide == true) {
 			$moteur->moteurPagination('page', 2, 0, $prevnext, $firstlast, $arrayAff = array($prevtext, $nexttext, $firstpage, $lastpage, 'precsuiv', 'pagination-current', 'pagination-block', 'pagination-disabled'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' '));
 		}

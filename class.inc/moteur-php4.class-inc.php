@@ -74,11 +74,11 @@ class moteurRecherche {
 	/*-- 1. $champ est la requête de recherche -------------------------------------------*/
 	/*-- 2. $table est la table de la base de données dans laquelle chercher -------------*/
 	/*-- 3. $typeRecherche pour choisir son mode de recherche (like, regexp ou fulltext) -*/
-	/*-- 4. $encoding est l'encodage souhaité (utf8, utf-8, iso-8859-1, latin1...) -------*/
-	/*-- 5. $stopWords permet d'exclure les mots "vides" provenant d'un tableau ----------*/
+	/*-- 4. $stopWords permet d'exclure les mots "vides" provenant d'un tableau ----------*/
 	/*-- => Inclure le fichier stopwords.php (variable $stowords) pour gagner du temps ---*/
-	/*-- 6. $exclusion permet d'exclure les mots plus courts que la taille donnée --------*/
+	/*-- 5. $exclusion permet d'exclure les mots plus courts que la taille donnée --------*/
 	/*-- => Si vide, aucune exclusion ne sera faite (mais les résultats moins précis) ----*/
+	/*-- 6. $encoding est l'encodage souhaité (utf8, utf-8, iso-8859-1, latin1...) -------*/
 	/*-- 7. $exact (true/false) pour une recherche exacte ou d'un ou plusieurs des mots --*/
 	/*-- 8. $accent (true/false) faire des recherches sans accent si la BDD le permet ----*/
 	/*------------------------------------------------------------------------------------*/
@@ -88,9 +88,17 @@ class moteurRecherche {
 		$this->encode		= strtolower($encoding);
 		$this->searchType	= $typeRecherche;
 		$this->exactmatch	= $exact;
-	
+
 		// Suppression des balises HTML (sécurité)
-		$champ = strip_tags($champ);
+		if($this->encode == 'latin1' || $this->encode == 'Latin1' || $this->encode == 'latin-1' || $this->encode == 'Latin-1') {
+			$mb_encode = "ISO-8859-1";
+		} elseif($this->encode == 'utf8' || $this->encode == 'UTF8' || $this->encode == 'utf-8' || $this->encode == 'UTF-8') {
+			$mb_encode = "UTF-8";
+		} else {
+			$mb_encode = $encoding;	
+		}
+		$champ = mb_strtolower(strip_tags($champ), $mb_encode);
+//		$champ = mb_convert_case(strip_tags($champ), MB_CASE_LOWER, $mb_encode);
 
 		// 1. si une expression est entre guillemets, on cherche l'expression complète (suite de mots)
 		// 2. si les mots clés sont hors des guillemets, la recherche mot par mot est activée
@@ -176,7 +184,7 @@ class moteurRecherche {
 		} else {
 			$encode = "utf8";
 		}
-		
+
 		/*------------------------- Options de recherche -------------------------*/
 		switch($this->searchType) {
 			/*------------------------ Recherche FULLTEXT ------------------------*/
@@ -185,6 +193,7 @@ class moteurRecherche {
 			/*-- (situé dans la section [mysqld] du fichier my.ini de MySQL ------*/
 			/*--------------------------------------------------------------------*/
 			case "FULLTEXT":
+			case "fulltext":
 				foreach($this->request as $this->request[$val]) {
 					if(preg_match('/(^[+-?!:;$^])|([+-?!:;^]$)/i',$this->request[$val])) {
 						$this->request[$val] = str_ireplace(array("+", "-", "?", "!", ";", ":", "^"),"",$this->request[$val]);
@@ -225,9 +234,19 @@ class moteurRecherche {
 			/*------------------------ Recherche REGEXP --------------------------*/
 			/*-- Recherche avec un regex (seuls les mots complets fonctionnent) --*/
 			/*--------------------------------------------------------------------*/
-			case "REGEXP":		
+			case "REGEXP":
+			case "regexp":		
 				// Variable utilisée en cas de surlignage des mots...
 				$this->motsExpressions = $this->request;				
+				if(preg_match("/^[+\?$\*§\|\[\]\(\)]/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],1,strlen($this->request[$val]));
+				}
+				if(preg_match("/[+\?$\*§\|\[\]\(\)]$/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],0,-1);
+				}
+				if(preg_match("/^[²°]/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],1,strlen($this->request[$val]));
+				}
 				
 				if($this->exactmatch == true) {
 					return " REGEXP CONVERT(_".$encode." '[[:<:]]".addslashes($this->request[$val])."[[:>:]]' USING ".$encode.") ";
@@ -240,8 +259,15 @@ class moteurRecherche {
 			/*-- Recherche la plus imprécise mais fonctionnelle ------------------*/
 			/*--------------------------------------------------------------------*/
 			case "LIKE":
+			case "like":
 				// Variable utilisée en cas de surlignage des mots...
 				$this->motsExpressions = $this->request;
+				if(preg_match("/^[\(]/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],1,strlen($this->request[$val]));
+				}
+				if(preg_match("/[\)]$/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],0,-1);
+				}
 
 				return " LIKE CONVERT(_".$encode." '%".addslashes($this->request[$val])."%' USING ".$encode.") ";
 				break;
@@ -249,6 +275,12 @@ class moteurRecherche {
 			default:
 				// Variable utilisée en cas de surlignage des mots...
 				$this->motsExpressions = $this->request;
+				if(preg_match("/^[\(]/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],1,strlen($this->request[$val]));
+				}
+				if(preg_match("/[\)]$/i",$this->request[$val])) {
+					$this->request[$val] = substr($this->request[$val],0,-1);
+				}
 				
 				return " LIKE CONVERT(_".$encode." '%".addslashes($this->request[$val])."%' USING ".$encode.") ";
 				break;
@@ -260,6 +292,7 @@ class moteurRecherche {
 	/*-- 1. Tableau des colonnes dans lesquelles chercher (condition WHERE...) --*/
 	/*---------------------------------------------------------------------------*/
 	function moteurRequetes($colonnesWhere = array()) {
+
 		$this->colonnesWhere = $colonnesWhere;
 		// Opérateur entre les champs de requête (OR si vous voulez beaucoup de laxisme)
 		$operateur = "AND";
@@ -314,6 +347,7 @@ class moteurRecherche {
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
 	/*---------------------------------------------------------------------------------*/
 	function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '') {
+
 		// Récupération des colonnes de sélections
 		if(empty($colonnesSelect)) {
 			$selectColumn = "*";
@@ -325,8 +359,8 @@ class moteurRecherche {
 		
 		// Limite le nombre d'affichage par page
 		if($limit[0] == true) {
-			$this->limitArg = $limit[1];
-			$this->limit	= $limit[2];
+			self::$limitArg = $limit[1];
+			self::$limit	= $limit[2];
 			
 			if(!isset($_GET['page'])) {
 				$limitDeb = 0;
@@ -351,7 +385,7 @@ class moteurRecherche {
 			}
 			
 			$colonnesStrSQL = implode(', ',$this->colonnesWhere);
-			$requeteType = mysql_query("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD WHERE $this->condition");
+			$requeteType = mysql_query("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD WHERE $this->condition") or die("Erreur : ".mysql_error());
 			while($ligne =  mysql_fetch_row($requeteType)) {
 				$count = 0;
 				for($p=1; $p < count($this->colonnesWhere)+1; $p++) {
@@ -361,8 +395,9 @@ class moteurRecherche {
 				}
 				// Met à jour la colonne de l'algorithme avec les nouvelles valeurs
 				$requeteAdd = mysql_query("UPDATE $this->tableBDD SET $algo[1] = '$count' WHERE $this->condition AND $algo[3] = '$ligne[0]'");
-			}	
+			}
 		}
+
 
 		// Affiche au choix la fin de requête personnalisée ou les classements classiques
 		if($algo[0] == true && $ordre[0] != true) {			
@@ -370,8 +405,6 @@ class moteurRecherche {
 		} else if($algo[0] == true && $ordre[0] == true) {
 			// Cumule l'algorithme et le classement classique si les deux sont sur "true"
 			$this->orderBy = " ORDER BY $algo[1] $algo[2], $ordre[1] $ordre[2]";
-		} else if(!empty($orderLimitPerso)) {
-			$this->orderBy = $orderLimitPerso;
 		} else {		
 			// Ajout des critères d'ordre (si l'option du tableau est sur "true")
 			if($ordre[0] == true) {
@@ -411,7 +444,7 @@ class moteurRecherche {
 		
 		// Récupération du nombre de résultats
 		$compteTotal = mysql_fetch_row($compte);
-		$this->nbResultsChiffre = $compteTotal[0];
+		self::$nbResultsChiffre = $compteTotal[0];
 
 		// Affiche le résultat de la fonction de rappel Callback
 		if(!empty($callback)) {
@@ -441,16 +474,16 @@ class moteurRecherche {
 	/*-- => (pointSuspension, sepPremiereDernierePage, $sepNumPage, sepSuivPrec, sepDebutFin) ------------*/
 	/*-- Source du code : http://seebz.net/archive/34-pagination-2-comme-avant-en-mieux.html -------------*/
 	/*----------------------------------------------------------------------------------------------------*/
-	function moteurPagination($param = "page", $NbVisible = 2, $debutFin = 0, $suivPrec = true, $firstLast = true, $arrayAff = array('&laquo; Précédent', 'Suivant &raquo;', 'Première page', 'Dernière page', 'precsuiv', 'current', 'pagination', 'inactif'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' ')) {
+	function moteurPagination($param = "", $NbVisible = 2, $debutFin = 0, $suivPrec = true, $firstLast = true, $arrayAff = array('&laquo; Précédent', 'Suivant &raquo;', 'Première page', 'Dernière page', 'precsuiv', 'current', 'pagination', 'inactif'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' ')) {
 		
 		// Nombre total de pages à afficher (en fonction de LIMIT)
-		$nb_pages = ceil($this->nbResultsChiffre / $this->limit);
+		$nb_pages = ceil(self::$nbResultsChiffre / self::$limit);
 		
 		// Formatage de la requête (pour éviter les problèmes avec les guillemets)
 		$this->requete = htmlspecialchars($this->requete);
 		
 		// Numero de page courante (1 par défaut)
-		$parametreGetPost = $this->limitArg;
+		$parametreGetPost = self::$limitArg;
 		if(isset($parametreGetPost) && is_numeric($parametreGetPost)) {
 			if($parametreGetPost == 0) {
 				$current_page = 1;
@@ -553,6 +586,42 @@ class moteurRecherche {
 		$pagination .= "</div>"; // Fin du bloc de pagination
 		echo $pagination;
 	}
+	
+	function limit() {
+		return self::$limit;	
+	}
+	function nbResults() {
+		return self::$nbResultsChiffre;	
+	}
+	
+}
+
+class affichageResultats extends moteurRecherche {
+	public function nbResultats($wordsResults = array("résultat", "résultats"), $phrase = 'pour votre recherche', $coord = " à ") {
+		if(parent::$limitArg == 0) {
+			$nbDebut = 1;
+			if(parent::nbResults() > parent::$limit) {
+				$nbFin = (parent::$limitArg+1) * parent::$limit;
+			} else {
+				$nbFin = parent::nbResults();
+			}
+		} else {
+			$nbDebut = ((parent::$limitArg-1) * parent::$limit)+1;
+			
+			if(ceil(parent::nbResults()/(parent::$limit*parent::$limitArg)) != 1) {
+				$nbFin = parent::$limitArg * parent::$limit;
+			} else {
+				$nbFin = parent::nbResults();
+			}
+		}
+		
+		if(parent::nbResults() < 2) {
+			$res = " ".$wordsResults[0];	
+		} else {
+			$res = " ".$wordsResults[1];
+		}
+		return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase." (".$nbDebut.$coord.$nbFin.")</div>";
+	}
 }
 
 /*------------------------------------------------------------------------------------------------*/
@@ -580,23 +649,27 @@ class surlignageMot {
 	function surlignageMot($mots, &$contenu, $typeSurlignage = "exact", $exact = true, $typeRecherche = "FULLTEXT") {
 		foreach($mots as $mot) {			
 			// Permet d'afficher les expressions entre guillemets en gras
-			if(preg_match('/"(.*)"/i', $mot)) {
-				$mot = str_ireplace(array('"','\"'),array(' ',' '),$mot);
+			if(preg_match_all('/"(.*)"/i', $mot, $args)) {
+				foreach($args[0] as $arg) {
+					$mot = str_ireplace(array('"','\"'),array(' ',' '),$mot);
+				}
 			}
 			// Permet d'échapper les caractères du regex
-			if(preg_match('([\+\*\?\/\'\"\-])', $mot)) {
-				$mot = str_ireplace(array('+', '*', '?', '/', "'", '"'),array('\+','\*','\?', '\/', '\'', ''),$mot);
+			if(preg_match_all('([\+\*\?\/\'\"\-])', $mot, $args)) {
+				foreach($args[0] as $arg) {
+					$mot = str_ireplace(array('+', '*', '?', '/', "'", '"'),array('\+','\*','\?', '\/', '\'', ''),$mot);
+				}
 			}
-						
+		
 			// Adapte le surlignage des mots selon les besoins (chaîne exacte, mot complet ou sans)
 			if($typeSurlignage == "exact" && (($exact == true && $typeRecherche != "LIKE") || ($exact == false && $typeRecherche == "FULLTEXT"))) {
-				$contenu = preg_replace('/([[:blank:]<>])('.$mot.')([[:blank:]<>])/i', '$1<b>$2</b>$3', $contenu);
+				$contenu = preg_replace('/([[:blank:]<>\(\[\{].?:?;?,?)('.$mot.')([\)\]\}.,;:[:blank:]<>])/i', '$1<b>$2</b>$3', $contenu);
 			} else if($typeSurlignage == "exact" && (($exact == true && $typeRecherche == "LIKE") || ($exact == false) && $typeRecherche != "FULLTEXT")) {
 				$contenu = preg_replace('/('.$mot.'{1,'.strlen($mot).'})/i', '<b>$1</b>', $contenu);
 			} else if($typeSurlignage == "total" || $typeSurlignage == "complet") {
 				$contenu = preg_replace('/([[:blank:]<>])([^[:blank:]<>]*'.$mot.'[^[:blank:]<>]*)([[:blank:]])/i', '$1<b>$2</b>$3', $contenu);
 			}
-			
+
 			// Nettoyage des balises <hn> inféctées par la mise en gras
 			if(preg_match_all('/<[\/]?[hH]+<b>('.$mot.')<\/b>+/i', $contenu, $args)) {
 				foreach($args[0] as $arg) {
@@ -613,6 +686,7 @@ class surlignageMot {
 			
 			// Nettoie les <strong> ajoutés en "trop" dans les attributs HTML courants (surtout src et href)
 			// Ainsi, si un mot recherché est dans une URL, une class (...), les <strong> seront omis et tout fonctionnera...
+			//preg_match_all('/(src|href|alt|title|class|id|rel)=["\']{1}[^\'"]+('.$mot.')[^\'"]+["\']{1}/i',$contenu, $args)
 			if(preg_match_all('/(src|href|alt|title|class|id|rel)=["\']{1}[^\'"]+('.$mot.')[^\'"]+["\']{1}/i',$contenu, $args)) {
 				foreach($args[0] as $arg) {
 					$contenu = preg_replace('/(src|href|alt|title|class|id|rel)*(=["\']{1}[^\'"]*)<b>+('.$mot.')<\/b>+([^\'"]*["\']{1})/i', '$1$2$3$4', $contenu);

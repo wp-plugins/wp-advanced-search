@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-advanced-search\n"
-"POT-Creation-Date: 2013-11-17 14:15+0100\n"
-"PO-Revision-Date: 2013-11-17 14:16+0100\n"
+"POT-Creation-Date: 2013-11-25 17:03+0100\n"
+"PO-Revision-Date: 2013-11-25 17:03+0100\n"
 "Last-Translator: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language-Team: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language: Français\n"
@@ -16,23 +16,23 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../WP-Advanced-Search-Documentation.php:9 ../WP-Advanced-Search.php:179
+#: ../WP-Advanced-Search-Documentation.php:15 ../WP-Advanced-Search.php:186
 msgid "Documentation"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:11
+#: ../WP-Advanced-Search-Documentation.php:17
 msgid ""
 "<strong>WP Advanced Search</strong> est un moteur de recherche complet pour "
 "WordPress qui corrige de nombreuses failles du moteur initial."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:13
+#: ../WP-Advanced-Search-Documentation.php:19
 msgid ""
 "La documentation ci-dessous explique l'installation et le fonctionnement "
 "global du plugin de recherche avancé."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:15
+#: ../WP-Advanced-Search-Documentation.php:21
 msgid ""
 "<em>N.B. : n'hésitez pas à contacter <a href=\"http://blog.internet-"
 "formation.fr/2013/10/wp-advanced-search-moteur-de-recherche-avance-pour-"
@@ -40,87 +40,87 @@ msgid ""
 "pour de plus amples informations.</em>"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:20
+#: ../WP-Advanced-Search-Documentation.php:26
 msgid "Installation du plugin"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:21
+#: ../WP-Advanced-Search-Documentation.php:27
 msgid "1. Préparez le formulaire de recherche (exemple : search-form.php)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:23
+#: ../WP-Advanced-Search-Documentation.php:29
 msgid "Repérez le formulaire de recherche WordPress"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:25
+#: ../WP-Advanced-Search-Documentation.php:31
 msgid ""
 "Localisez l'attribut \"name\" du champ de recherche (\"s\" par défaut) et le "
 "modifiez si désiré."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:26
+#: ../WP-Advanced-Search-Documentation.php:32
 msgid ""
 "S'assurer que le formulaire pointe vers la page de recherche (search.php par "
 "défaut)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:31
+#: ../WP-Advanced-Search-Documentation.php:37
 msgid "Capture d'écran"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:38
+#: ../WP-Advanced-Search-Documentation.php:44
 msgid "2. Préparez la page de résultats (exemple : search.php)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:40
+#: ../WP-Advanced-Search-Documentation.php:46
 msgid ""
 "&nbsp;&nbsp;&nbsp;&nbsp;Ajouter le code <strong>&lt;?php WP_Advanced_Search"
 "(); ?&gt;</strong> pour afficher les résultats"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:43
+#: ../WP-Advanced-Search-Documentation.php:49
 msgid "Installation simple et rapide !"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:45
+#: ../WP-Advanced-Search-Documentation.php:51
 msgid ""
 "Supprimez toute la boucle d'affichage initiale des résultats de recherche."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:46
+#: ../WP-Advanced-Search-Documentation.php:52
 msgid "Placez-vous dans le bloc qui doit recevoir les résultats de recherche."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:47
+#: ../WP-Advanced-Search-Documentation.php:53
 msgid ""
 "Remplacez la boucle par le code <strong>&lt;?php WP_Advanced_Search(); ?&gt;"
 "</strong>."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:57
+#: ../WP-Advanced-Search-Documentation.php:63
 msgid "3. Paramétrez le moteur à votre guise"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:59
+#: ../WP-Advanced-Search-Documentation.php:65
 msgid ""
 "Les réglages par défaut répondent aux fonctionnalités essentielles du moteur "
 "de recherche."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:61
+#: ../WP-Advanced-Search-Documentation.php:67
 msgid ""
 "Entrez la valeur de l'attribut \"name\" du champ de recherche (\"s\" par "
 "défaut) et celui des tables dans lesquelles rechercher (laissez par défaut "
 "si vous avez des doutes)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:62
+#: ../WP-Advanced-Search-Documentation.php:68
 msgid ""
 "Choisissez le type de recherche : FULLTEXT (texte intégral), REGEXP "
 "(relativement précis), LIKE (recherche approchante)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:63
+#: ../WP-Advanced-Search-Documentation.php:69
 msgid ""
 "Paramétrez l'ordre d'affichage des résultats du moteur en choisissant la "
 "colonne de classement (dates des articles et pages par défaut) et/ou en "
@@ -128,125 +128,179 @@ msgid ""
 "le plus à la recherche)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:64
+#: ../WP-Advanced-Search-Documentation.php:70
 msgid "Activez ou non la surbrillance des mots-clés recherchés."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:65
+#: ../WP-Advanced-Search-Documentation.php:71
 msgid ""
 "Activez ou non les \"stop words\", c'est-à-dire l'exclusion des mots vides "
 "lors des recherches. Il est aussi possible d'exclure les mots qui ne "
 "dépassent pas un certain nombre de caractères."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:75
+#: ../WP-Advanced-Search-Documentation.php:81
+msgid "<strong>N.B. : particularités des index FULLTEXT</strong>"
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:83
+msgid ""
+"La recherche en texte intégrale (FULLTEXT) est la plus aboutie mais demande "
+"quelques paramétrages."
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:85
+msgid ""
+"<strong>Installation d'index FULLTEXT</strong> sur les tables de recherche. "
+"Cliquez sur ce lien pour gagner du temps : <a href=\"#\" onclick=\""
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:85
+msgid "\">créez les index FULLTEXT</a>."
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:86
+msgid ""
+"La recherche FULLTEXT répond à certains paramètres du fichier my.ini de "
+"MySQL, il convient d'avoir accès à ce fichier pour gérer totalement la "
+"recherche en texte intégrale..."
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:87
+msgid ""
+"Par défaut, la recherche FULLTEXT exclut quelques \"stopwords\" mais aussi "
+"les mots courts (de 1 à 3 caractères), ce qui peut poser problème. Il faut "
+"modifier le <strong>paramètre ft_min_word_len</strong> si vous avez un "
+"serveur dédié. Si vous détenez un serveur mutualisé, il est conseillé "
+"d'opter pour la recherche REGEXP ou LIKE si vous voulez que tous les mots "
+"offrent des résultats..."
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:97
 msgid "4. Stylisez l'ensemble et les résultats de recherche"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:77
+#: ../WP-Advanced-Search-Documentation.php:99
 msgid ""
 "Plusieurs options disponibles pour personnaliser l'affichage des résultats."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:79
+#: ../WP-Advanced-Search-Documentation.php:101
 msgid "Choisissez les blocs à afficher (tout est modulable)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:80
+#: ../WP-Advanced-Search-Documentation.php:102
 msgid ""
 "Choisissez un thème dans la liste ou désactivez les thèmes (style "
 "personnalisé)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:81
+#: ../WP-Advanced-Search-Documentation.php:103
 msgid "Paramétrez les classes CSS selon vos envies."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:82
+#: ../WP-Advanced-Search-Documentation.php:104
 msgid "Formatez la date comme bon vous semble (si vous souhaitez l'afficher)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:83
+#: ../WP-Advanced-Search-Documentation.php:105
 msgid "Numérotez ou non les résultats de recherche."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:93
+#: ../WP-Advanced-Search-Documentation.php:115
 msgid "5. Réglez la pagination (optionnel)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:95
+#: ../WP-Advanced-Search-Documentation.php:117
 msgid "Plusieurs options de personnalisation de la pagination."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:97
+#: ../WP-Advanced-Search-Documentation.php:119
 msgid "Activez ou non la pagination (affiche tous les résultats si désactivé)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:98
+#: ../WP-Advanced-Search-Documentation.php:120
 msgid "Sélectionnez les liens à afficher dans la pagination."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:99
+#: ../WP-Advanced-Search-Documentation.php:121
 msgid ""
 "Choisissez un thème ou non pour la pagination (plusieurs couleurs "
 "disponibles)."
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:100
+#: ../WP-Advanced-Search-Documentation.php:122
 msgid "Modifiez les libellés de la pagination si besoin."
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:124
-#: ../WP-Advanced-Search-Function.php:146
-msgid "Publié le "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:130
-#: ../WP-Advanced-Search-Function.php:160
-#: ../WP-Advanced-Search-Function.php:226
-#: ../WP-Advanced-Search-Function.php:243
-msgid "par "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:138
-#: ../WP-Advanced-Search-Function.php:153
-#: ../WP-Advanced-Search-Function.php:177
-#: ../WP-Advanced-Search-Function.php:204
-msgid "dans "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:169
-#: ../WP-Advanced-Search-Function.php:191
-msgid "Publié par "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:183
-#: ../WP-Advanced-Search-Function.php:197
-#: ../WP-Advanced-Search-Function.php:220
-#: ../WP-Advanced-Search-Function.php:249
-msgid "le "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:214
-#: ../WP-Advanced-Search-Function.php:236
-msgid "Publié dans "
-msgstr ""
-
-#: ../WP-Advanced-Search-Function.php:286
-#: ../WP-Advanced-Search-Function.php:305
-msgid "Lire la suite..."
-msgstr ""
-
+#: ../WP-Advanced-Search-Documentation.php:156
 #: ../WP-Advanced-Search-Options.php:19
 msgid ""
 "Index FULLTEXT créés avec succès !\\nVous pouvez utiliser le type FULLTEXT "
 "dorénavant..."
 msgstr ""
 
+#: ../WP-Advanced-Search-Function.php:84
+msgid "résultat"
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:84
+msgid "résultats"
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:84
+msgid "pour votre recherche"
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:84
+msgid " à "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:132
+#: ../WP-Advanced-Search-Function.php:154
+msgid "Publié le "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:138
+#: ../WP-Advanced-Search-Function.php:168
+#: ../WP-Advanced-Search-Function.php:234
+#: ../WP-Advanced-Search-Function.php:251
+msgid "par "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:146
+#: ../WP-Advanced-Search-Function.php:161
+#: ../WP-Advanced-Search-Function.php:185
+#: ../WP-Advanced-Search-Function.php:212
+msgid "dans "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:177
+#: ../WP-Advanced-Search-Function.php:199
+msgid "Publié par "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:191
+#: ../WP-Advanced-Search-Function.php:205
+#: ../WP-Advanced-Search-Function.php:228
+#: ../WP-Advanced-Search-Function.php:257
+msgid "le "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:222
+#: ../WP-Advanced-Search-Function.php:244
+msgid "Publié dans "
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:294
+#: ../WP-Advanced-Search-Function.php:313
+msgid "Lire la suite..."
+msgstr ""
+
 #: ../WP-Advanced-Search-Options.php:83 ../WP-Advanced-Search-Options.php:274
 #: ../WP-Advanced-Search-Pagination.php:7
 #: ../WP-Advanced-Search-Pagination.php:85 ../WP-Advanced-Search-Styles.php:7
-#: ../WP-Advanced-Search-Styles.php:123
+#: ../WP-Advanced-Search-Styles.php:130
 msgid "Enregistrer"
 msgstr ""
 
@@ -397,6 +451,7 @@ msgstr ""
 #: ../WP-Advanced-Search-Styles.php:38 ../WP-Advanced-Search-Styles.php:45
 #: ../WP-Advanced-Search-Styles.php:52 ../WP-Advanced-Search-Styles.php:60
 #: ../WP-Advanced-Search-Styles.php:76 ../WP-Advanced-Search-Styles.php:116
+#: ../WP-Advanced-Search-Styles.php:123
 msgid "Oui"
 msgstr ""
 
@@ -408,6 +463,7 @@ msgstr ""
 #: ../WP-Advanced-Search-Styles.php:39 ../WP-Advanced-Search-Styles.php:46
 #: ../WP-Advanced-Search-Styles.php:53 ../WP-Advanced-Search-Styles.php:61
 #: ../WP-Advanced-Search-Styles.php:77 ../WP-Advanced-Search-Styles.php:117
+#: ../WP-Advanced-Search-Styles.php:124
 msgid "Non"
 msgstr ""
 
@@ -732,13 +788,17 @@ msgid ""
 msgstr ""
 
 #: ../WP-Advanced-Search-Styles.php:119
+msgid "Affichage du nombre de résultats ?"
+msgstr ""
+
+#: ../WP-Advanced-Search-Styles.php:126
 msgid "Numéroter les résultats ?"
 msgstr ""
 
-#: ../WP-Advanced-Search.php:177
+#: ../WP-Advanced-Search.php:184
 msgid "Thèmes et styles"
 msgstr ""
 
-#: ../WP-Advanced-Search.php:178
+#: ../WP-Advanced-Search.php:185
 msgid "Options de pagination"
 msgstr ""

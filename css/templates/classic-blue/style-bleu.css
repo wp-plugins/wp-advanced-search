@@ -1,5 +1,6 @@
 .clearBlock{clear:both}
-.WPAdvancedSearch h3{margin-bottom:2em;text-transform:uppercase;font-size:.8em}
+.WPAdvancedSearch h3{margin-bottom:.3em;text-transform:uppercase;font-size:.8em}
+.searchNbResults {margin-bottom:1.8em;font-size:.8em;font-style:italic;}
 .WPFirstSearch a{font-size:1.1em; color:#007db7;text-decoration:none}
 .WPFirstSearch a:hover,.WPcommentSearch a:hover,.WPReadMoreSearch a:hover,.WPtextSearch a:hover{text-decoration:underline}
 .WPSecondSearch{margin:.2em 0 .7em}

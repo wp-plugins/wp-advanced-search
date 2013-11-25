@@ -1,6 +1,12 @@
 <?php
 // Fonction d'affichage de la page d'aide et de réglages de l'extension
 function WP_Advanced_Search_Callback_Documentation() {
+
+	// Déclencher la fonction de mise à jour des index FULLTEXT (upload)
+	if(isset($_POST['wp_advanced_search_fulltext'])) {
+		WP_Advanced_Search_FullText_Doc();
+	}
+
 	/* --------------------------------------------------------------------- */
 	/* ------------------------ Affichage de la page ----------------------- */
 	/* --------------------------------------------------------------------- */
@@ -72,6 +78,22 @@ function WP_Advanced_Search_Callback_Documentation() {
     </div>
     <div class="block clear">
         <div class="col">
+        	<p class="tr"><?php _e('<strong>N.B. : particularités des index FULLTEXT</strong>'); ?></p>
+            <div class="tr-info">
+            	<p><?php _e('La recherche en texte intégrale (FULLTEXT) est la plus aboutie mais demande quelques paramétrages.','WP-Advanced-Search') ?></p>
+                <ol>
+                    <li><?php _e('<strong>Installation d\'index FULLTEXT</strong> sur les tables de recherche. Cliquez sur ce lien pour gagner du temps : <a href="#" onclick="','WP-Advanced-Search'); ?>getElementById('WP-Advanced-Search-Form').submit()<?php _e('">créez les index FULLTEXT</a>.','WP-Advanced-Search'); ?></li>
+                    <li><?php _e('La recherche FULLTEXT répond à certains paramètres du fichier my.ini de MySQL, il convient d\'avoir accès à ce fichier pour gérer totalement la recherche en texte intégrale...','WP-Advanced-Search') ?></li>
+                    <li><?php _e('Par défaut, la recherche FULLTEXT exclut quelques "stopwords" mais aussi les mots courts (de 1 à 3 caractères), ce qui peut poser problème. Il faut modifier le <strong>paramètre ft_min_word_len</strong> si vous avez un serveur dédié. Si vous détenez un serveur mutualisé, il est conseillé d\'opter pour la recherche REGEXP ou LIKE si vous voulez que tous les mots offrent des résultats...','WP-Advanced-Search') ?></li>
+                </ol>
+            </div>
+        </div>
+        <div class="col">
+			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-4.png',__FILE__); ?>" alt="Capture WP Advanced Search - 3" /></p>
+        </div>
+    </div>
+    <div class="block clear">
+        <div class="col">
         	<p class="tr"><?php _e('4. Stylisez l\'ensemble et les résultats de recherche','WP-Advanced-Search'); ?></p>
             <div class="tr-info">
             	<p><?php _e('Plusieurs options disponibles pour personnaliser l\'affichage des résultats.','WP-Advanced-Search') ?></p>
@@ -85,7 +107,7 @@ function WP_Advanced_Search_Callback_Documentation() {
             </div>
         </div>
         <div class="col">
-			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-4.png',__FILE__); ?>" alt="Capture WP Advanced Search - 4" /></p>
+			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-5.png',__FILE__); ?>" alt="Capture WP Advanced Search - 4" /></p>
         </div>
     </div>
     <div class="block clear">
@@ -102,10 +124,35 @@ function WP_Advanced_Search_Callback_Documentation() {
             </div>
         </div>
         <div class="col">
-			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-5.png',__FILE__); ?>" alt="Capture WP Advanced Search - 5" /></p>
+			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-6.png',__FILE__); ?>" alt="Capture WP Advanced Search - 5" /></p>
         </div>
     </div>
+    
+    <!-- Formulaire pour installer les index FULLTEXT (si activé en cliquant sur le lien) -->
+    <form id="WP-Advanced-Search-Form" method="post">
+        <input type="hidden" name="wp_advanced_search_fulltext" value="" />
+    </form>
 <?php
 	echo '</div>';
 } // Fin de la fonction Callback
+
+function WP_Advanced_Search_FullText_Doc() {
+	global $wpdb, $table_WP_Advanced_Search;
+	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
+	
+	// Récupération des valeurs des variables utiles
+	$columnSelectSearch = $select->colonnesWhere;
+	$databaseSearch = $select->db;
+	$tableSearch = $select->tables;
+
+	// Inclusion des class du moteur de recherche
+	if(phpversion() < 5) {
+		include('class.inc/moteur-php4.class-inc.php');
+	} else {
+		include('class.inc/moteur-php5.class-inc.php');
+	}
+
+	$alterTable = new alterTableFullText($databaseSearch, $tableSearch, $columnSelectSearch);
+	echo '<script type="text/javascript">alert("'.__('Index FULLTEXT créés avec succès !\nVous pouvez utiliser le type FULLTEXT dorénavant...','WP-Advanced-Search').'");</script>';
+}
 ?>

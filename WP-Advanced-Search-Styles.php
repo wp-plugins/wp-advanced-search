@@ -112,6 +112,13 @@ function WP_Advanced_Search_Callback_Styles() {
                         <br/><em><?php _e('<a href="http://php.net/manual/fr/function.date.php" target="_blank">Voir documentation PHP sur les dates</a> (exemple : "l j F Y" pour "mardi 25 juin 2013")','WP-Planification'); ?></em>
                 </p>
                 <p class="tr">
+                    <select name="wp_advanced_search_nbResultsOK" id="wp_advanced_search_nbResultsOK">
+                        <option value="1" <?php if($select->nbResultsOK == true) { echo 'selected="selected"'; } ?>><?php _e('Oui','WP-Advanced-Search'); ?></option>
+                        <option value="0" <?php if($select->nbResultsOK == false) { echo 'selected="selected"'; } ?>><?php _e('Non','WP-Advanced-Search'); ?></option>
+                    </select>
+                    <label for="wp_advanced_search_nbResultsOK"><strong><?php _e('Affichage du nombre de résultats ?','WP-Advanced-Search'); ?></strong></label>
+                </p>
+                <p class="tr">
                     <select name="wp_advanced_search_numberOK" id="wp_advanced_search_numberOK">
                         <option value="1" <?php if($select->NumberOK == true) { echo 'selected="selected"'; } ?>><?php _e('Oui','WP-Advanced-Search'); ?></option>
                         <option value="0" <?php if($select->NumberOK == false) { echo 'selected="selected"'; } ?>><?php _e('Non','WP-Advanced-Search'); ?></option>
@@ -131,6 +138,7 @@ function WP_Advanced_Search_update_styles() {
 	global $wpdb, $table_WP_Advanced_Search; // insérer les variables globales
 	
 	// Options d'affichage
+	$wp_advanced_search_nbResultsOK		= $_POST['wp_advanced_search_nbResultsOK'];
 	$wp_advanced_search_numberOK		= $_POST['wp_advanced_search_numberOK'];
 	$wp_advanced_search_style			= $_POST['wp_advanced_search_style'];
 	$wp_advanced_search_formatageDateOK	= $_POST['wp_advanced_search_formatageDateOK'];
@@ -146,6 +154,7 @@ function WP_Advanced_Search_update_styles() {
 	$wp_advanced_search_update = $wpdb->update(
 		$table_WP_Advanced_Search,
 		array(
+			"nbResultsOK" => $wp_advanced_search_nbResultsOK,
 			"NumberOK" => $wp_advanced_search_numberOK,
 			"Style" => $wp_advanced_search_style,
 			"formatageDate" => $wp_advanced_search_formatageDateOK,
