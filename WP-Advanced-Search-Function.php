@@ -81,7 +81,11 @@ function WP_Advanced_Search() {
 				// Afficher le nombre de résultats
 				if($select->nbResultsOK == true) {
 					$affichageResultats = new affichageResultats();
-					$output .= $affichageResultats->nbResultats(array(__('résultat','WP-Advanced-Search'), __('résultats','WP-Advanced-Search')), __('pour votre recherche','WP-Advanced-Search'), __(' à ','WP-Advanced-Search'));
+					if($select->NumberPerPage == 0) {
+						$output .= $affichageResultats->nbResultats(array(__('résultat','WP-Advanced-Search'), __('résultats','WP-Advanced-Search')), __('pour votre recherche','WP-Advanced-Search'), __(' à ','WP-Advanced-Search'), true);
+					} else {
+						$output .= $affichageResultats->nbResultats(array(__('résultat','WP-Advanced-Search'), __('résultats','WP-Advanced-Search')), __('pour votre recherche','WP-Advanced-Search'), __(' à ','WP-Advanced-Search'));
+					}
 				}
 
 				while($key = mysql_fetch_assoc($query)) { // On lance la boucle d'affichage des résultats
