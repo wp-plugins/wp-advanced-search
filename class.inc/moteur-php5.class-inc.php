@@ -596,31 +596,48 @@ class moteurRecherche {
 	
 }
 
+/*--------------------------------------------------------*/
+/*------- Class Fille pour afficher les résultats --------*/
+/*-- 4 paramètres optionnels : ---------------------------*/
+/*-- 1. Tableau pour afficher "résultat" et "résultats" --*/
+/*-- 2. Fin de la phrase ("pour votre recherche") --------*/
+/*-- 3. Coordination pour le nb de résultats par page ----*/
+/*-- 4. Affichage différent s'il n'y a pas de LIMIT ------*/
+/*--------------------------------------------------------*/
 class affichageResultats extends moteurRecherche {
-	public function nbResultats($wordsResults = array("résultat", "résultats"), $phrase = 'pour votre recherche', $coord = " à ") {
-		if(parent::$limitArg == 0) {
-			$nbDebut = 1;
-			if(parent::nbResults() > parent::$limit) {
-				$nbFin = (parent::$limitArg+1) * parent::$limit;
+	public function nbResultats($wordsResults = array("résultat", "résultats"), $phrase = 'pour votre recherche', $coord = " à ", $illimite = false) {
+		if($illimite == true) {
+			if(parent::nbResults() < 2) {
+				$res = " ".$wordsResults[0];	
 			} else {
-				$nbFin = parent::nbResults();
+				$res = " ".$wordsResults[1];
 			}
+			return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase."</div>";
 		} else {
-			$nbDebut = ((parent::$limitArg-1) * parent::$limit)+1;
+			if(parent::$limitArg == 0) {
+				$nbDebut = 1;
+				if(parent::nbResults() > parent::$limit) {
+					$nbFin = (parent::$limitArg+1) * parent::$limit;
+				} else {
+					$nbFin = parent::nbResults();
+				}
+			} else {
+				$nbDebut = ((parent::$limitArg-1) * parent::$limit)+1;
+				
+				if(ceil(parent::nbResults()/(parent::$limit*parent::$limitArg)) != 1) {
+					$nbFin = parent::$limitArg * parent::$limit;
+				} else {
+					$nbFin = parent::nbResults();
+				}
+			}
 			
-			if(ceil(parent::nbResults()/(parent::$limit*parent::$limitArg)) != 1) {
-				$nbFin = parent::$limitArg * parent::$limit;
+			if(parent::nbResults() < 2) {
+				$res = " ".$wordsResults[0];	
 			} else {
-				$nbFin = parent::nbResults();
+				$res = " ".$wordsResults[1];
 			}
+			return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase." (".$nbDebut.$coord.$nbFin.")</div>";
 		}
-		
-		if(parent::nbResults() < 2) {
-			$res = " ".$wordsResults[0];	
-		} else {
-			$res = " ".$wordsResults[1];
-		}
-		return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase." (".$nbDebut.$coord.$nbFin.")</div>";
 	}
 }
 
