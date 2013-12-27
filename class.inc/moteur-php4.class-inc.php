@@ -493,15 +493,21 @@ class moteurRecherche {
 		} else {
 			$current_page = 1;
 		}
-		
+
 		// Récupération des paramètres d'URL et formatage des liens (paramètre de la page à la fin)
-		preg_match_all('#([^=])+([^\?\&])+#i', $_SERVER['QUERY_STRING'], $valueArgs);
-		$urlPage = $_SERVER['PHP_SELF'].'?';
-		foreach($valueArgs[0] as $arg) {
-			$urlPage .= $arg;
-			$urlPage = str_replace("&".$param."=".($parametreGetPost), "", $urlPage);
+		if($_GET[$param] < $nb_pages+1 && is_numeric($_GET[$param]) || !isset($_GET[$param])) {
+			preg_match_all('#([^=])+([^\?\&])+#i', $_SERVER['QUERY_STRING'], $valueArgs);
+			$urlPage = $_SERVER['PHP_SELF'].'?';
+			foreach($valueArgs[0] as $arg) {
+				$urlPage .= $arg;
+				$urlPage = str_replace("&".$param."=".($parametreGetPost), "", $urlPage);
+			}
+			$urlPage .= "&".$param."=";
+		} else {
+			$urlpropre = str_ireplace("?".$param."=".$_GET[$param],"",$_SERVER['REQUEST_URI']);
+			$urlpropre = str_ireplace("&".$param."=".$_GET[$param],"",$_SERVER['REQUEST_URI']);
+			header('location:'.$urlpropre);
 		}
-		$urlPage .= "&".$param."=";
 
 		// Début du bloc de pagination (avec classBloc)
 		$pagination = '<div class="'.$arrayAff[6].'">';
