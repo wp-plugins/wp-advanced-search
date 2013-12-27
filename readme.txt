@@ -7,9 +7,9 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 3.6.1
-Stable Tag: 1.7
+Stable Tag: 1.7.1
 
-"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
+"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
 
 == Description ==
 
@@ -25,6 +25,7 @@ Quelques exemples d'options existantes :
 <li>Ajout d'une pagination automatique</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
 <li>Gestion des blocs &agrave; afficher dans les SERP</li>
+<li>Plusieurs th&egrave;mes disponibles</li>
 <li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
 <li>...</li>
 </ul>
@@ -42,6 +43,7 @@ Some examples of existing options:
 <li>Adding an automatic pagination</li>
 <li>Highlight search terms, or not</li>
 <li>Manage blocks to display in the SERP</li>
+<li>Several templates for result pages</li>
 <li>Ability to write an exact search with words in quotation marks</li>
 <li>...</li>
 </ul>
@@ -67,6 +69,7 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 2. Panneau du widget (widget panel).
 3. Exemple d'usage complet (for example : complete usage of plugin).
 4. Exemple d'affichage diff&eacute;rent (for example : another type of use of plugin).
+5. Nouveau th&egrave;me graphique (New template).
 
 == Changelog ==
 
@@ -89,3 +92,33 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 = Version 1.1.5 (06/10/2013) =
 
 - Corrige quelques bugs de mise &agrave; jour (fix some bugs with upgrade)
+
+
+= Version 1.2 (10/10/2013) =
+
+- D&eacute;sactivez puis r&eacute;activez l'extension pour ceux qui rencontrent des probl&egrave;mes avec l'ancienne mise &agrave; jour... Pardon ! (Deactivate and reactivate the extension for those who have problems with the old update ... Sorry!)
+- Ajout des stop words dans plusieurs langues (adding stop words in several languages)
+- Correction de la gestion des images à la Une trop grandes... (Fixed post thumbnails too large ...)
+
+= Version 1.5 (17/11/2013) =
+
+- Refonte totale du backoffice de l'extension (Total change in the backoffice extension)
+- Ajout de th&egrave;mes graphiques pour la page de r&eacute;sultats (Adding templates for results page)
+- Ajout d'une option pour ordonner les informations dans les r&eacute;sultats de recherche (One option added to order information in search results)
+- Ajout d'une page de documentation pour accompagner l'installation (A help page added to support the installation)
+- Mise &agrave; jour des traductions anglaises (English translation updated)
+
+= Version 1.6 (19/11/2013) =
+
+- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
+
+= Version 1.7 (25/11/2013) =
+
+- Affichage possible du nombre de r&eacute;sultats (adding option to show the number of search results)
+- D&eacute;bogage des recherches en majuscules (Fixed problems with search queries in uppercase)
+- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
+- Am&eacute;lioration de la documentation sur la recherche FULLTEXT (Improved documentation about FULLTEXT search)
+
+= Version 1.7.1 (27/12/2013) =
+
+- Modification de la s&eacute;curit&eacute; de la pagination (fixed problem of security with pagination)
