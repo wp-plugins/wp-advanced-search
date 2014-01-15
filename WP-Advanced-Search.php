@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.7.1
+Version: 1.8
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "1.7.1";
+$WP_Advanced_Search_Version = "1.8";
 
 function WP_Advanced_Search_Lang() {
 	load_plugin_textdomain('WP-Advanced-Search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
@@ -150,7 +150,7 @@ function WP_Advanced_Search_install_update() {
 	// Récupération de la version en cours (pour voir si mise à jour...)
 	$installed_ver = get_option("wp_advanced_search_version");
 
-	if($installed_ver != $WP_Advanced_Search_Version && $installed_ver != "1.7") {
+	if($installed_ver != $WP_Advanced_Search_Version && $installed_ver != "1.7" && $installed_ver != "1.7.1") {
 		$sqlShow = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'BlocOrder'");
 		if($sqlShow != 1) {
 			$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD BlocOrder VARCHAR(10)");
@@ -164,6 +164,8 @@ function WP_Advanced_Search_install_update() {
 		);
 		$chp = wp_parse_args($instance, $defautUpgrade);
 		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('BlocOrder' => $chp['BlocOrder'], 'nbResultsOK' => $chp['nbResultsOK']), array('id' => 1));
+	}
+	if($installed_ver != $WP_Advanced_Search_Version) {
 		// Mise à jour de la version
 		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
 	}

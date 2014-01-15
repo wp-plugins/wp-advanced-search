@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp_advanced_search\n"
-"POT-Creation-Date: 2013-11-25 16:59+0100\n"
-"PO-Revision-Date: 2013-11-25 17:03+0100\n"
+"POT-Creation-Date: 2014-01-15 06:41+0100\n"
+"PO-Revision-Date: 2014-01-15 06:41+0100\n"
 "Last-Translator: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language-Team: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language: en_GB\n"
@@ -277,60 +277,55 @@ msgstr ""
 "FULLTEXT indexes created successfully!\\nYou can use the FULLTEXT type "
 "now ..."
 
-#: ../WP-Advanced-Search-Function.php:84
+#: ../WP-Advanced-Search-Function.php:85 ../WP-Advanced-Search-Function.php:87
 msgid "résultat"
 msgstr "result"
 
-#: ../WP-Advanced-Search-Function.php:84
+#: ../WP-Advanced-Search-Function.php:85 ../WP-Advanced-Search-Function.php:87
 msgid "résultats"
 msgstr "results"
 
-#: ../WP-Advanced-Search-Function.php:84
+#: ../WP-Advanced-Search-Function.php:85 ../WP-Advanced-Search-Function.php:87
 msgid "pour votre recherche"
 msgstr "found"
 
-#: ../WP-Advanced-Search-Function.php:84
+#: ../WP-Advanced-Search-Function.php:85 ../WP-Advanced-Search-Function.php:87
 msgid " à "
 msgstr " to "
 
-#: ../WP-Advanced-Search-Function.php:132
-#: ../WP-Advanced-Search-Function.php:154
-msgid "Publié le "
+#: ../WP-Advanced-Search-Function.php:135
+msgid "Publié "
 msgstr "Published"
 
-#: ../WP-Advanced-Search-Function.php:138
-#: ../WP-Advanced-Search-Function.php:168
-#: ../WP-Advanced-Search-Function.php:234
-#: ../WP-Advanced-Search-Function.php:251
-msgid "par "
-msgstr "by"
-
-#: ../WP-Advanced-Search-Function.php:146
-#: ../WP-Advanced-Search-Function.php:161
-#: ../WP-Advanced-Search-Function.php:185
-#: ../WP-Advanced-Search-Function.php:212
-msgid "dans "
-msgstr "in"
-
-#: ../WP-Advanced-Search-Function.php:177
-#: ../WP-Advanced-Search-Function.php:199
-msgid "Publié par "
-msgstr "Published by"
-
-#: ../WP-Advanced-Search-Function.php:191
-#: ../WP-Advanced-Search-Function.php:205
+#: ../WP-Advanced-Search-Function.php:142
+#: ../WP-Advanced-Search-Function.php:173
 #: ../WP-Advanced-Search-Function.php:228
-#: ../WP-Advanced-Search-Function.php:257
+#: ../WP-Advanced-Search-Function.php:242
+#: ../WP-Advanced-Search-Function.php:283
+#: ../WP-Advanced-Search-Function.php:321
 msgid "le "
 msgstr "the"
 
-#: ../WP-Advanced-Search-Function.php:222
-#: ../WP-Advanced-Search-Function.php:244
-msgid "Publié dans "
-msgstr "Published in"
+#: ../WP-Advanced-Search-Function.php:148
+#: ../WP-Advanced-Search-Function.php:196
+#: ../WP-Advanced-Search-Function.php:205
+#: ../WP-Advanced-Search-Function.php:236
+#: ../WP-Advanced-Search-Function.php:289
+#: ../WP-Advanced-Search-Function.php:315
+msgid "par "
+msgstr "by"
 
-#: ../WP-Advanced-Search-Function.php:294
-#: ../WP-Advanced-Search-Function.php:313
+#: ../WP-Advanced-Search-Function.php:154
+#: ../WP-Advanced-Search-Function.php:178
+#: ../WP-Advanced-Search-Function.php:211
+#: ../WP-Advanced-Search-Function.php:247
+#: ../WP-Advanced-Search-Function.php:266
+#: ../WP-Advanced-Search-Function.php:297
+msgid "dans "
+msgstr "in"
+
+#: ../WP-Advanced-Search-Function.php:358
+#: ../WP-Advanced-Search-Function.php:377
 msgid "Lire la suite..."
 msgstr "Read more ..."
 
@@ -859,6 +854,12 @@ msgstr "Templates and styles"
 #: ../WP-Advanced-Search.php:185
 msgid "Options de pagination"
 msgstr "Pagination settings"
+
+#~ msgid "Publié par "
+#~ msgstr "Published by"
+
+#~ msgid "Publié dans "
+#~ msgstr "Published in"
 
 #~ msgid "Bleu"
 #~ msgstr "Blue"
