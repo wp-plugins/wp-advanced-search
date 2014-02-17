@@ -403,7 +403,7 @@ function WP_Advanced_Search() {
 		}
 
 		// Affichage des résultats en fonction d'une ou plusieurs catégories sélectionnés (pour les articles uniquement !)
-		if(!in_array('toutes', unserialize($select->categories)) && $select->postType == "post") {
+		if(!in_array('toutes', unserialize($select->categories)) && $select->categories != 'a:0:{}' && $select->postType == "post") {
 			$conditions = "as WPP INNER JOIN $wpdb->term_relationships as TR INNER JOIN $wpdb->terms as TT WHERE WPP.ID = TR.object_id AND TT.term_id = TR.term_taxonomy_id AND (";
 			$nbCat = 0;
 			foreach(unserialize($select->categories) as $cate) {
