@@ -38,7 +38,6 @@ function WP_Advanced_Search_update() {
 	$wp_advanced_search_posttype		= $_POST['wp_advanced_search_posttype'];
 	$wp_advanced_search_categories 		= array();
 	foreach($_POST['wp_advanced_search_categories'] as $ctgSave) {
-		echo $ctgSave;
 		array_push($wp_advanced_search_categories, $ctgSave);
 	}
 	print($wp_advanced_search_categories);
