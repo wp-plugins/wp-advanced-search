@@ -40,7 +40,6 @@ function WP_Advanced_Search_update() {
 	foreach($_POST['wp_advanced_search_categories'] as $ctgSave) {
 		array_push($wp_advanced_search_categories, $ctgSave);
 	}
-	print($wp_advanced_search_categories);
 	if(is_numeric($_POST['wp_advanced_search_numberPerPage']) || !empty($_POST['wp_advanced_search_numberPerPage'])) {
 		$wp_advanced_search_numberPerPage = $_POST['wp_advanced_search_numberPerPage'];
 	} else {
