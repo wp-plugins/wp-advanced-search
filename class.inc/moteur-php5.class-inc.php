@@ -346,7 +346,14 @@ class moteurRecherche {
 	/*-- N.B. : la fonction ajoute la colonne de classement si elle n'existe pas ! ----*/
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
 	/*---------------------------------------------------------------------------------*/
-	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '') {
+	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '', $conditionsPlus = '') {
+
+		// Ajout d'une conditions spécifique à WordPress
+		if(empty($conditionsPlus)) {
+			$conditions = "WHERE";	
+		} else {
+			$conditions = $conditionsPlus;
+		}
 
 		// Récupération des colonnes de sélections
 		if(empty($colonnesSelect)) {
@@ -418,28 +425,29 @@ class moteurRecherche {
 		/*------------------------ Requête SQL totale -----------------------*/
 		/*-------------------------------------------------------------------*/
 		if(empty($orderLimitPerso)) {
-			$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $this->orderBy $this->limitMinMax")
+			$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $this->orderBy $this->limitMinMax")
 			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			// Pour calculer le nombre total de résultats justes
-			$this->nbResults = mysql_query("SELECT count(*) FROM $this->tableBDD WHERE $this->condition")
+			$this->nbResults = mysql_query("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition")
 			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
-			$compte = mysql_query("SELECT count(*) FROM $this->tableBDD WHERE $this->condition")
+			$compte = mysql_query("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition")
 			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 
 		} else {
 			if($limit[0] == true && $ordre[0] == true) {
-				$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax")
+				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax")
+				//$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax")
 				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			} else if($limit[0] == true && $ordre[0] == false) {
-				$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $orderLimitPerso $this->limitMinMax")
+				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->limitMinMax")
 				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			} else {
-				$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $orderLimitPerso")
+				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso")
 				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			}
 			// Pour calculer le nombre total de résultats justes
-			$this->nbResults = mysql_query("SELECT count(*) FROM $this->tableBDD WHERE $this->condition $orderLimitPerso");
-			$compte = mysql_query("SELECT count(*) FROM $this->tableBDD WHERE $this->condition $orderLimitPerso");
+			$this->nbResults = mysql_query("SELECT DISTINCT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
+			$compte = mysql_query("SELECT DISTINCT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
 		}
 		
 		// Récupération du nombre de résultats

@@ -6,8 +6,8 @@ Plugin URI: http://wordpress.org/extend/plugins/wordpress-wp-advanced-search/
 Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight
 License: GPLv2 or later
 Requires at least: 2.5
-Tested up to: 3.8
-Stable Tag: 1.8
+Tested up to: 3.8.1
+Stable Tag: 2.0
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
 
@@ -24,9 +24,10 @@ Quelques exemples d'options existantes :
 <li>Utilisation d'un algorithme de pertinence pour le classement final</li>
 <li>Ajout d'une pagination automatique</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
-<li>Gestion des blocs &agrave; afficher dans les SERP</li>
+<li>Gestion des blocs &agrave; afficher dans les résultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
 <li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
+<li>Possibilit&eacute; de rechercher des articles plac&eacute;s dans des cat&eacute;gories pr&eacute;cises</li>
 <li>...</li>
 </ul>
 </p>
@@ -45,6 +46,7 @@ Some examples of existing options:
 <li>Manage blocks to display in the SERP</li>
 <li>Several templates for result pages</li>
 <li>Ability to write an exact search with words in quotation marks</li>
+<li>Opportunity to show the results of specific categories</li>
 <li>...</li>
 </ul>
 </p>
@@ -128,3 +130,7 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 - Am&eacute;lioration de l'affichage de la ligne de la date, cat&eacute;gorie... (better display for the row that contains the date, the category...)
 - Gestion de l'affichage lorsqu'un article est dans plusieurs cat&eacute;gories (better display when a post is in multiple categories)
 - Am&eacute;lioration et corrections de certaines traductions (Improvement and corrections of some translations)
+
+= Version 2.0 (17/02/2014) =
+
+- Ajout d'une option pour g&eacute;rer l'affichage de r&eacute;sultats issus d'une ou plusieurs cat&eacute;gories spécifiques (Added an option to control the display of results from one or more specific categories)

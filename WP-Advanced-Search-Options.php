@@ -36,6 +36,12 @@ function WP_Advanced_Search_update() {
 	$wp_advanced_search_exclusionwords	= $_POST['wp_advanced_search_exclusionwords'];
 	$wp_advanced_search_stopwords		= $_POST['wp_advanced_search_stopwords'];
 	$wp_advanced_search_posttype		= $_POST['wp_advanced_search_posttype'];
+	$wp_advanced_search_categories 		= array();
+	foreach($_POST['wp_advanced_search_categories'] as $ctgSave) {
+		echo $ctgSave;
+		array_push($wp_advanced_search_categories, $ctgSave);
+	}
+	print($wp_advanced_search_categories);
 	if(is_numeric($_POST['wp_advanced_search_numberPerPage']) || !empty($_POST['wp_advanced_search_numberPerPage'])) {
 		$wp_advanced_search_numberPerPage = $_POST['wp_advanced_search_numberPerPage'];
 	} else {
@@ -68,6 +74,7 @@ function WP_Advanced_Search_update() {
 			"AscDesc" => $wp_advanced_search_ascdesc,
 			"AlgoOK" => $wp_advanced_search_algoOK,
 			"postType" => $wp_advanced_search_posttype,
+			"categories" => serialize($wp_advanced_search_categories),
 			"ResultText" => $wp_advanced_search_resulttext,
 			"ErrorText" => $wp_advanced_search_errortext
 		), 
@@ -105,6 +112,16 @@ function WP_Advanced_Search_Callback() {
 	// Sélection des données dans la base de données		
 	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
 ?>
+	<script type="text/javascript">
+		function montrer(object) {
+		   if (document.getElementById) document.getElementById(object).style.display = 'block';
+		}
+		
+		function cacher(object) {
+		   if (document.getElementById) document.getElementById(object).style.display = 'none';
+		}
+    </script>
+
 		<!-- Formulaire pour installer les index FULLTEXT (si activé en cliquant sur le lien) -->
         <form id="WP-Advanced-Search-Form" method="post">
         	<input type="hidden" name="wp_advanced_search_fulltext" value="" />
@@ -118,7 +135,7 @@ function WP_Advanced_Search_Callback() {
                 <p class="tr">
                 <select name="wp_advanced_search_table" id="wp_advanced_search_table" />
                 <?php
-                    $tablesSearch = $wpdb->get_results("SHOW TABLES FROM ".$select->db." LIKE '%".$wpdb->prefix."%'");					
+                    $tablesSearch = $wpdb->get_results("SHOW TABLES FROM ".$select->db." LIKE '".$wpdb->prefix."%'");					
                     $numberTables = count($tablesSearch,1);
                     for($i=0; $i < $numberTables; $i++) {
                         foreach($tablesSearch[$i] as $table => $value) {
@@ -151,12 +168,42 @@ function WP_Advanced_Search_Callback() {
                 </p>
                 <p class="tr">
                     <select name="wp_advanced_search_posttype" id="wp_advanced_search_posttype">
-                        <option value="post" <?php if($select->postType == 'post') { echo 'selected="selected"'; } ?>><?php _e('Articles','WP-Advanced-Search'); ?></option>
-                        <option value="page" <?php if($select->postType == 'page') { echo 'selected="selected"'; } ?>><?php _e('Pages','WP-Advanced-Search'); ?></option>
-                        <option value="pagepost" <?php if($select->postType == 'pagepost') { echo 'selected="selected"'; } ?>><?php _e('Articles + Pages','WP-Advanced-Search'); ?></option>
-                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?>><?php _e('Tout','WP-Advanced-Search'); ?></option>
+                        <option value="post" <?php if($select->postType == 'post') { echo 'selected="selected"'; } ?> onclick="montrer('ctgBlock')";><?php _e('Articles','WP-Advanced-Search'); ?></option>
+                        <option value="page" <?php if($select->postType == 'page') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')";><?php _e('Pages','WP-Advanced-Search'); ?></option>
+                        <option value="pagepost" <?php if($select->postType == 'pagepost') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Articles + Pages','WP-Advanced-Search'); ?></option>
+                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Tout','WP-Advanced-Search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_posttype"><strong><?php _e('Type de contenus pour la recherche ?','WP-Advanced-Search'); ?></strong></label>
+                </p>
+                <p class="tr" id="ctgBlock" <?php if($select->postType == 'post') { echo 'style="display:block;"'; } else { echo 'style="display:none;"'; } ?>>
+					<?php
+                        $tabSlugCategories = $wpdb->get_results("SELECT TE.slug FROM $wpdb->terms as TE INNER JOIN $wpdb->term_taxonomy as TT WHERE TT.taxonomy = 'category' AND TE.term_id = TT.term_id"); // Ajouter AND TT.count !=0 pour ne garder que les catégories contenant des articles !
+						$tabNameCategories = $wpdb->get_results("SELECT TE.name FROM $wpdb->terms as TE INNER JOIN $wpdb->term_taxonomy as TT WHERE TT.taxonomy = 'category' AND TE.term_id = TT.term_id"); // Ajouter AND TT.count !=0 pour ne garder que les catégories contenant des articles !
+						//$tabCategories = array_combine($tabSlugCategories, $tabNameCategories);
+						foreach($tabSlugCategories as $slugTab) {
+							foreach($slugTab as $slug) {
+								$tabSlug[] = $slug;	
+							}
+						}
+						foreach($tabNameCategories as $nameTab) {
+							foreach($nameTab as $name) {
+								$tabName[] = $name;	
+							}
+						}
+						$tabCategories = array_combine($tabSlug, $tabName);
+						$select->categories = unserialize($select->categories);
+                    ?>
+                    <select name="wp_advanced_search_categories[]" id="wp_advanced_search_categories" multiple="multiple" size="5">
+                        <option value="toutes" <?php if(in_array('toutes', $select->categories)) { echo 'selected="selected"'; } ?>><?php _e('Toutes les catégories','WP-Advanced-Search'); ?></option>
+                        <?php
+						foreach($tabCategories as $tabKey => $tabCtg) {
+						?>
+								<option value="<?php echo $tabKey; ?>" <?php if(in_array($tabKey, $select->categories)) { echo 'selected="selected"'; } ?> name="categories"><?php _e($tabCtg,'WP-Advanced-Search'); ?></option>
+                        <?php
+						}
+                        ?>
+                    </select>
+                    <label for="wp_advanced_search_categories"><strong><?php _e('Catégories de recherche (articles uniquement)','WP-Advanced-Search'); ?></strong></label>
                 </p>
                 <p class="tr">
                     <input value="<?php echo $select->NumberPerPage; ?>" name="wp_advanced_search_numberPerPage" id="wp_advanced_search_numberPerPage" type="text" />

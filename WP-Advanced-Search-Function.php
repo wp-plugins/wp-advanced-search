@@ -401,6 +401,22 @@ function WP_Advanced_Search() {
 			$output .= "</div>\n";
 			echo $output;
 		}
+
+		// Affichage des résultats en fonction d'une ou plusieurs catégories sélectionnés (pour les articles uniquement !)
+		if(!in_array('toutes', unserialize($select->categories)) && $select->postType == "post") {
+			$conditions = "as WPP INNER JOIN $wpdb->term_relationships as TR INNER JOIN $wpdb->terms as TT WHERE WPP.ID = TR.object_id AND TT.term_id = TR.term_taxonomy_id AND (";
+			$nbCat = 0;
+			foreach(unserialize($select->categories) as $cate) {
+				 $conditions .= "TT.slug = '".$cate."'";
+				 if($nbCat < (count(unserialize($select->categories)) -1)) {
+				 	$conditions .= " OR ";
+				 }
+				 $nbCat++;
+			}
+			$conditions .= ") AND";
+		} else {
+			$conditions = '';	
+		}
 		
 		// Récupération du type de contenu à afficher
 		if($select->postType == "post") {
@@ -415,9 +431,9 @@ function WP_Advanced_Search() {
 		
 		// Lancement de la fonction d'affichage	
 		if($select->NumberPerPage == 0) {
-			$moteur->moteurAffichage('affichage', '', array(false, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation);
+			$moteur->moteurAffichage('affichage', '', array(false, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		} else {
-			$moteur->moteurAffichage('affichage', '', array(true, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation);
+			$moteur->moteurAffichage('affichage', '', array(true, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 			$paginationValide = true;
 		}
 		

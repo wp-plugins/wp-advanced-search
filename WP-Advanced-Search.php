@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 1.8
+Version: 2.0
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "1.8";
+$WP_Advanced_Search_Version = "2.0";
 
 function WP_Advanced_Search_Lang() {
 	load_plugin_textdomain('WP-Advanced-Search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
@@ -68,6 +68,7 @@ function WP_Advanced_Search_install() {
 		paginationPrevText VARCHAR(50) NOT NULL,
 		paginationNextText VARCHAR(50) NOT NULL,
 		postType VARCHAR(8) NOT NULL,
+		categories TEXT,
 		ResultText TEXT,
 		ErrorText TEXT
 		);";
@@ -121,11 +122,12 @@ function WP_Advanced_Search_install_data() {
 			"paginationPrevText" => "&laquo; Précédent",
 			"paginationNextText" => "Suivant &raquo;",
 			"postType" => 'pagepost',
+			"categories" => 'toutes',
 			"ResultText" => 'Résultats de la recherche :',
 			"ErrorText" => 'Aucun résultat, veuillez effectuer une autre recherche !'
 		);
 		$champ = wp_parse_args($instance, $defaut);
-		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'nbResultsOK' => $champ['nbResultsOK'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'BlocOrder' => $champ['BlocOrder'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
+		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'nbResultsOK' => $champ['nbResultsOK'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'BlocOrder' => $champ['BlocOrder'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'postType' => $champ['postType'], 'categories' => $champ['categories'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText']));
 	}
 }
 // Quand ça désactive l'extension, la table est supprimée...
@@ -150,20 +152,17 @@ function WP_Advanced_Search_install_update() {
 	// Récupération de la version en cours (pour voir si mise à jour...)
 	$installed_ver = get_option("wp_advanced_search_version");
 
-	if($installed_ver != $WP_Advanced_Search_Version && $installed_ver != "1.7" && $installed_ver != "1.7.1") {
-		$sqlShow = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'BlocOrder'");
+	if($installed_ver != $WP_Advanced_Search_Version) {
+		$sqlShow = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'categories'");
 		if($sqlShow != 1) {
-			$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD BlocOrder VARCHAR(10)");
+			$sqlUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD categories TEXT");
+			// Mise à jour des des nouvelles valeurs par défaut
+			$defautUpgrade = array(
+				"categories" => 'toutes'
+			);
+			$chp = wp_parse_args($instance, $defautUpgrade);
+			$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('categories' => $chp['categories']), array('id' => 1));
 		}
-		$sqlUpgrade2 = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD nbResultsOK BOOLEAN NOT NULL");
-
-		// Mise à jour des des nouvelles valeurs par défaut
-		$defautUpgrade = array(
-			"BlocOrder" => 'D-A-C',
-			"nbResultsOK" => false
-		);
-		$chp = wp_parse_args($instance, $defautUpgrade);
-		$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('BlocOrder' => $chp['BlocOrder'], 'nbResultsOK' => $chp['nbResultsOK']), array('id' => 1));
 	}
 	if($installed_ver != $WP_Advanced_Search_Version) {
 		// Mise à jour de la version
