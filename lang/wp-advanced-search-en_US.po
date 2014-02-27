@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp_advanced_search\n"
-"POT-Creation-Date: 2014-02-17 14:05+0100\n"
-"PO-Revision-Date: 2014-02-17 14:06+0100\n"
+"POT-Creation-Date: 2014-02-27 18:57+0100\n"
+"PO-Revision-Date: 2014-02-27 18:57+0100\n"
 "Last-Translator: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language-Team: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language: en_GB\n"
@@ -295,7 +295,7 @@ msgstr " to "
 
 #: ../WP-Advanced-Search-Function.php:135
 msgid "Publié "
-msgstr "Published"
+msgstr "Published "
 
 #: ../WP-Advanced-Search-Function.php:142
 #: ../WP-Advanced-Search-Function.php:173
@@ -304,7 +304,7 @@ msgstr "Published"
 #: ../WP-Advanced-Search-Function.php:283
 #: ../WP-Advanced-Search-Function.php:321
 msgid "le "
-msgstr "the"
+msgstr "the "
 
 #: ../WP-Advanced-Search-Function.php:148
 #: ../WP-Advanced-Search-Function.php:196
@@ -313,7 +313,7 @@ msgstr "the"
 #: ../WP-Advanced-Search-Function.php:289
 #: ../WP-Advanced-Search-Function.php:315
 msgid "par "
-msgstr "by"
+msgstr "by "
 
 #: ../WP-Advanced-Search-Function.php:154
 #: ../WP-Advanced-Search-Function.php:178
@@ -322,25 +322,37 @@ msgstr "by"
 #: ../WP-Advanced-Search-Function.php:266
 #: ../WP-Advanced-Search-Function.php:297
 msgid "dans "
-msgstr "in"
+msgstr "in "
+
+#: ../WP-Advanced-Search-Function.php:328
+msgid "Aucun commentaire"
+msgstr "No comment"
+
+#: ../WP-Advanced-Search-Function.php:330
+msgid "commentaire"
+msgstr "comment"
+
+#: ../WP-Advanced-Search-Function.php:332
+msgid "commentaires"
+msgstr "comments"
 
 #: ../WP-Advanced-Search-Function.php:358
 #: ../WP-Advanced-Search-Function.php:377
 msgid "Lire la suite..."
 msgstr "Read more ..."
 
-#: ../WP-Advanced-Search-Options.php:90 ../WP-Advanced-Search-Options.php:321
+#: ../WP-Advanced-Search-Options.php:88 ../WP-Advanced-Search-Options.php:319
 #: ../WP-Advanced-Search-Pagination.php:7
 #: ../WP-Advanced-Search-Pagination.php:85 ../WP-Advanced-Search-Styles.php:7
 #: ../WP-Advanced-Search-Styles.php:130
 msgid "Enregistrer"
 msgstr "Update"
 
-#: ../WP-Advanced-Search-Options.php:104
+#: ../WP-Advanced-Search-Options.php:102
 msgid "Aide et réglages de WP-Advanced-Search."
 msgstr "WP-Advanced-Search settings."
 
-#: ../WP-Advanced-Search-Options.php:106
+#: ../WP-Advanced-Search-Options.php:104
 msgid ""
 "<strong>WP Advanced Search</strong> permet d'activer un moteur de recherche "
 "puissant pour WordPress."
@@ -348,7 +360,7 @@ msgstr ""
 "<strong>WP-Advanced-Search</strong> enables a powerful search engine for "
 "WordPress."
 
-#: ../WP-Advanced-Search-Options.php:107
+#: ../WP-Advanced-Search-Options.php:105
 msgid ""
 "Plusieurs types de recherche (\"LIKE\", \"REGEXP\" ou \"FULLTEXT\"), "
 "algorithme de pertinence, mise en surbrillance des mots recherchés, "
@@ -357,120 +369,120 @@ msgstr ""
 "Several types of research (\"LIKE\", \"REGEXP\" or \"FULLTEXT\"), relevancy "
 "algorithm, highlighting search terms, pagination, configurable display ..."
 
-#: ../WP-Advanced-Search-Options.php:108
+#: ../WP-Advanced-Search-Options.php:106
 msgid "Tout est entièrement modulable pour obtenir des résultats précis !"
 msgstr "Everything is fully configurable for accurate results!"
 
-#: ../WP-Advanced-Search-Options.php:109
+#: ../WP-Advanced-Search-Options.php:107
 msgid ""
 "<strong>Consultez la documentation pour plus d'informations si nécessaire..."
 "</strong>"
 msgstr ""
 "<strong>Read the documentation for more information if needed ...</strong>"
 
-#: ../WP-Advanced-Search-Options.php:134
+#: ../WP-Advanced-Search-Options.php:132
 msgid "Options générales du moteur"
 msgstr "General search engine options"
 
-#: ../WP-Advanced-Search-Options.php:149
+#: ../WP-Advanced-Search-Options.php:147
 msgid "Table de recherche"
 msgstr "Search table"
 
-#: ../WP-Advanced-Search-Options.php:153
+#: ../WP-Advanced-Search-Options.php:151
 msgid "Attribut \"name\" du champ de recherche"
 msgstr "Attribute \"name\" field search"
 
-#: ../WP-Advanced-Search-Options.php:157
+#: ../WP-Advanced-Search-Options.php:155
 msgid "Colonnes de la table dans lesquelles rechercher"
 msgstr "Table columns to search"
 
-#: ../WP-Advanced-Search-Options.php:158
+#: ../WP-Advanced-Search-Options.php:156
 msgid "Séparez les valeurs par des virgules"
 msgstr "Separate values with commas"
 
-#: ../WP-Advanced-Search-Options.php:162
+#: ../WP-Advanced-Search-Options.php:160
 msgid "FULLTEXT"
 msgstr "FULLTEXT"
 
-#: ../WP-Advanced-Search-Options.php:163
+#: ../WP-Advanced-Search-Options.php:161
 msgid "REGEXP"
 msgstr "REGEXP"
 
-#: ../WP-Advanced-Search-Options.php:164
+#: ../WP-Advanced-Search-Options.php:162
 msgid "LIKE"
 msgstr "LIKE"
 
-#: ../WP-Advanced-Search-Options.php:166
+#: ../WP-Advanced-Search-Options.php:164
 msgid "Type de recherche PHP-MySQL"
 msgstr "Search type in PHP-MySQL"
 
-#: ../WP-Advanced-Search-Options.php:167
+#: ../WP-Advanced-Search-Options.php:165
 msgid "<a href=\"#\" onclick=\""
 msgstr "<a href=\"#\" onclick=\""
 
-#: ../WP-Advanced-Search-Options.php:167
+#: ../WP-Advanced-Search-Options.php:165
 msgid ""
 "\">Installez les index FULLTEXT</a> pour que la recherche FULLTEXT puisse "
 "fonctionner..."
 msgstr "\">Install the FULLTEXT index</a> for research FULLTEXT works well ..."
 
-#: ../WP-Advanced-Search-Options.php:171
+#: ../WP-Advanced-Search-Options.php:169
 msgid "Articles"
 msgstr "Posts"
 
-#: ../WP-Advanced-Search-Options.php:172
+#: ../WP-Advanced-Search-Options.php:170
 msgid "Pages"
 msgstr "Pages"
 
-#: ../WP-Advanced-Search-Options.php:173
+#: ../WP-Advanced-Search-Options.php:171
 msgid "Articles + Pages"
 msgstr "Posts + Pages"
 
-#: ../WP-Advanced-Search-Options.php:174
+#: ../WP-Advanced-Search-Options.php:172
 msgid "Tout"
 msgstr "All"
 
-#: ../WP-Advanced-Search-Options.php:176
+#: ../WP-Advanced-Search-Options.php:174
 msgid "Type de contenus pour la recherche ?"
 msgstr "Content type for search ?"
 
-#: ../WP-Advanced-Search-Options.php:197
+#: ../WP-Advanced-Search-Options.php:195
 msgid "Toutes les catégories"
 msgstr "All categories"
 
-#: ../WP-Advanced-Search-Options.php:206
+#: ../WP-Advanced-Search-Options.php:204
 msgid "Catégories de recherche (articles uniquement)"
 msgstr "Search categories (only for posts)"
 
-#: ../WP-Advanced-Search-Options.php:210
+#: ../WP-Advanced-Search-Options.php:208
 msgid "Nombre de résultats par page"
 msgstr "Number of results per page"
 
-#: ../WP-Advanced-Search-Options.php:211
+#: ../WP-Advanced-Search-Options.php:209
 msgid "0 ou vide pour tout afficher dans une page (sans pagination)"
 msgstr "0 or blank to display all in one page (without pagination)"
 
-#: ../WP-Advanced-Search-Options.php:214
+#: ../WP-Advanced-Search-Options.php:212
 msgid "Mise en surbrillance et rendu"
 msgstr "Highlight keywords and display settings"
 
-#: ../WP-Advanced-Search-Options.php:217
+#: ../WP-Advanced-Search-Options.php:215
 msgid "Précise"
 msgstr "Precise"
 
-#: ../WP-Advanced-Search-Options.php:218 ../WP-Advanced-Search-Options.php:300
+#: ../WP-Advanced-Search-Options.php:216 ../WP-Advanced-Search-Options.php:298
 msgid "Approchante"
 msgstr "Approaching"
 
-#: ../WP-Advanced-Search-Options.php:219
+#: ../WP-Advanced-Search-Options.php:217
 msgid "Aucune mise en gras"
 msgstr "No bolding"
 
-#: ../WP-Advanced-Search-Options.php:221
+#: ../WP-Advanced-Search-Options.php:219
 msgid "Mise en surbrillance des mots clés"
 msgstr "Highlight keywords search"
 
-#: ../WP-Advanced-Search-Options.php:222
+#: ../WP-Advanced-Search-Options.php:220
 msgid ""
 "\"Précise\" pour rechercher la chaîne exacte, \"Approchante\" pour chercher "
 "les mots contenant une chaîne (si recherche LIKE)"
@@ -478,20 +490,20 @@ msgstr ""
 "\"Precise\" for the exact string, \"approaching\" for the word containing a "
 "string (if LIKE search)"
 
-#: ../WP-Advanced-Search-Options.php:226
+#: ../WP-Advanced-Search-Options.php:224
 msgid "Texte pour la requête recherchée"
 msgstr "Text for the search query"
 
-#: ../WP-Advanced-Search-Options.php:230
+#: ../WP-Advanced-Search-Options.php:228
 msgid "Texte affiché si aucun résultat"
 msgstr "Display text when there is no result"
 
-#: ../WP-Advanced-Search-Options.php:234
+#: ../WP-Advanced-Search-Options.php:232
 msgid "Ordre des résultats"
 msgstr "Order search results"
 
-#: ../WP-Advanced-Search-Options.php:237 ../WP-Advanced-Search-Options.php:244
-#: ../WP-Advanced-Search-Options.php:277 ../WP-Advanced-Search-Options.php:313
+#: ../WP-Advanced-Search-Options.php:235 ../WP-Advanced-Search-Options.php:242
+#: ../WP-Advanced-Search-Options.php:275 ../WP-Advanced-Search-Options.php:311
 #: ../WP-Advanced-Search-Pagination.php:31
 #: ../WP-Advanced-Search-Pagination.php:38
 #: ../WP-Advanced-Search-Pagination.php:45 ../WP-Advanced-Search-Styles.php:31
@@ -502,8 +514,8 @@ msgstr "Order search results"
 msgid "Oui"
 msgstr "Yes"
 
-#: ../WP-Advanced-Search-Options.php:238 ../WP-Advanced-Search-Options.php:245
-#: ../WP-Advanced-Search-Options.php:278 ../WP-Advanced-Search-Options.php:314
+#: ../WP-Advanced-Search-Options.php:236 ../WP-Advanced-Search-Options.php:243
+#: ../WP-Advanced-Search-Options.php:276 ../WP-Advanced-Search-Options.php:312
 #: ../WP-Advanced-Search-Pagination.php:32
 #: ../WP-Advanced-Search-Pagination.php:39
 #: ../WP-Advanced-Search-Pagination.php:46 ../WP-Advanced-Search-Styles.php:32
@@ -514,15 +526,15 @@ msgstr "Yes"
 msgid "Non"
 msgstr "No"
 
-#: ../WP-Advanced-Search-Options.php:240
+#: ../WP-Advanced-Search-Options.php:238
 msgid "Ordonner les résultats ?"
 msgstr "Sort results?"
 
-#: ../WP-Advanced-Search-Options.php:247
+#: ../WP-Advanced-Search-Options.php:245
 msgid "Algorithme de pertinence ?"
 msgstr "relevance algorithm?"
 
-#: ../WP-Advanced-Search-Options.php:248
+#: ../WP-Advanced-Search-Options.php:246
 msgid ""
 "L'algorithme de pertinence affiche en ordre décroissant les résultats qui "
 "ont le plus de correspondances avec la requête"
@@ -530,99 +542,99 @@ msgstr ""
 "The relevancy algorithm displays the results in descending order with the "
 "most connections with the request"
 
-#: ../WP-Advanced-Search-Options.php:264
+#: ../WP-Advanced-Search-Options.php:262
 msgid "Colonne de classement"
 msgstr "Order Column"
 
-#: ../WP-Advanced-Search-Options.php:268
+#: ../WP-Advanced-Search-Options.php:266
 msgid "Croissant (ASC)"
 msgstr "Ascending (ASC)"
 
-#: ../WP-Advanced-Search-Options.php:269
+#: ../WP-Advanced-Search-Options.php:267
 msgid "Décroissant (DESC)"
 msgstr "Descending (DESC)"
 
-#: ../WP-Advanced-Search-Options.php:271
+#: ../WP-Advanced-Search-Options.php:269
 msgid "Croissant ou décroissant ?"
 msgstr "Ascending or descending?"
 
-#: ../WP-Advanced-Search-Options.php:274
+#: ../WP-Advanced-Search-Options.php:272
 msgid "Options de formatage des requêtes"
 msgstr "Formatting options for search queries"
 
-#: ../WP-Advanced-Search-Options.php:280
+#: ../WP-Advanced-Search-Options.php:278
 msgid "Activer les \"stop words\" ?"
 msgstr "Enable \"stop words\"?"
 
-#: ../WP-Advanced-Search-Options.php:284
+#: ../WP-Advanced-Search-Options.php:282
 msgid "Désactivé"
 msgstr "Disabled"
 
-#: ../WP-Advanced-Search-Options.php:285
+#: ../WP-Advanced-Search-Options.php:283
 msgid "< 1 caractère"
 msgstr "< 1 character"
 
-#: ../WP-Advanced-Search-Options.php:286
+#: ../WP-Advanced-Search-Options.php:284
 msgid "< 2 caractères"
 msgstr "< 2 characters"
 
-#: ../WP-Advanced-Search-Options.php:287
+#: ../WP-Advanced-Search-Options.php:285
 msgid "< 3 caractères"
 msgstr "< 3 characters"
 
-#: ../WP-Advanced-Search-Options.php:288
+#: ../WP-Advanced-Search-Options.php:286
 msgid "< 4 caractères"
 msgstr "< 4 characters"
 
-#: ../WP-Advanced-Search-Options.php:289
+#: ../WP-Advanced-Search-Options.php:287
 msgid "< 5 caractères"
 msgstr "< 5 characters"
 
-#: ../WP-Advanced-Search-Options.php:290
+#: ../WP-Advanced-Search-Options.php:288
 msgid "< 6 caractères"
 msgstr "< 6 characters"
 
-#: ../WP-Advanced-Search-Options.php:291
+#: ../WP-Advanced-Search-Options.php:289
 msgid "< 7 caractères"
 msgstr "< 7 characters"
 
-#: ../WP-Advanced-Search-Options.php:292
+#: ../WP-Advanced-Search-Options.php:290
 msgid "< 8 caractères"
 msgstr "< 7 characters"
 
-#: ../WP-Advanced-Search-Options.php:293
+#: ../WP-Advanced-Search-Options.php:291
 msgid "< 9 caractères"
 msgstr "< 9 characters"
 
-#: ../WP-Advanced-Search-Options.php:295
+#: ../WP-Advanced-Search-Options.php:293
 msgid "Exclure les mots courts ?"
 msgstr "Exclude short words?"
 
-#: ../WP-Advanced-Search-Options.php:299
+#: ../WP-Advanced-Search-Options.php:297
 msgid "Exacte"
 msgstr "Exact"
 
-#: ../WP-Advanced-Search-Options.php:302
+#: ../WP-Advanced-Search-Options.php:300
 msgid "Recherche exacte ou approchante ?"
 msgstr "Exact Search or approaching Search?"
 
-#: ../WP-Advanced-Search-Options.php:306
+#: ../WP-Advanced-Search-Options.php:304
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: ../WP-Advanced-Search-Options.php:307
+#: ../WP-Advanced-Search-Options.php:305
 msgid "ISO-8859-1 (Latin-1)"
 msgstr "ISO-8859-1 (Latin-1)"
 
-#: ../WP-Advanced-Search-Options.php:309
+#: ../WP-Advanced-Search-Options.php:307
 msgid "Choix de l'encodage des caractères"
 msgstr "Choice of character encoding"
 
-#: ../WP-Advanced-Search-Options.php:316
+#: ../WP-Advanced-Search-Options.php:314
 msgid "Suppression des accents de la requête ?"
 msgstr "Removing accents in the query?"
 
-#: ../WP-Advanced-Search-Options.php:317
+#: ../WP-Advanced-Search-Options.php:315
 msgid "Utile si les contenus sont sans accent dans la base de données"
 msgstr "Useful if the words are not emphasized in the database"
 

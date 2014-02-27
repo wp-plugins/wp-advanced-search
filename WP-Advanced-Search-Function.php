@@ -325,11 +325,11 @@ function WP_Advanced_Search() {
 							// Affichage conditionné des commentaires
 							if($select->CommentOK == true) {
 								if($key['comment_count'] == 0) {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">Aucun commentaire</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.__('Aucun commentaire','WP-Advanced-Search').'</a></span>'."\n";
 								} else if($key['comment_count'] == 1) {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaire</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' '.__('commentaire','WP-Advanced-Search').'</a></span>'."\n";
 								} else {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' commentaires</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' '.__('commentaires','WP-Advanced-Search').'</a></span>'."\n";
 								}
 							}
 
