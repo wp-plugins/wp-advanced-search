@@ -108,8 +108,8 @@ function WP_Advanced_Search_Callback_Styles() {
                 </p>
                 <p class="tr">
                     <input value="<?php echo $select->formatageDate; ?>" name="wp_advanced_search_formatageDateOK" id="wp_advanced_search_formatageDateOK" type="text" />
-                    <label for="wp_advanced_search_formatageDateOK"><strong><?php _e('Formatage de la date (si active)','WP-Planification'); ?></strong></label>
-                        <br/><em><?php _e('<a href="http://php.net/manual/fr/function.date.php" target="_blank">Voir documentation PHP sur les dates</a> (exemple : "l j F Y" pour "mardi 25 juin 2013")','WP-Planification'); ?></em>
+                    <label for="wp_advanced_search_formatageDateOK"><strong><?php _e('Formatage de la date (si active)','wp-advanced-search'); ?></strong></label>
+                        <br/><em><?php _e('<a href="http://php.net/manual/fr/function.date.php" target="_blank">Voir documentation PHP sur les dates</a> (exemple : "l j F Y" pour "mardi 25 juin 2013")','wp-advanced-search'); ?></em>
                 </p>
                 <p class="tr">
                     <select name="wp_advanced_search_nbResultsOK" id="wp_advanced_search_nbResultsOK">
