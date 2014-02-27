@@ -16,7 +16,7 @@ $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 $WP_Advanced_Search_Version = "2.0.1";
 
 function WP_Advanced_Search_Lang() {
-	load_plugin_textdomain('WP-Advanced-Search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
+	load_plugin_textdomain('wp-advanced-search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
 }
 add_action('plugins_loaded', 'WP_Advanced_Search_Lang' );
 
@@ -182,9 +182,9 @@ function WP_Advanced_Search_admin() {
 	$function4		= 'WP_Advanced_Search_Callback_Documentation';	// Fonction appelée pour afficher la page de documentation
 
 	add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, plugins_url('img/icon-16.png',__FILE__), 200);
-	add_submenu_page($menu_slug, __('Thèmes et styles','WP-Advanced-Search'), __('Thèmes et styles','WP-Advanced-Search'), $capability, $function2, $function2);
-	add_submenu_page($menu_slug, __('Options de pagination','WP-Advanced-Search'), __('Options de pagination','WP-Advanced-Search'), $capability, $function3, $function3);
-	add_submenu_page($menu_slug, __('Documentation','WP-Advanced-Search'), __('Documentation','WP-Advanced-Search'), $capability, $function4, $function4);
+	add_submenu_page($menu_slug, __('Thèmes et styles','wp-advanced-search'), __('Thèmes et styles','wp-advanced-search'), $capability, $function2, $function2);
+	add_submenu_page($menu_slug, __('Options de pagination','wp-advanced-search'), __('Options de pagination','wp-advanced-search'), $capability, $function3, $function3);
+	add_submenu_page($menu_slug, __('Documentation','wp-advanced-search'), __('Documentation','wp-advanced-search'), $capability, $function4, $function4);
 }
 add_action('admin_menu', 'WP_Advanced_Search_admin');
 
