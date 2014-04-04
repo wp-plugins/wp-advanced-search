@@ -9,7 +9,7 @@ Requires at least: 2.5
 Tested up to: 3.8.1
 Stable Tag: 2.1
 
-"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
+"WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
 == Description ==
 
@@ -25,7 +25,7 @@ Quelques exemples d'options existantes :
 <li>Ajout d'une pagination automatique</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
 <li>Autocompl&eacute;tion et ajout automatique de mots dans l'index</li>
-<li>Gestion des blocs &agrave; afficher dans les résultats</li>
+<li>Gestion des blocs &agrave; afficher dans les r&eacute;sultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
 <li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
 <li>Possibilit&eacute; de rechercher des articles plac&eacute;s dans des cat&eacute;gories pr&eacute;cises</li>
