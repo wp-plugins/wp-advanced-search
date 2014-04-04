@@ -1,4 +1,14 @@
 <?php
+/*
+Class Name: SearchEnginePOO
+Creator: Mathieu Chartier
+Website: http://blog.internet-formation.fr/2013/09/moteur-de-recherche-php-objet-poo-complet-pagination-surlignage-fulltext/
+Version: 2.0
+Date: 2014-04-02
+*/
+?>
+
+<?php
 /*------------------------------------------------------------------------*/
 /*----------------- Class pour créer les index FullText ------------------*/
 /*-- 1. Lancer $alterTable = new alterTableFullText(); -------------------*/
@@ -731,5 +741,141 @@ class surlignageMot {
 		}
 		$this->contenu = $contenu;
 	}
-} // Fin de la class
+} // Fin de la class de surlignage
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------- Class pour l'autocomplétion -------------------------------------------*/
+//-- 2 class PHP Objet (constructeur et la méthode autoComplete)
+//-- Constructeur (10 arguments dont 6 optionnels) :
+//-- -> 1. chemin vers le fichier PHP qui gère l'autocomplétion (par défaut "autocompletion.php")
+//-- -> 2. sélecteur du champ de recherche à autocompléter ('#id', '.class', etc)
+//-- -> 3. nom de la table de la table de l'index inversé
+//-- -> 4. nom de la colonne (du "champ") dans lequel sont insérés tous les mots clés
+//-- -> 5. OPTIONNEL : permet une autosuggestion multiple (true) ou seulement pour le premier mot (false)
+//-- -> 6. OPTIONNEL : limite d'affichage du nombre de résultats (5 par défaut)
+//-- -> 7. OPTIONNEL : type d'autocomplétion (0 = le mot débute par la chaîne ; 1 = le mot contient la chaîne)
+//-- -> 8. OPTIONNEL : autofocus sur le premier résultat (true ou false --> false conseillé)
+//-- -> 9. OPTIONNEL : autorise la création ou non de la table d'index inversé (inutile si déjà existant, donc false)
+//-- ->10. OPTIONNEL : encodage des caractères ("utf-8" ou "iso-8859-1" en gros)
+//-- Méthode autoComplete (2 arguments dont un seul obligatoire)
+//-- -> 1. nom du champ de recherche ($_GET['nom_du_champ'])
+//-- -> 2. OPTIONNEL : longueur minimale des mots ajoutés dans l'index (plus de 2 lettres par défaut)
+/*----------------------------------------------------------------------------------------------------------------*/
+class autoCompletion {
+	private $table;
+	private $column;
+	private $encode;
+	
+	public function __construct($urlDestination = "autocompletion.php", $selector = "#moteur", $tableName = "autosuggest", $colName = "words", $multiple = true, $limitDisplay = 5, $type = 0, $autoFocus = false, $create = true, $encode = "utf-8") {
+		// Enregistrement des informations dans la class PHP objet
+		$this->table	= htmlspecialchars($tableName);
+		$this->column	= htmlspecialchars($colName);
+		$this->encode	= strtolower($encode);
+
+		if($create == true) {
+			$createSQL = "CREATE TABLE IF NOT EXISTS ".$this->table." (
+						 idindex INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						 ".$this->column." VARCHAR(250) NOT NULL)
+						 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
+			mysql_query($createSQL) or die("Erreur : ".mysql_error());
+		}
+		
+		// Gère l'autofocus et la sélection automatique du premier résultat
+		if($autoFocus == true) {
+			$autoFocus = "true";
+		} else {
+			$autoFocus = "false";
+		}
+
+		// Génération du script Ajax jQuery d'autocomplétion (il faut préalablement avoir ajouté les fichiers associés !)
+		// N'oubliez pas les fichiers suivants pour que le système fonctionne : autocompletion.php, jquery.autocomplete.js, jquery.js (ou autre nom), le CSS		
+		$scriptAutoCompletion = "\n".'<script type="text/javascript">'."\n";
+		$scriptAutoCompletion.= '$(document).ready(function() {'."\n";
+		$scriptAutoCompletion.= "$('".$selector."').autocomplete('".$urlDestination."?t=".$tableName."&f=".$colName."&l=".$limitDisplay."&type=".$type."&e=".$encode."', { selectFirst:".$autoFocus.", max:".$limitDisplay.", multiple:".$multiple.", multipleSeparator:' ', delay:100, noRecord:'' })"."\n";
+		$scriptAutoCompletion.=	"})"."\n";
+		$scriptAutoCompletion.=	'</script>'."\n";
+		echo $scriptAutoCompletion;
+	}
+
+	public function autoComplete($field = '', $minLength = 2) {
+		$table = $this->table;
+		$column = $this->column;
+
+		/*-------------------------------------------*/
+		/*--- Récupération des mots clés tapés ------*/
+		/*--- Ajout des nouveaux mots dans l'index --*/
+		/*-------------------------------------------*/
+		// Suppression des balises HTML (sécurité)
+		if($this->encode == 'latin1' || $this->encode == 'Latin1' || $this->encode == 'latin-1' || $this->encode == 'Latin-1') {
+			$mb_encode = "ISO-8859-1";
+		} elseif($this->encode == 'utf8' || $this->encode == 'UTF8' || $this->encode == 'utf-8' || $this->encode == 'UTF-8') {
+			$mb_encode = "UTF-8";
+		} else {
+			$mb_encode = $encoding;	
+		}
+		$field = mb_strtolower(strip_tags($field), $mb_encode);
+
+		// 1. si une expression est entre guillemets, on cherche l'expression complète (suite de mots)
+		// 2. si les mots clés sont hors des guillemets, la recherche mot par mot est activée
+		if(preg_match_all('/["]{1}([^"]+[^"]+)+["]{1}/i', $field, $entreGuillemets)) {
+			// Ajoute toutes les expressions entre guillemets dans un tableau
+			foreach($entreGuillemets[1] as $expression) {
+				$results[] = mysql_real_escape_string($expression);
+			}
+			// Récupère les mots qui ne sont pas entre guillemets dans un tableau
+			$sansExpressions = str_ireplace($entreGuillemets[0],"",$field);
+			$motsSepares = explode(" ",$sansExpressions);		
+		} else {
+			$motsSepares = explode(" ",mysql_real_escape_string($field));
+		}
+		// Supprimer les clés vides du tableau (à cause des espaces de trop et strip_tags)
+		foreach($motsSepares as $key => $value) {
+			// Remplace les mots exclus (trop courts) par des chaines vides
+			if(!empty($exclusion)) {
+				if(strlen($value) <= $exclusion) {
+					$value = '';
+				}
+			}
+			// Supprime les stops words s'ils existent
+			if(!empty($stopWords)) {
+				if(in_array($value, $stopWords)) {
+					$value = '';
+				}
+			}
+			// Supprime les chaines vides du tableau (et donc les mots exclus)
+			if(empty($value)) {
+				unset($motsSepares[$key]);
+			}
+		}
+		// Ajoute chaque mot unique dans la liste des mots à chercher
+		foreach($motsSepares as $motseul) {
+			$results[] = $motseul;
+		}
+		
+		// Si le tableau des mots et expressions n'est pas vide, alors on cherche... (sinon pas de résultats !)
+		if(!empty($results)) {
+			// Nettoie chaque champ pour éviter les risques de piratage...
+			for($y=0; $y < count($results); $y++) {
+				$expression = $results[$y];
+				$recherche[] = htmlspecialchars(trim(strip_tags($expression)));
+			}
+
+			// Récupération des mots dans l'index inversé
+			$selectWords = mysql_query("SELECT ".$column." FROM ".$table."") or die("Erreur : ".mysql_error());
+			$selected = array();
+			while($w = mysql_fetch_assoc($selectWords)) {
+				$selected[] = htmlspecialchars(trim($w[$column]));
+			}
+
+			foreach($recherche as $word) {
+				if(strlen($word) > $minLength) {						
+					if(!in_array(stripslashes($word), $selected)) {
+						$addWordsSQL = "INSERT INTO ".$this->table." SET ".$this->column." = '".$word."'";
+						mysql_query($addWordsSQL) or die("Erreur : ".mysql_error());
+					}
+				}
+			}
+		}
+	}
+} // Fin de la class d'autocomplétion
 ?>

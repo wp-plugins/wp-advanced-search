@@ -1,5 +1,35 @@
 <?php
 /*--------------------------------------------*/
+/*--------- Fonction d'autocomplétion --------*/
+/*--------------------------------------------*/
+// Ajout conditionné du système d'autocomplétion
+function addAutoCompletion() {
+	global $wpdb, $table_WP_Advanced_Search;
+	
+	// Sélection des données dans la base de données		
+	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
+	
+	// Instanciation des variables utiles
+	$selector		= $select->autoCompleteSelector;
+	$dbName			= $select->db;
+	$tableName		= $select->autoCompleteTable;
+	$tableColumn	= $select->autoCompleteColumn;
+	$limitDisplay	= $select->autoCompleteNumber;
+	$multiple		= $select->autoCompleteTypeSuggest;
+	$type			= $select->autoCompleteType;
+	$autoFocus		= $select->autoCompleteAutofocus;
+	$create			= false; // On laisse sur false car la table est créée par ailleurs
+	$encoding		= $select->encoding;
+	
+	// Lancement de la fonction d'autocomplétion si activé...
+	if($select->autoCompleteActive == 1) {
+		include_once('class.inc/moteur-php5.class-inc.php');
+		$autocompletion = new autoCompletion(plugins_url("autocompletion/autocompletion.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
+	}
+}
+add_action('wp_footer', 'addAutoCompletion');
+
+/*--------------------------------------------*/
 /*------------ Fonction du moteur ------------*/
 /*--------------------------------------------*/
 function WP_Advanced_Search() {
@@ -7,18 +37,21 @@ function WP_Advanced_Search() {
 	global $moteur;
 	global $select;
 	global $wp_rewrite;
-	
-	// Inclusion des class du moteur de recherche
-	if(phpversion() < 5) {
-		include('class.inc/moteur-php4.class-inc.php');
-	} else {
-		include('class.inc/moteur-php5.class-inc.php');
-	}
 
 	// Sélection des données dans la base de données		
 	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
-	
-	// Instanciation des variables
+
+	// Instanciation des variables utiles
+	$selector		= $select->autoCompleteSelector;
+	$dbName			= $select->db;
+	$tableName		= $select->autoCompleteTable;
+	$tableColumn	= $select->autoCompleteColumn;
+	$limitDisplay	= $select->autoCompleteNumber;
+	$multiple		= $select->autoCompleteTypeSuggest;
+	$type			= $select->autoCompleteType;
+	$autoFocus		= $select->autoCompleteAutofocus;
+	$create			= false; // On laisse sur false car la table est créée par ailleurs
+	// Autres variables utiles
 	$table = $select->tables;
 	$nameSearch = $select->nameField;
 	$typeRecherche = $select->typeSearch;
@@ -32,6 +65,17 @@ function WP_Advanced_Search() {
 	$lastpage = $select->paginationLastPage;
 	$prevtext = $select->paginationPrevText;
 	$nexttext = $select->paginationNextText;
+
+	// Inclusion des class du moteur de recherche
+	include_once('class.inc/moteur-php5.class-inc.php');
+	if($select->autoCompleteActive == 1) {
+		$autocompletion = new autoCompletion(plugins_url("autocompletion/autocompletion.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
+
+		// Lancement de la fonction de remplissage automatique de l'index inversé (si activé)
+		if($select->autoCompleteGenerate == true) {
+			$autocompletion->autoComplete(stripslashes($_GET[$nameSearch]), $select->autoCompleteSizeMin);
+		}
+	}
 
 	if(empty($select->colonnesWhere)) {
 		$colonnesWhere = array('post_title', 'post_content', 'post_excerpt');
@@ -400,7 +444,7 @@ function WP_Advanced_Search() {
 			}
 			$output .= "</div>\n";
 			echo $output;
-		}
+		} // Fin de la fonction callback d'affichage
 
 		// Affichage des résultats en fonction d'une ou plusieurs catégories sélectionnés (pour les articles uniquement !)
 		if(!in_array('toutes', unserialize($select->categories)) && $select->categories != 'a:0:{}' && $select->postType == "post") {

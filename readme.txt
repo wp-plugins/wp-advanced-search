@@ -3,11 +3,11 @@ Contributors: Mathieu Chartier
 Donate link: http://www.mathieu-chartier.com
 Author URI: http://blog.internet-formation.fr/2013/07/wp-advanced-search/
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-wp-advanced-search/
-Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight
+Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 3.8.1
-Stable Tag: 2.0.3
+Stable Tag: 2.1
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&agrave;rement modulable.
 
@@ -24,6 +24,7 @@ Quelques exemples d'options existantes :
 <li>Utilisation d'un algorithme de pertinence pour le classement final</li>
 <li>Ajout d'une pagination automatique</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
+<li>Autocompl&eacute;tion et ajout automatique de mots dans l'index</li>
 <li>Gestion des blocs &agrave; afficher dans les résultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
 <li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
@@ -43,6 +44,7 @@ Some examples of existing options:
 <li>Using a relevance algorithm for the final classification</li>
 <li>Adding an automatic pagination</li>
 <li>Highlight search terms, or not</li>
+<li>Autocomplete option and automatic addition of words in the index</li>
 <li>Manage blocks to display in the SERP</li>
 <li>Several templates for result pages</li>
 <li>Ability to write an exact search with words in quotation marks</li>
@@ -72,6 +74,8 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 3. Exemple d'usage complet (for example : complete usage of plugin).
 4. Exemple d'affichage diff&eacute;rent (for example : another type of use of plugin).
 5. Nouveau th&egrave;me graphique (New template).
+6. Options d'autosuggestion (autosuggest options).
+7. Exemple d'autocompl&eacute;tion (exemple of autocomplete query).
 
 == Changelog ==
 
@@ -138,3 +142,8 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 = Version 2.0.3 (07/03/2014) =
 
 - Correction de quelques traductions (Correction for several translations)
+
+= Version 2.1 (04/04/2014) =
+
+- Ajout d'un syst&egrave;me complet d'autosuggestion (Adding a complete system for autocompletion)
+- R&eacute;solution de bugs passagers (Fixed some errors)

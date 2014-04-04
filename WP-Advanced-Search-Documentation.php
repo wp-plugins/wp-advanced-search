@@ -78,7 +78,7 @@ function WP_Advanced_Search_Callback_Documentation() {
     </div>
     <div class="block clear">
         <div class="col">
-        	<p class="tr"><?php _e('<strong>N.B. : particularités des index FULLTEXT</strong>'); ?></p>
+        	<p class="tr"><?php _e('<strong>N.B. : particularités des index FULLTEXT !</strong>'); ?></p>
             <div class="tr-info">
             	<p><?php _e('La recherche en texte intégrale (FULLTEXT) est la plus aboutie mais demande quelques paramétrages.','wp-advanced-search') ?></p>
                 <ol>
@@ -125,6 +125,24 @@ function WP_Advanced_Search_Callback_Documentation() {
         </div>
         <div class="col">
 			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-6.png',__FILE__); ?>" alt="Capture WP Advanced Search - 5" /></p>
+        </div>
+    </div>
+    <div class="block clear">
+        <div class="col">
+        	<p class="tr"><?php _e('6. Réglez l\'autocomplétion (optionnel)','wp-advanced-search'); ?></p>
+            <div class="tr-info">
+            	<p><?php _e('Plusieurs options de personnalisation pour les autosuggestions.','wp-advanced-search') ?></p>
+                <ol>
+                    <li><?php _e('Activez ou non l\'autocomplétion.','wp-advanced-search') ?></li>
+                    <li><?php _e('Important : opter pour le bon sélecteur du champ de recherche (#id ou .class en fonction --> .search-field pour le thème Twenty Thourteen par exemple).','wp-advanced-search') ?></li>
+                    <li><?php _e('Important : créer la table d\'index inversé pour rendre le système fonctionnel.','wp-advanced-search') ?></li>
+                    <li><?php _e('Adaptez les options à vos envies.','wp-advanced-search') ?></li>
+                    <li><?php _e('N.B. : il est recommandé d\'ajouter soi-même des mots et expressions au début','wp-advanced-search') ?></li>
+                </ol>
+            </div>
+        </div>
+        <div class="col">
+			<p class="tr"><img src="<?php echo plugins_url('img/screenshot-7.png',__FILE__); ?>" alt="Capture WP Advanced Search - 5" /></p>
         </div>
     </div>
     
