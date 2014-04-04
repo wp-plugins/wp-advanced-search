@@ -176,8 +176,9 @@ function WP_Advanced_Search() {
 
 					// Affichage d'un bloc pour date + auteur + categorie
 					$output .= '<p class="WPSecondSearch">'."\n";
-						$output .= '<span class="WPdateSearch">'.__('Publié ','wp-advanced-search').'</span>';
-						
+						if($select->DateOK == true || $select->AuthorOK == true || $select->CategoryOK == true) {
+							$output .= '<span class="WPdateSearch">'.__('Publié ','wp-advanced-search').'</span>';
+						}
 						if($select->BlocOrder == "D-A-C") // Ordre : Date - Auteur - Catégorie
 						{
 							// Affichage conditionné de la date
