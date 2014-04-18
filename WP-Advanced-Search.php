@@ -200,7 +200,7 @@ function WP_Advanced_Search_install_update() {
 			$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('categories' => $chp['categories']), array('id' => 1));
 		}
 		
-		$sqlShowAC = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'autoComplete%'");
+		$sqlShowAC = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'autoCompleteActive'");
 		if($sqlShowAC != 1) {
 			$tableUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (
 			autoCompleteActive BOOLEAN NOT NULL,
@@ -366,6 +366,8 @@ function WP_Advanced_Search_Pagination_CSS($bool) {
 function WP_Advanced_Search_AutoCompletion() {
 	$urlstyle = plugins_url('class.inc/autocompletion/jquery.autocomplete.css',__FILE__);
 	wp_enqueue_style('autocomplete', $urlstyle, false, '1.0');
+	$urljquery = plugins_url('class.inc/autocompletion/jquery.js',__FILE__);
+	wp_enqueue_script('jquery2',$urljquery,false);	
 	$url = plugins_url('class.inc/autocompletion/jquery.autocomplete.js',__FILE__);
 	wp_enqueue_script('autocomplete', $url, array('jquery'), '1.0');
 }
