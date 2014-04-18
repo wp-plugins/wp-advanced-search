@@ -1,10 +1,11 @@
 <?php
 /*
-Class Name: SearchEnginePOO
+Class Name: SearchEnginePOO WordPress
 Creator: Mathieu Chartier
 Website: http://blog.internet-formation.fr/2013/09/moteur-de-recherche-php-objet-poo-complet-pagination-surlignage-fulltext/
-Version: 2.0
-Date: 2014-04-02
+Version: 2.1
+Note: PHP 5.5 compatible
+Date: 2014-04-17
 */
 ?>
 
@@ -16,33 +17,36 @@ Date: 2014-04-02
 /*-- N.B. : la fonction modifie la table en MyISAM (pour les FullText) ---*/
 /*------------------------------------------------------------------------*/
 class alterTableFullText {
-	public function __construct($nomBDD, $table, $colonnes) {
+	private $db; // Variable de connexion (mysqli en objet !)
+
+	public function __construct($bdd, $nomBDD, $table, $colonnes) {
+		$this->db = $bdd;
 		// Vérification du type de table SQL pour savoir si c'est en MyISAM
-		$engineSQL = mysql_query("SHOW TABLE STATUS FROM $nomBDD LIKE '".$table."'");
-		$engine = mysql_fetch_assoc($engineSQL);
+		$engineSQL = $this->db->get_results("SHOW TABLE STATUS FROM $nomBDD LIKE '".$table."'", ARRAY_A);
+		$engine = $engineSQL;
 		
 		// Modification de la table en MyISAM si nécessaire (compatibilité FULLTEXT)
 		if($engine["Engine"] != "MyISAM") {
-			$MyISAMConverter = mysql_query("ALTER TABLE $table ENGINE=MYISAM") or die();
-		}
-		
+			$MyISAMConverter = $this->db->query("ALTER TABLE $table ENGINE=MYISAM") or die("Erreur : ".$this->db->show_errors());
+		}	
 		// Création des index FULLTEXT dans les colonnes s'ils n'existent pas déjà...
 		if (is_array($colonnes)) {
 			foreach($colonnes as $colonne) {
-				$ifFullTextExists = mysql_query("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'");
-				$fullTextExists = mysql_fetch_assoc($ifFullTextExists);
+				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
+				$fullTextExists = $ifFullTextExists;
 				if($fullTextExists['Index_type'] != 'FULLTEXT') {
-					$alterTableFullText = mysql_query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die();
+					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
 				}
 			}
 		} else {
+
 			$colonnes = str_ireplace(' ', '', $colonnes);
 			$SQLFields = explode(',',$colonnes);
 			foreach($SQLFields as $colonne) {
-				$ifFullTextExists = mysql_query("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'");
-				$fullTextExists = mysql_fetch_assoc($ifFullTextExists);
+				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
+				$fullTextExists = $ifFullTextExists;
 				if($fullTextExists['Index_type'] != 'FULLTEXT') {
-					$alterTableFullText = mysql_query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die();
+					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
 				}
 			}
 		}
@@ -58,6 +62,7 @@ class alterTableFullText {
 //-- N.B. : ajouter si besoin $moteur->moteurPagination(args) -> si $_GET --*/
 /*--------------------------------------------------------------------------*/
 class moteurRecherche {
+	private $db;				// Variable de connexion (mysqli en objet !)
 	private $tableBDD;			// Nom de la table de la base de données
 	private $encode;			// Type d'encodage ("utf-8" ou "iso-8859-1" notamment)
 	private $searchType;		// Type de recherche ("like", "regexp" ou "fulltext")
@@ -92,7 +97,8 @@ class moteurRecherche {
 	/*-- 7. $exact (true/false) pour une recherche exacte ou d'un ou plusieurs des mots --*/
 	/*-- 8. $accent (true/false) faire des recherches sans accent si la BDD le permet ----*/
 	/*------------------------------------------------------------------------------------*/
-	public function __construct($champ = '', $table = '', $typeRecherche = 'regexp', $stopWords = array(), $exclusion = '', $encoding = 'utf-8', $exact = true, $accent = false) {
+	public function __construct($bdd = '', $champ = '', $table = '', $typeRecherche = 'regexp', $stopWords = array(), $exclusion = '', $encoding = 'utf-8', $exact = true, $accent = false) {
+		$this->db			= $bdd;
 		$this->requete		= $champ;
 		$this->tableBDD		= $table;
 		$this->encode		= strtolower($encoding);
@@ -162,7 +168,7 @@ class moteurRecherche {
 					$recherche[] = str_ireplace($withaccent, $withnoaccent, htmlspecialchars(trim(strip_tags($expression))));
 				}
 			}
-			$this->algoRequest = $recherche; // Tableau contenant les mots et expression de la requête (doublon utile !)
+			$this->algoRequest = $recherche; // Tableau contenant les mots et expression de la requête (doublon utile !)			
 			$this->request = $recherche; // Tableau contenant les mots et expression de la requête de l'utilisateur
 			$this->countWords = count($recherche,1); // nombre de mots contenus dans la requête
 		} else {
@@ -224,7 +230,7 @@ class moteurRecherche {
 					// Ajoute un échappement devant les apostrophes qui traînent...
 					$this->request[$val] = str_ireplace(array("'"),array("\'"),$this->request[$val]);
 					
-					// Ajout chaque mot ou expression dans un tableau
+					// Ajoute chaque mot ou expression dans un tableau
 					$valueModif[] = $this->request[$val];
 					
 					// Variable utilisée en cas de surlignage des mots...
@@ -233,7 +239,7 @@ class moteurRecherche {
 				
 				if($this->exactmatch == true) {
 					$this->request[$val] = implode(' +', $valueModif);
-					return " AGAINST(CONVERT(_".$encode." '+".$this->request[$val]."' USING ".$encode.") IN BOOLEAN MODE) ";
+					return " AGAINST(CONVERT(_".$encode." '+".$this->request[$val].")' USING ".$encode.") IN BOOLEAN MODE) ";
 				} else {
 					$this->request[$val] = implode(' ', $valueModif);
 					return " AGAINST(CONVERT(_".$encode." '".$this->request[$val]."' USING ".$encode.") IN BOOLEAN MODE) ";
@@ -335,6 +341,7 @@ class moteurRecherche {
 					$query .= ") ";
 				}
 			}
+			
 		} else { // si recherche en "fulltext"
 			$colonnesStrSQL = implode(', ',$colonnesWhere);
 			$query = " MATCH (".$colonnesStrSQL.")".$this->requestKey(0);
@@ -356,15 +363,14 @@ class moteurRecherche {
 	/*-- N.B. : la fonction ajoute la colonne de classement si elle n'existe pas ! ----*/
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
 	/*---------------------------------------------------------------------------------*/
-	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(true, "post_date", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '', $conditionsPlus = '') {
-
+	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(false, "id", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '', $conditionsPlus = '') {
 		// Ajout d'une conditions spécifique à WordPress
 		if(empty($conditionsPlus)) {
 			$conditions = "WHERE";	
 		} else {
 			$conditions = $conditionsPlus;
 		}
-
+		
 		// Récupération des colonnes de sélections
 		if(empty($colonnesSelect)) {
 			$selectColumn = "*";
@@ -379,7 +385,7 @@ class moteurRecherche {
 			self::$limitArg = $limit[1];
 			self::$limit	= $limit[2];
 			
-			if(!isset($_GET['page'])) {
+			if(!isset($limit[1])) {
 				$limitDeb = 0;
 			} else
 			if($limit[1] == 0) {
@@ -395,15 +401,16 @@ class moteurRecherche {
 		// Algorithme de pertinence (plus il y a de mots dans le résultat, plus c'est haut)
 		if($algo[0] == true) {
 			// Ajout une colonne dans la base de données pour recueillir les valeurs de l'algorithme
-			$ifColumnExist = mysql_query("SHOW COLUMNS FROM $this->tableBDD LIKE '".$algo[1]."'");
-			$columnExist = mysql_fetch_row($ifColumnExist);
+			$ifColumnExist = $this->db->get_row("SHOW COLUMNS FROM $this->tableBDD LIKE '".$algo[1]."'", ARRAY_N);
+			$columnExist = $ifColumnExist;
 			if($columnExist[0] != $algo[1]) {
-				$addColumn = mysql_query("ALTER TABLE $this->tableBDD ADD ".$algo[1]." DECIMAL(10,3)");
+				$addColumn = $this->db->query("ALTER TABLE $this->tableBDD ADD ".$algo[1]." DECIMAL(10,3)");
 			}
 			
 			$colonnesStrSQL = implode(', ',$this->colonnesWhere);
-			$requeteType = mysql_query("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD WHERE $this->condition") or die("Erreur : ".mysql_error());
-			while($ligne =  mysql_fetch_row($requeteType)) {
+			$requeteType = $this->db->get_results("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD WHERE $this->condition", ARRAY_N) or die("Erreur : ".$this->db->print_error());
+
+			foreach($requeteType as $ligne) {
 				$count = 0;
 				for($p=1; $p < count($this->colonnesWhere)+1; $p++) {
 					foreach($this->algoRequest as $mots) {
@@ -411,10 +418,9 @@ class moteurRecherche {
 					}
 				}
 				// Met à jour la colonne de l'algorithme avec les nouvelles valeurs
-				$requeteAdd = mysql_query("UPDATE $this->tableBDD SET $algo[1] = '$count' WHERE $this->condition AND $algo[3] = '$ligne[0]'");
+				$requeteAdd = $this->db->query("UPDATE $this->tableBDD SET $algo[1] = '$count' WHERE $this->condition AND $algo[3] = '$ligne[0]'");
 			}
 		}
-
 
 		// Affiche au choix la fin de requête personnalisée ou les classements classiques
 		if($algo[0] == true && $ordre[0] != true) {			
@@ -435,44 +441,39 @@ class moteurRecherche {
 		/*------------------------ Requête SQL totale -----------------------*/
 		/*-------------------------------------------------------------------*/
 		if(empty($orderLimitPerso)) {
-			$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $this->orderBy $this->limitMinMax")
-			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+			$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête finale, vérifiez bien votre paramétrage complet !</div>");
 			// Pour calculer le nombre total de résultats justes
-			$this->nbResults = mysql_query("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition")
-			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
-			$compte = mysql_query("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition")
-			or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
-
+			$this->nbResults = $this->db->get_results("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition", ARRAY_N) or die("<div>Erreur dans le comptage des résultats (problème de requête) !</div>");
+			$compte = $this->db->get_var("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition") or die("<div>Erreur dans le comptage des résultats (problème de requête) !</div>");
 		} else {
 			if($limit[0] == true && $ordre[0] == true) {
-				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax")
-				//$this->requeteTotale = mysql_query("SELECT $selectColumn FROM $this->tableBDD WHERE $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax")
-				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			} else if($limit[0] == true && $ordre[0] == false) {
-				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->limitMinMax")
-				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			} else {
-				$this->requeteTotale = mysql_query("SELECT DISTINCT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso")
-				or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			}
 			// Pour calculer le nombre total de résultats justes
-			$this->nbResults = mysql_query("SELECT DISTINCT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
-			$compte = mysql_query("SELECT DISTINCT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
+			$this->nbResults = $this->db->get_results("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_N);
+			$compte = $this->db->get_var("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
 		}
-		
+
+		$this->nbResults = $this->nbResults[0][0];
+
 		// Récupération du nombre de résultats
-		$compteTotal = mysql_fetch_row($compte);
-		self::$nbResultsChiffre = $compteTotal[0];
+		$compteTotal = $compte;
+		self::$nbResultsChiffre = $compteTotal;
 
 		// Affiche le résultat de la fonction de rappel Callback
 		if(!empty($callback)) {
 			// Enregistre le nombre de résultats totalisés par la requête totale
-			$nbResultats = mysql_fetch_row($this->nbResults);
+			$nbResultats = $this->nbResults;
+
 			// Appel à la fonction de rappel avec quatre paramètres oblibatoires !!!
 			// 1. une variable au choix pour récupérer l'ensemble de la requête (tableau)
 			// 2. une variable au choix pour le nombre de résultats retournés par la requête totale
 			// 3. une variable au choix pour l'ensemble des mots et expressions de la requête
-			call_user_func_array($callback, array(&$this->requeteTotale, &$nbResultats[0], &$this->motsExpressions));
+			call_user_func_array($callback, array(&$this->requeteTotale, &$nbResultats, &$this->motsExpressions));
 		} else {
 			echo "<p>Attention ! Aucune fonction de rappel appelée pour afficher les résultats</p>";	
 		}
@@ -480,8 +481,9 @@ class moteurRecherche {
 
 	/*----------------------------------------------------------------------------------------------------*/
 	/*--------------------------------------- Fonction de pagination -------------------------------------*/
-	/*-------- 7 arguments possibles... ------------------------------------------------------------------*/
-	/*-- 1. $param est le nom du paramètre GET de la page ('page' par défaut)-----------------------------*/
+	/*-------- 8 arguments possibles (2 obligatoires) ----------------------------------------------------*/
+	/*-- 1. $instruction est le $_GET['page'] ou $_POST['page] -------------------------------------------*/
+	/*-- 1. $param est le nom du paramètre GET ou POST de la page ('page' par défaut) --------------------*/
 	/*-- 2. $NbVisible correspond au nombre de pages affichées autour de la page courante ----------------*/
 	/*-- 3. $debutFin pour afficher des liens (premières et dernières pages) => 0 pour vide --------------*/
 	/*-- 4. $suivPrec (true/false) pour afficher ou non "page suivante" et "page précédente" -------------*/
@@ -492,11 +494,11 @@ class moteurRecherche {
 	/*-- => (pointSuspension, sepPremiereDernierePage, $sepNumPage, sepSuivPrec, sepDebutFin) ------------*/
 	/*-- Source du code : http://seebz.net/archive/34-pagination-2-comme-avant-en-mieux.html -------------*/
 	/*----------------------------------------------------------------------------------------------------*/
-	public function moteurPagination($param = "", $NbVisible = 2, $debutFin = 0, $suivPrec = true, $firstLast = true, $arrayAff = array('&laquo; Précédent', 'Suivant &raquo;', 'Première page', 'Dernière page', 'precsuiv', 'current', 'pagination', 'inactif'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' ')) {
+	public function moteurPagination($instruction = 0, $param = "page", $NbVisible = 2, $debutFin = 0, $suivPrec = true, $firstLast = true, $arrayAff = array('&laquo; Précédent', 'Suivant &raquo;', 'Première page', 'Dernière page', 'precsuiv', 'current', 'pagination', 'inactif'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' ')) {
 		
 		// Nombre total de pages à afficher (en fonction de LIMIT)
 		$nb_pages = ceil(self::$nbResultsChiffre / self::$limit);
-		
+
 		// Formatage de la requête (pour éviter les problèmes avec les guillemets)
 		$this->requete = htmlspecialchars($this->requete);
 		
@@ -511,9 +513,9 @@ class moteurRecherche {
 		} else {
 			$current_page = 1;
 		}
-	
+		
 		// Récupération des paramètres d'URL et formatage des liens (paramètre de la page à la fin)
-		if($_GET[$param] < $nb_pages+1 && is_numeric($_GET[$param]) || !isset($_GET[$param])) {
+		if(($instruction >= 0 && is_numeric($instruction) && $instruction < $nb_pages+1) || $instruction == 0) {
 			preg_match_all('#([^=])+([^?&\#])+#i', $_SERVER['QUERY_STRING'], $valueArgs);
 			$urlPage = $_SERVER['PHP_SELF'].'?';
 			foreach($valueArgs[0] as $arg) {
@@ -523,8 +525,8 @@ class moteurRecherche {
 			$urlPage .= "&".$param."=";
 			$urlPage = str_replace("?".$param."=".$parametreGetPost."&", "?", $urlPage);
 		} else {
-			$urlpropre = str_ireplace("?".$param."=".$_GET[$param],"",$_SERVER['REQUEST_URI']);
-			$urlpropre = str_ireplace("&".$param."=".$_GET[$param],"",$_SERVER['REQUEST_URI']);
+			$urlpropre = str_ireplace("?".$param."=".$instruction,"?".$param."=1",$_SERVER['REQUEST_URI']);
+			$urlpropre = str_ireplace("&".$param."=".$instruction,"&".$param."=1",$_SERVER['REQUEST_URI']);
 			header('location:'.$urlpropre);
 		}
 
@@ -611,7 +613,7 @@ class moteurRecherche {
 		$pagination .= "</div>"; // Fin du bloc de pagination
 		echo $pagination;
 	}
-	
+
 	function limit() {
 		return self::$limit;	
 	}
@@ -621,23 +623,23 @@ class moteurRecherche {
 	
 }
 
-/*--------------------------------------------------------*/
-/*------- Class Fille pour afficher les résultats --------*/
-/*-- 4 paramètres optionnels : ---------------------------*/
-/*-- 1. Tableau pour afficher "résultat" et "résultats" --*/
-/*-- 2. Fin de la phrase ("pour votre recherche") --------*/
-/*-- 3. Coordination pour le nb de résultats par page ----*/
-/*-- 4. Affichage différent s'il n'y a pas de LIMIT ------*/
-/*--------------------------------------------------------*/
+/*-------------------------------------------------------------------*/
+/*------------ Class Fille pour afficher les résultats --------------*/
+/*-- 4 paramètres optionnels :
+/*-- 1. "false" pour afficher le nombre de résultats par page
+/*-- 2. Tableau pour afficher "résultat" et "résultats"
+/*-- 3. Fin de la phrase ("pour votre recherche")
+/*-- 4. Coordination pour le nb de résultats par page
+/*-------------------------------------------------------------------*/
 class affichageResultats extends moteurRecherche {
-	public function nbResultats($wordsResults = array("résultat", "résultats"), $phrase = 'pour votre recherche', $coord = " à ", $illimite = false) {
+	public function nbResultats($illimite = false, $wordsResults = array("résultat", "résultats"), $phrase = 'pour votre recherche', $coord = " à ") {
 		if($illimite == true) {
 			if(parent::nbResults() < 2) {
 				$res = " ".$wordsResults[0];	
 			} else {
 				$res = " ".$wordsResults[1];
 			}
-			return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase."</div>";
+			return "<div class=\"searchNbResults\"><span class='numR'>".parent::nbResults()."</span>".$res." ".$phrase.".</div>";
 		} else {
 			if(parent::$limitArg == 0) {
 				$nbDebut = 1;
@@ -661,7 +663,7 @@ class affichageResultats extends moteurRecherche {
 			} else {
 				$res = " ".$wordsResults[1];
 			}
-			return "<div class=\"searchNbResults\">".parent::nbResults().$res." ".$phrase." (".$nbDebut.$coord.$nbFin.")</div>";
+			return "<div class=\"searchNbResults\"><span class='numR'>".parent::nbResults()."</span>".$res." ".$phrase." (".$nbDebut.$coord.$nbFin.").</div>";
 		}
 	}
 }
@@ -692,6 +694,7 @@ class surlignageMot {
 	/*----------------------------------------------------------------------------------*/
 	/*----------------------- Méthode de surlignage avec 5 arguments -------------------*/
 	/*------ $gras = new surlignageMot($mots, $texte, 'exact', true, "FULLTEXT"); ------*/
+
 	/*----------------------------------------------------------------------------------*/
 	public function __construct($mots, &$contenu, $typeSurlignage = "exact", $exact = true, $typeRecherche = "FULLTEXT") {
 		foreach($mots as $mot) {			
@@ -707,16 +710,22 @@ class surlignageMot {
 					$mot = str_ireplace(array('+', '*', '?', '/', "'", '"'),array('\+','\*','\?', '\/', '\'', ''),$mot);
 				}
 			}
-		
+
+			$withaccent = array('à','á','â','ã','ä','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ','À','Á','Â','Ã','Ä','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ñ','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý');
+			$withnoaccent = array('a','a','a','a','a','c','e','e','e','e','i','i','i','i','n','o','o','o','o','o','u','u','u','u','y','y','A','A','A','A','A','C','E','E','E','E','I','I','I','I','N','O','O','O','O','O','U','U','U','U','Y');
+			if(preg_match('#[\p{Xan}][^a-zA-Z]#iu', $mot)) {
+				$mot = str_ireplace($withaccent, $withnoaccent, htmlspecialchars(trim($mot)));
+			}
+
 			// Adapte le surlignage des mots selon les besoins (chaîne exacte, mot complet ou sans)
 			if($typeSurlignage == "exact" && (($exact == true && $typeRecherche != "LIKE") || ($exact == false && $typeRecherche == "FULLTEXT"))) {
-				$contenu = preg_replace('/([[:blank:]<>\(\[\{].?:?;?,?)('.$mot.')([\)\]\}.,;:[:blank:]<>])/i', '$1<b>$2</b>$3', $contenu);
+				$contenu = preg_replace('/([[:blank:]<>\(\[\{\'].?:?;?,?)('.$mot.')([\)\]\}.,;:!\?[:blank:]<>])/i', '$1<b>$2</b>$3', $contenu);
 			} else if($typeSurlignage == "exact" && (($exact == true && $typeRecherche == "LIKE") || ($exact == false) && $typeRecherche != "FULLTEXT")) {
 				$contenu = preg_replace('/('.$mot.'{1,'.strlen($mot).'})/i', '<b>$1</b>', $contenu);
 			} else if($typeSurlignage == "total" || $typeSurlignage == "complet") {
 				$contenu = preg_replace('/([[:blank:]<>])([^[:blank:]<>]*'.$mot.'[^[:blank:]<>]*)([[:blank:]])/i', '$1<b>$2</b>$3', $contenu);
 			}
-
+			
 			// Nettoyage des balises <hn> inféctées par la mise en gras
 			if(preg_match_all('/<[\/]?[hH]+<b>('.$mot.')<\/b>+/i', $contenu, $args)) {
 				foreach($args[0] as $arg) {
@@ -763,12 +772,14 @@ class surlignageMot {
 //-- -> 2. OPTIONNEL : longueur minimale des mots ajoutés dans l'index (plus de 2 lettres par défaut)
 /*----------------------------------------------------------------------------------------------------------------*/
 class autoCompletion {
+	private $db;
 	private $table;
 	private $column;
 	private $encode;
 	
-	public function __construct($urlDestination = "autocompletion.php", $selector = "#moteur", $tableName = "autosuggest", $colName = "words", $multiple = true, $limitDisplay = 5, $type = 0, $autoFocus = false, $create = true, $encode = "utf-8") {
+	public function __construct($bdd, $urlDestination = "autocompletion.php", $selector = "#moteur", $tableName = "autosuggest", $colName = "words", $multiple = true, $limitDisplay = 5, $type = 0, $autoFocus = false, $create = false, $encode = "utf-8") {
 		// Enregistrement des informations dans la class PHP objet
+		$this->db		= $bdd;
 		$this->table	= htmlspecialchars($tableName);
 		$this->column	= htmlspecialchars($colName);
 		$this->encode	= strtolower($encode);
@@ -778,7 +789,7 @@ class autoCompletion {
 						 idindex INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						 ".$this->column." VARCHAR(250) NOT NULL)
 						 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
-			mysql_query($createSQL) or die("Erreur : ".mysql_error());
+			$this->db->query($createSQL) or die("Erreur : ".$this->db->show_errors());
 		}
 		
 		// Gère l'autofocus et la sélection automatique du premier résultat
@@ -789,10 +800,10 @@ class autoCompletion {
 		}
 
 		// Génération du script Ajax jQuery d'autocomplétion (il faut préalablement avoir ajouté les fichiers associés !)
-		// N'oubliez pas les fichiers suivants pour que le système fonctionne : autocompletion.php, jquery.autocomplete.js, jquery.js (ou autre nom), le CSS		
+		// N'oubliez pas les fichiers suivants pour que le système fonctionne : autocompletion.php, jquery.autocomplete.js, jquery.js (ou autre nom), le CSS
 		$scriptAutoCompletion = "\n".'<script type="text/javascript">'."\n";
-		$scriptAutoCompletion.= '$(document).ready(function() {'."\n";
-		$scriptAutoCompletion.= "$('".$selector."').autocomplete('".$urlDestination."?t=".$tableName."&f=".$colName."&l=".$limitDisplay."&type=".$type."&e=".$encode."', { selectFirst:".$autoFocus.", max:".$limitDisplay.", multiple:".$multiple.", multipleSeparator:' ', delay:100, noRecord:'' })"."\n";
+		$scriptAutoCompletion.= 'jQuery(document).ready(function() {'."\n";
+		$scriptAutoCompletion.= "jQuery('".$selector."').autocomplete('".$urlDestination."?t=".$tableName."&f=".$colName."&l=".$limitDisplay."&type=".$type."&e=".$encode."', { selectFirst:".$autoFocus.", max:".$limitDisplay.", multiple:".$multiple.", multipleSeparator:' ', delay:100, noRecord:'' })"."\n";
 		$scriptAutoCompletion.=	"})"."\n";
 		$scriptAutoCompletion.=	'</script>'."\n";
 		echo $scriptAutoCompletion;
@@ -821,13 +832,13 @@ class autoCompletion {
 		if(preg_match_all('/["]{1}([^"]+[^"]+)+["]{1}/i', $field, $entreGuillemets)) {
 			// Ajoute toutes les expressions entre guillemets dans un tableau
 			foreach($entreGuillemets[1] as $expression) {
-				$results[] = mysql_real_escape_string($expression);
+				$results[] = esc_sql($expression);
 			}
 			// Récupère les mots qui ne sont pas entre guillemets dans un tableau
 			$sansExpressions = str_ireplace($entreGuillemets[0],"",$field);
 			$motsSepares = explode(" ",$sansExpressions);		
 		} else {
-			$motsSepares = explode(" ",mysql_real_escape_string($field));
+			$motsSepares = explode(" ", esc_sql($field));
 		}
 		// Supprimer les clés vides du tableau (à cause des espaces de trop et strip_tags)
 		foreach($motsSepares as $key => $value) {
@@ -862,17 +873,18 @@ class autoCompletion {
 			}
 
 			// Récupération des mots dans l'index inversé
-			$selectWords = mysql_query("SELECT ".$column." FROM ".$table."") or die("Erreur : ".mysql_error());
+			$selectWords = $this->db->get_results("SELECT ".$column." FROM ".$table, ARRAY_A) or die("Erreur : ".$this->db->show_errors());
 			$selected = array();
-			while($w = mysql_fetch_assoc($selectWords)) {
-				$selected[] = htmlspecialchars(trim($w[$column]));
+			
+			foreach($selectWords as $w) {
+				$selected[] = $w[$column];
 			}
 
 			foreach($recherche as $word) {
 				if(strlen($word) > $minLength) {						
-					if(!in_array(stripslashes($word), $selected)) {
+					if(!in_array($word, $selected)) {
 						$addWordsSQL = "INSERT INTO ".$this->table." SET ".$this->column." = '".$word."'";
-						mysql_query($addWordsSQL) or die("Erreur : ".mysql_error());
+						$this->db->query($addWordsSQL) or die("Erreur : ".$this->db->show_errors());
 					}
 				}
 			}

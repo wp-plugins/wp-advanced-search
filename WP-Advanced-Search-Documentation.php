@@ -164,13 +164,9 @@ function WP_Advanced_Search_FullText_Doc() {
 	$tableSearch = $select->tables;
 
 	// Inclusion des class du moteur de recherche
-	if(phpversion() < 5) {
-		include('class.inc/moteur-php4.class-inc.php');
-	} else {
-		include('class.inc/moteur-php5.class-inc.php');
-	}
+	include('class.inc/moteur-php5.5.class-inc.php');
 
-	$alterTable = new alterTableFullText($databaseSearch, $tableSearch, $columnSelectSearch);
-	echo '<script type="text/javascript">alert("'.__('Index FULLTEXT créés avec succès !\nVous pouvez utiliser le type FULLTEXT dorénavant...','wp-advanced-search').'");</script>';
+	$alterTable = new alterTableFullText($wpdb, $databaseSearch, $tableSearch, $columnSelectSearch);
+	echo '<script type="application/javascript">alert("'.__('Index FULLTEXT créés avec succès !\nVous pouvez utiliser le type FULLTEXT dorénavant...','wp-advanced-search').'");</script>';
 }
 ?>

@@ -4,7 +4,7 @@
 /*--------------------------------------------*/
 // Ajout conditionné du système d'autocomplétion
 function addAutoCompletion() {
-	global $wpdb, $table_WP_Advanced_Search;
+	global $wpdb, $table_WP_Advanced_Search, $link;
 	
 	// Sélection des données dans la base de données		
 	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
@@ -23,8 +23,8 @@ function addAutoCompletion() {
 	
 	// Lancement de la fonction d'autocomplétion si activé...
 	if($select->autoCompleteActive == 1) {
-		include_once('class.inc/moteur-php5.class-inc.php');
-		$autocompletion = new autoCompletion(plugins_url("autocompletion/autocompletion.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
+		include_once('class.inc/moteur-php5.5.class-inc.php');
+		$autocompletion = new autoCompletion($wpdb, plugins_url("class.inc/autocompletion/autocompletion-PHP5.5.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
 	}
 }
 add_action('wp_footer', 'addAutoCompletion');
@@ -33,10 +33,7 @@ add_action('wp_footer', 'addAutoCompletion');
 /*------------ Fonction du moteur ------------*/
 /*--------------------------------------------*/
 function WP_Advanced_Search() {
-	global $wpdb, $table_WP_Advanced_Search;
-	global $moteur;
-	global $select;
-	global $wp_rewrite;
+	global $wpdb, $table_WP_Advanced_Search, $moteur, $select, $wp_rewrite;
 
 	// Sélection des données dans la base de données		
 	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
@@ -65,11 +62,12 @@ function WP_Advanced_Search() {
 	$lastpage = $select->paginationLastPage;
 	$prevtext = $select->paginationPrevText;
 	$nexttext = $select->paginationNextText;
-
+	
 	// Inclusion des class du moteur de recherche
-	include_once('class.inc/moteur-php5.class-inc.php');
+	include_once('class.inc/moteur-php5.5.class-inc.php');
+
 	if($select->autoCompleteActive == 1) {
-		$autocompletion = new autoCompletion(plugins_url("autocompletion/autocompletion.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
+		$autocompletion = new autoCompletion($wpdb, plugins_url("class.inc/autocompletion/autocompletion-PHP5.5.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
 
 		// Lancement de la fonction de remplissage automatique de l'index inversé (si activé)
 		if($select->autoCompleteGenerate == true) {
@@ -101,9 +99,10 @@ function WP_Advanced_Search() {
 	WP_Advanced_Search_Pagination_CSS($select->paginationStyle);
 
 	// Lancement du moteur de recherche
-	$moteur = new moteurRecherche(stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
+	$linkDB = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+	$moteur = new moteurRecherche($wpdb, stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
 	$moteur->moteurRequetes($colonnesWhere);
-	
+
 	// Affichage des résultats si le moteur est en marche !
 	if(isset($moteur)) {
 		function affichage($query, $nbResults, $words) {
@@ -126,13 +125,13 @@ function WP_Advanced_Search() {
 				if($select->nbResultsOK == true) {
 					$affichageResultats = new affichageResultats();
 					if($select->NumberPerPage == 0) {
-						$output .= $affichageResultats->nbResultats(array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'), true);
+						$output .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
 					} else {
-						$output .= $affichageResultats->nbResultats(array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						$output .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
 					}
 				}
 
-				while($key = mysql_fetch_assoc($query)) { // On lance la boucle d'affichage des résultats
+				foreach($query as $key) { // On lance la boucle d'affichage des résultats (version WordPress)
 					// Récupération du numéro du résultat
 					$nb++;
 					
@@ -385,13 +384,6 @@ function WP_Advanced_Search() {
 						$output .= '<div class="WPBlockContent">'."\n";
 						
 						$output .= get_the_post_thumbnail($key['ID'],'thumbnail');
-						/*
-						$ImageOK = $wpdb->get_results("SELECT * FROM ".$tableCible." AS p INNER JOIN ".$tableMeta." AS m1 ON (m1.post_id = '".$key['ID']."' AND m1.meta_value = p.ID AND m1.meta_key = '_thumbnail_id' AND p.post_type = 'attachment')");
-						foreach($ImageOK as $img) {
-							$imageThumb = '<img src="'.$img->guid.'" alt="'.$img->post_title.'" />'."\n"; // Image à la Une
-							$output .= $imageThumb;
-						}
-						*/
 						
 						if($select->ArticleOK == "excerpt") {
 							$output .= '<div class="WPtextSearch">'."\n";
@@ -476,15 +468,15 @@ function WP_Advanced_Search() {
 		
 		// Lancement de la fonction d'affichage	
 		if($select->NumberPerPage == 0) {
-			$moteur->moteurAffichage('affichage', '', array(false, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(false, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		} else {
-			$moteur->moteurAffichage('affichage', '', array(true, $_GET['page'], $select->NumberPerPage), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 			$paginationValide = true;
 		}
 		
 		// Lancement de la fonction de pagination si elle est activée...
 		if($select->paginationActive == true && $paginationValide == true) {
-			$moteur->moteurPagination('page', 2, 0, $prevnext, $firstlast, $arrayAff = array($prevtext, $nexttext, $firstpage, $lastpage, 'precsuiv', 'pagination-current', 'pagination-block', 'pagination-disabled'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' '));
+			$moteur->moteurPagination(htmlspecialchars($_GET['page']), 'page', 2, 0, $prevnext, $firstlast, $arrayAff = array($prevtext, $nexttext, $firstpage, $lastpage, 'precsuiv', 'pagination-current', 'pagination-block', 'pagination-disabled'), $arraySeparateur = array('&hellip;', ' ', ' ', ' ', ' '));
 		}
 	}
 }

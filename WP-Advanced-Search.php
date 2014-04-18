@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
 Author: Mathieu Chartier
-Version: 2.1
+Version: 2.2
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "2.1";
+$WP_Advanced_Search_Version = "2.2";
 
 function WP_Advanced_Search_Lang() {
 	load_plugin_textdomain('wp-advanced-search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
@@ -199,45 +199,48 @@ function WP_Advanced_Search_install_update() {
 			$chp = wp_parse_args($instance, $defautUpgrade);
 			$defaultUpgrade = $wpdb->update($table_WP_Advanced_Search, array('categories' => $chp['categories']), array('id' => 1));
 		}
-
-		$tableUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (
-		autoCompleteActive BOOLEAN NOT NULL,
-		autoCompleteSelector VARCHAR(50) NOT NULL,
-		autoCompleteAutofocus BOOLEAN NOT NULL,
-		autoCompleteType TINYINT,
-		autoCompleteNumber TINYINT,
-		autoCompleteTypeSuggest BOOLEAN NOT NULL,
-		autoCompleteCreate BOOLEAN NOT NULL,
-		autoCompleteTable VARCHAR(50) NOT NULL,
-		autoCompleteColumn VARCHAR(50) NOT NULL,
-		autoCompleteGenerate BOOLEAN NOT NULL,
-		autoCompleteSizeMin TINYINT
-		)");
-		$defauts = array(
-			"autoCompleteActive" => true,
-			"autoCompleteSelector" => ".search-field",
-			"autoCompleteAutofocus" => false,
-			"autoCompleteType" => 0,
-			"autoCompleteNumber" => 5,
-			"autoCompleteTypeSuggest" => true,
-			"autoCompleteCreate" => false,
-			"autoCompleteTable" => $wpdb->prefix."autosuggest",
-			"autoCompleteColumn" => "words",
-			"autoCompleteGenerate" => true,
-			"autoCompleteSizeMin" => 2
-		);
-		$fld = wp_parse_args($instance, $defauts);
-		$autoCompleteUpgrade = $wpdb->update($table_WP_Advanced_Search, array('autoCompleteActive' => $fld['autoCompleteActive'], 'autoCompleteSelector' => $fld['autoCompleteSelector'], 'autoCompleteAutofocus' => $fld['autoCompleteAutofocus'], 'autoCompleteType' => $fld['autoCompleteType'], 'autoCompleteNumber' => $fld['autoCompleteNumber'], 'autoCompleteTypeSuggest' => $fld['autoCompleteTypeSuggest'], 'autoCompleteCreate' => $fld['autoCompleteCreate'], 'autoCompleteTable' => $fld['autoCompleteTable'], 'autoCompleteColumn' => $fld['autoCompleteColumn'], 'autoCompleteGenerate' => $fld['autoCompleteGenerate'], 'autoCompleteSizeMin' => $fld['autoCompleteSizeMin']), array('id' => 1));
 		
-		// Création de l'index inversé par défaut (pour l'autocomplétion)
-		$wpdb->query("CREATE TABLE IF NOT EXISTS ".$fld['autoCompleteTable']." (
-					 idindex INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-					 ".$fld['autoCompleteColumn']." VARCHAR(250) NOT NULL)
-					 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci"
-		);
+		$sqlShowAC = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'autoComplete%'");
+		if($sqlShowAC != 1) {
+			$tableUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (
+			autoCompleteActive BOOLEAN NOT NULL,
+			autoCompleteSelector VARCHAR(50) NOT NULL,
+			autoCompleteAutofocus BOOLEAN NOT NULL,
+			autoCompleteType TINYINT,
+			autoCompleteNumber TINYINT,
+			autoCompleteTypeSuggest BOOLEAN NOT NULL,
+			autoCompleteCreate BOOLEAN NOT NULL,
+			autoCompleteTable VARCHAR(50) NOT NULL,
+			autoCompleteColumn VARCHAR(50) NOT NULL,
+			autoCompleteGenerate BOOLEAN NOT NULL,
+			autoCompleteSizeMin TINYINT
+			)");
+			$defauts = array(
+				"autoCompleteActive" => true,
+				"autoCompleteSelector" => ".search-field",
+				"autoCompleteAutofocus" => false,
+				"autoCompleteType" => 0,
+				"autoCompleteNumber" => 5,
+				"autoCompleteTypeSuggest" => true,
+				"autoCompleteCreate" => false,
+				"autoCompleteTable" => $wpdb->prefix."autosuggest",
+				"autoCompleteColumn" => "words",
+				"autoCompleteGenerate" => true,
+				"autoCompleteSizeMin" => 2
+			);
+			$fld = wp_parse_args($instance, $defauts);
+			$autoCompleteUpgrade = $wpdb->update($table_WP_Advanced_Search, array('autoCompleteActive' => $fld['autoCompleteActive'], 'autoCompleteSelector' => $fld['autoCompleteSelector'], 'autoCompleteAutofocus' => $fld['autoCompleteAutofocus'], 'autoCompleteType' => $fld['autoCompleteType'], 'autoCompleteNumber' => $fld['autoCompleteNumber'], 'autoCompleteTypeSuggest' => $fld['autoCompleteTypeSuggest'], 'autoCompleteCreate' => $fld['autoCompleteCreate'], 'autoCompleteTable' => $fld['autoCompleteTable'], 'autoCompleteColumn' => $fld['autoCompleteColumn'], 'autoCompleteGenerate' => $fld['autoCompleteGenerate'], 'autoCompleteSizeMin' => $fld['autoCompleteSizeMin']), array('id' => 1));
+			
+			// Création de l'index inversé par défaut (pour l'autocomplétion)
+			$wpdb->query("CREATE TABLE IF NOT EXISTS ".$fld['autoCompleteTable']." (
+						 idindex INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						 ".$fld['autoCompleteColumn']." VARCHAR(250) NOT NULL)
+						 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci"
+			);
 
-		// Mise à jour de la version
-		update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
+			// Mise à jour de la version
+			update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
+		}
 	}
 }
 
@@ -361,13 +364,10 @@ function WP_Advanced_Search_Pagination_CSS($bool) {
 
 // Ajout conditionné du fichier d'autocomplétion
 function WP_Advanced_Search_AutoCompletion() {
-	$urlstyle = plugins_url('autocompletion/jquery.autocomplete.css',__FILE__);
-	wp_register_style('autocomplete', $urlstyle);
-	wp_enqueue_style('autocomplete');
-	$urljquery = plugins_url('autocompletion/jquery.js',__FILE__);
-	wp_enqueue_script('jquery2',$urljquery,false);	
-	$url = plugins_url('autocompletion/jquery.autocomplete.js',__FILE__);
-	wp_enqueue_script('autocomplete',$url,false);
+	$urlstyle = plugins_url('class.inc/autocompletion/jquery.autocomplete.css',__FILE__);
+	wp_enqueue_style('autocomplete', $urlstyle, false, '1.0');
+	$url = plugins_url('class.inc/autocompletion/jquery.autocomplete.js',__FILE__);
+	wp_enqueue_script('autocomplete', $url, array('jquery'), '1.0');
 }
 add_action('wp_enqueue_scripts', 'WP_Advanced_Search_AutoCompletion');
 
