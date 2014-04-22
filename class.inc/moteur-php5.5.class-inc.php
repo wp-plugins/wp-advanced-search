@@ -3,7 +3,7 @@
 Class Name: SearchEnginePOO WordPress
 Creator: Mathieu Chartier
 Website: http://blog.internet-formation.fr/2013/09/moteur-de-recherche-php-objet-poo-complet-pagination-surlignage-fulltext/
-Version: 2.1
+Version: 2.1.1
 Note: PHP 5.5 compatible
 Date: 2014-04-17
 */
@@ -67,6 +67,7 @@ class moteurRecherche {
 	private $encode;			// Type d'encodage ("utf-8" ou "iso-8859-1" notamment)
 	private $searchType;		// Type de recherche ("like", "regexp" ou "fulltext")
 	private $exactmatch;		// Méthode de recherche (précise ou approchante --> true ou false)
+	private $exclusion;			// Taille minimale des mots exclus
 	private $colonnesWhere;		// Tableau contenant les colonnes dans lesquelles la recherche est effectuée
 	private $algoRequest;		// Tableau contenant chaque mot ou expression clé (après découpage)
 	private $request;			// Tableau contenant chaque mot ou expression clé (après découpage)
@@ -104,6 +105,7 @@ class moteurRecherche {
 		$this->encode		= strtolower($encoding);
 		$this->searchType	= $typeRecherche;
 		$this->exactmatch	= $exact;
+		$this->exclusion	= $exclusion;
 
 		// Suppression des balises HTML (sécurité)
 		if($this->encode == 'latin1' || $this->encode == 'Latin1' || $this->encode == 'latin-1' || $this->encode == 'Latin-1') {
@@ -363,7 +365,7 @@ class moteurRecherche {
 	/*-- N.B. : la fonction ajoute la colonne de classement si elle n'existe pas ! ----*/
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
 	/*---------------------------------------------------------------------------------*/
-	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(false, "id", "DESC"), $algo = array(false,'algo','DESC','id'), $orderLimitPerso = '', $conditionsPlus = '') {
+	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(false, "id", "DESC"), $algo = array(false,'algo','DESC','ID'), $orderLimitPerso = '', $conditionsPlus = '') {
 		// Ajout d'une conditions spécifique à WordPress
 		if(empty($conditionsPlus)) {
 			$conditions = "WHERE";	
@@ -399,7 +401,8 @@ class moteurRecherche {
 		}
 		
 		// Algorithme de pertinence (plus il y a de mots dans le résultat, plus c'est haut)
-		if($algo[0] == true) {
+		$numberWP = $this->db->get_row("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_N);
+		if($algo[0] == true && $numberWP[0] != 0) {
 			// Ajout une colonne dans la base de données pour recueillir les valeurs de l'algorithme
 			$ifColumnExist = $this->db->get_row("SHOW COLUMNS FROM $this->tableBDD LIKE '".$algo[1]."'", ARRAY_N);
 			$columnExist = $ifColumnExist;
@@ -408,7 +411,7 @@ class moteurRecherche {
 			}
 			
 			$colonnesStrSQL = implode(', ',$this->colonnesWhere);
-			$requeteType = $this->db->get_results("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD WHERE $this->condition", ARRAY_N) or die("Erreur : ".$this->db->print_error());
+			$requeteType = $this->db->get_row("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso") or die("Erreur d'algorithme : ".$this->db->show_errors());
 
 			foreach($requeteType as $ligne) {
 				$count = 0;
@@ -418,7 +421,7 @@ class moteurRecherche {
 					}
 				}
 				// Met à jour la colonne de l'algorithme avec les nouvelles valeurs
-				$requeteAdd = $this->db->query("UPDATE $this->tableBDD SET $algo[1] = '$count' WHERE $this->condition AND $algo[3] = '$ligne[0]'");
+				$requeteAdd = $this->db->query("UPDATE $this->tableBDD SET $algo[1] = '$count' ".$conditions." $this->condition AND $algo[3] = '$ligne[0]'");
 			}
 		}
 
@@ -440,12 +443,12 @@ class moteurRecherche {
 		/*-------------------------------------------------------------------*/
 		/*------------------------ Requête SQL totale -----------------------*/
 		/*-------------------------------------------------------------------*/
-		if(empty($orderLimitPerso)) {
+		if(empty($orderLimitPerso) && $numberWP[0] != 0) {
 			$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête finale, vérifiez bien votre paramétrage complet !</div>");
 			// Pour calculer le nombre total de résultats justes
 			$this->nbResults = $this->db->get_results("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition", ARRAY_N) or die("<div>Erreur dans le comptage des résultats (problème de requête) !</div>");
 			$compte = $this->db->get_var("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition") or die("<div>Erreur dans le comptage des résultats (problème de requête) !</div>");
-		} else {
+		} else if(!empty($orderLimitPerso) && $numberWP[0] != 0) {
 			if($limit[0] == true && $ordre[0] == true) {
 				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			} else if($limit[0] == true && $ordre[0] == false) {

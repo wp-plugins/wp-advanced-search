@@ -39,7 +39,7 @@ if(isset($_GET['q']) && !empty($_GET['q'])) {
 	// Retourne les résultats avec le système d'autocomplétion
     while($donnees = mysqli_fetch_assoc($results)) {
         if($encode == "utf-8" || $encode == "utf8" || $encode == "UTF-8" || $encode == "UTF8") {
-			echo $donnees[$field]."\n";
+			echo utf8_encode($donnees[$field])."\n";
 		} else {
 			echo $donnees[$field]."\n";	
 		}
