@@ -1,35 +1,5 @@
 <?php
 /*--------------------------------------------*/
-/*--------- Fonction d'autocomplétion --------*/
-/*--------------------------------------------*/
-// Ajout conditionné du système d'autocomplétion
-function addAutoCompletion() {
-	global $wpdb, $table_WP_Advanced_Search, $link;
-	
-	// Sélection des données dans la base de données		
-	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
-	
-	// Instanciation des variables utiles
-	$selector		= $select->autoCompleteSelector;
-	$dbName			= $select->db;
-	$tableName		= $select->autoCompleteTable;
-	$tableColumn	= $select->autoCompleteColumn;
-	$limitDisplay	= $select->autoCompleteNumber;
-	$multiple		= $select->autoCompleteTypeSuggest;
-	$type			= $select->autoCompleteType;
-	$autoFocus		= $select->autoCompleteAutofocus;
-	$create			= false; // On laisse sur false car la table est créée par ailleurs
-	$encoding		= $select->encoding;
-	
-	// Lancement de la fonction d'autocomplétion si activé...
-	if($select->autoCompleteActive == 1) {
-		include_once('class.inc/moteur-php5.5.class-inc.php');
-		$autocompletion = new autoCompletion($wpdb, plugins_url("class.inc/autocompletion/autocompletion-PHP5.5.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
-	}
-}
-add_action('wp_footer', 'addAutoCompletion');
-
-/*--------------------------------------------*/
 /*------------ Fonction du moteur ------------*/
 /*--------------------------------------------*/
 function WP_Advanced_Search() {
@@ -66,6 +36,15 @@ function WP_Advanced_Search() {
 	// Inclusion des class du moteur de recherche
 	include_once('class.inc/moteur-php5.5.class-inc.php');
 
+	// Lancement de la fonction de scroll infini ou de trigger si active...
+	if($select->paginationType == "trigger") {
+		WP_Advanced_Search_Trigger();
+	}
+	if($select->paginationType == "infinite") {
+		WP_Advanced_Search_InfiniteScroll();
+	}
+	
+	// Lancement de la fonctionb d'autocomplétion si active...
 	if($select->autoCompleteActive == 1) {
 		$autocompletion = new autoCompletion($wpdb, plugins_url("class.inc/autocompletion/autocompletion-PHP5.5.php", __FILE__ ), $selector, $tableName, $tableColumn, $multiple, $limitDisplay, $type, $autoFocus, $create, $encoding);
 
@@ -74,11 +53,12 @@ function WP_Advanced_Search() {
 			$autocompletion->autoComplete(stripslashes($_GET[$nameSearch]), $select->autoCompleteSizeMin);
 		}
 	}
-
+	
+	// Récupération du nom des colonnes
 	if(empty($select->colonnesWhere)) {
 		$colonnesWhere = array('post_title', 'post_content', 'post_excerpt');
 	} else {
-		$colonnesWhere = explode(',',$select->colonnesWhere);
+		$colonnesWhere = explode(',',trim($select->colonnesWhere));
 	}
 	if($select->stopWords == true) {
 		// Récupération de la langue par défaut et des stopwords adaptés
@@ -99,7 +79,6 @@ function WP_Advanced_Search() {
 	WP_Advanced_Search_Pagination_CSS($select->paginationStyle);
 
 	// Lancement du moteur de recherche
-	$linkDB = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 	$moteur = new moteurRecherche($wpdb, stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
 	$moteur->moteurRequetes($colonnesWhere);
 
@@ -108,11 +87,11 @@ function WP_Advanced_Search() {
 		function affichage($query, $nbResults, $words) {
 			global $select, $wpdb, $moteur, $wp_rewrite;
 
-			$output = '<div class="WPAdvancedSearch">'."\n";
-			$output .= '<h3>'.__($select->ResultText,'wp-advanced-search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
+			$outputBeg = '<div class="WPAdvancedSearch">'."\n";
+			$outputBeg .= '<h3>'.__($select->ResultText,'wp-advanced-search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
 
 			if($nbResults == 0) {
-				$output .= "<div class=\"WPBlockSearch\">\n";	
+				$output = "<div class=\"WPBlockSearch\">\n";	
 				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'wp-advanced-search').'</p>'."\n";
 				$output .= "</div>\n";
 			} else {
@@ -124,10 +103,10 @@ function WP_Advanced_Search() {
 				// Afficher le nombre de résultats
 				if($select->nbResultsOK == true) {
 					$affichageResultats = new affichageResultats();
-					if($select->NumberPerPage == 0) {
-						$output .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+					if($select->NumberPerPage == 0 || $select->paginationType != 'classic') {
+						$outputBeg .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
 					} else {
-						$output .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						$outputBeg .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
 					}
 				}
 
@@ -155,22 +134,22 @@ function WP_Advanced_Search() {
 					$nbCategory = count($CategoryOK);
 					
 					// Bloc global
-					$output .= "<div class=\"WPBlockSearch\">\n";
+					$output .= "\n<div class=\"WPBlockSearch\" id=\"".$nb."\">\n";
 
 					// Affichage conditionné de la date et du titre
 					if($select->TitleOK == true && $select->NumberOK == true) {
-						$output .= '<p class="WPFirstSearch">'."\n";
-						$output .= '<span class="WPnumberSearch">'.$nb.'</span>'."\n";
-						$output .= '<span class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></span>'."\n";				
-						$output .= '</p>'."\n";
+						$output .= '<div class="WPFirstSearch">'."\n";
+						$output .= '<p class="WPnumberSearch">'.$nb.'</p>'."\n";
+						$output .= '<p class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></p>'."<p class='clearBlock'></p>\n";				
+						$output .= '</div>'."\n";
 					} else if($select->TitleOK == true && $select->NumberOK == false) {
-						$output .= '<p class="WPFirstSearch">'."\n";
-						$output .= '<span class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></span>'."\n";				
-						$output .= '</p>'."\n";
+						$output .= '<div class="WPFirstSearch">'."\n";
+						$output .= '<p class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></p>'."\n";				
+						$output .= '</div>'."\n";
 					} else if($select->TitleOK == false && $select->NumberOK == true) {
-						$output .= '<p class="WPFirstSearch">'."\n";
-						$output .= '<span class="WPnumberSearch">'.$nb.'</span>'."\n";	
-						$output .= '</p>'."\n";
+						$output .= '<div class="WPFirstSearch">'."\n";
+						$output .= '<p class="WPnumberSearch">'.$nb.'</p>'."\n";	
+						$output .= '</div>'."\n";
 					}
 
 					// Affichage d'un bloc pour date + auteur + categorie
@@ -435,8 +414,19 @@ function WP_Advanced_Search() {
 					$output = $strong->contenu;
 				}
 			}
-			$output .= "</div>\n";
-			echo $output;
+			$outputEnd = "</div>\n";
+			
+			// Ajoute le texte du trigger si l'option est active
+			if($select->paginationType == "trigger" && $select->paginationActive == true) {
+				$outputEnd .= '<div id="loadMore">'.$select->paginationText.'</div>';
+			}
+			// Ajoute le texte du trigger si l'option est active
+			if($select->paginationType == "infinite" && $select->paginationActive == true) {
+				$outputEnd .= '<div id="loadMoreIS"><img src="'.plugins_url("img/loadingGrey.gif", __FILE__ ).'" alt="" /></div>';
+			}
+			
+			// Retourne les résultats complets du moteur de recherche
+			echo $outputBeg.$output.$outputEnd;
 		} // Fin de la fonction callback d'affichage
 
 		// Affichage des résultats en fonction d'une ou plusieurs catégories sélectionnés (pour les articles uniquement !)
@@ -469,9 +459,13 @@ function WP_Advanced_Search() {
 		// Lancement de la fonction d'affichage	
 		if($select->NumberPerPage == 0) {
 			$moteur->moteurAffichage('affichage', '', array(false, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
-		} else {
+		} else if ($select->paginationActive == true && $select->NumberPerPage != 0 && ($select->paginationType == "trigger" || $select->paginationType == "infinite")) {
+			$moteur->moteurAffichage('affichage', '', array(true, 0, htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+		} else if ($select->paginationActive == true && $select->NumberPerPage != 0 && $select->paginationType == "classic") {
 			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 			$paginationValide = true;
+		} else if ($select->paginationActive == false && $select->NumberPerPage != 0) {
+			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		}
 		
 		// Lancement de la fonction de pagination si elle est activée...

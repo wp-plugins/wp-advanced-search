@@ -11,8 +11,8 @@
 .WPcommentSearch{clear:both}
 .WPcommentSearch a{font-size:.8em;margin-left:.8em;color:#FF5000;text-decoration:none;font-style:italic;}
 .WPcommentSearch a:hover{text-decoration:underline}
-.WPnumberSearch{color:#fff;padding-right:1.7em;font-size:.9em}
-.WPtitleSearch{margin-right:.5em}
+.WPnumberSearch{color:#fff;padding:.3em 1.7em 0 0;font-size:.9em;float:left;text-align:center;}
+.WPtitleSearch{padding:.3em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;color:#242424}
 .WPBlockContent{margin-bottom:1em}
 .WPBlockContent img {float:left;width:14%;margin-right:.5em;border:1px solid #ffd6c3;padding:1px}
 .WPtextSearch a{color:#FF5000;text-decoration:none}

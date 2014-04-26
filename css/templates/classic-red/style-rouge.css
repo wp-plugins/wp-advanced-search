@@ -8,8 +8,8 @@
 .WPauthorSearch a,.WPcategorySearch a{color:#242424}
 .WPauthorSearch a:hover,.WPcategorySearch a:hover{text-decoration:none}
 .WPcommentSearch a{font-size:.8em;margin-left:.8em;color:#BB0000;text-decoration:none;font-style:italic}
-.WPnumberSearch{border:1px solid #BB0000;border-radius:10px;padding:0 .5em;color:#BB0000}
-.WPtitleSearch{margin-right:.5em}
+.WPnumberSearch{border:1px solid #BB0000;border-radius:10px;padding:0 .5em;color:#BB0000;float:left; margin-right:.5em}
+.WPtitleSearch{margin-right:.5em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;color:#BB0000}
 .WPBlockContent{margin-bottom:1em}
 .WPBlockContent img {float:left;width:14%;margin-right:.5em}
 .WPtextSearch a{color:#BB0000;text-decoration:none}
