@@ -26,6 +26,11 @@ function WP_Advanced_Search_Callback_Autocompletion() {
 	if(isset($_POST['wp_advanced_search_action_addwords'])) {
 		WP_Advanced_Search_Autocompletion_AddWords();
 	}
+	
+	// Déclencher la fonction de suppression des extraits
+	if(isset($_POST['wp_advanced_search_action_deletewords'])) {
+		WP_Advanced_Search_Autocompletion_DeleteWords();
+	}
 
 	/* --------------------------------------------------------------------- */
 	/* ------------------------ Affichage de la page ----------------------- */
@@ -151,6 +156,22 @@ function WP_Advanced_Search_Callback_Autocompletion() {
                     <br/><em><?php _e('Séparez les mots ou expressions par des virgules !<br/>Exemple --> moteur, moteur de recherche, recherche, advanced, search<br/>N.B. : les doublons ne s\'ajoutent pas...','wp-advanced-search'); ?></em>
                     <br/><input type="submit" name="wp_advanced_search_action_addwords" class="button-primary" value="<?php _e('Ajouter à l\'index', 'wp-advanced-search'); ?>" />
                 </p>
+				<h4><?php _e('Gestion de l\'index existant','wp-advanced-search'); ?></h4>
+                <p class="tr2">
+                	<label for="wp_advanced_search_autocompletion_deletewords"><strong><?php _e('Supprimer des mots et expressions dans l\'index (si nécessaire)','wp-advanced-search'); ?></strong></label>
+                    <select name="wp_advanced_search_autocompletion_deletewords[]" multiple="multiple" id="deleteSelect" size="12">
+					<?php
+						$expressions = $wpdb->get_results("SELECT ".$select->autoCompleteColumn." FROM ".$select->autoCompleteTable." ORDER BY ".$select->autoCompleteColumn." ASC", ARRAY_N);
+						foreach($expressions as $word) {
+					?>
+						<option value="<?php echo $word[0]; ?>"><?php echo $word[0]; ?></option>
+					<?php
+						}
+					?>
+					</select>
+                    <br/><em><?php _e('Sélectionner les mots et expressions qui ne vous conviennent pas et supprimer-les...','wp-advanced-search'); ?></em>
+                    <br/><input type="submit" name="wp_advanced_search_action_deletewords" onclick="javascript:return(confirm('<?php _e('&Ecirc;tes-vous sûrs de vouloir supprimer ces mots et expressions ?','WP-Advanced-Search'); ?>'));" class="button-primary" value="<?php _e('Supprimer de l\'index', 'wp-advanced-search'); ?>" />
+                </p>
                 <?php
 					}
 				?>
@@ -221,6 +242,18 @@ function WP_Advanced_Search_Autocompletion_AddWords() {
 				$wpdb->query("INSERT INTO ".$select->autoCompleteTable."(".$select->autoCompleteColumn.") VALUES ('".$exp."')");
 			}
 		}
+	}
+}
+
+// Suppression des extraits sélectionnés
+function WP_Advanced_Search_Autocompletion_DeleteWords() {
+	global $wpdb, $table_WP_Advanced_Search; // insérer les variables globales
+
+	$tableDelete = $wpdb->get_row("SELECT autoCompleteTable, autoCompleteColumn FROM ".$table_WP_Advanced_Search, ARRAY_N);
+	$tabWords = $_POST['wp_advanced_search_autocompletion_deletewords'];
+	
+	foreach($tabWords as $word) {
+		$wpdb->delete($tableDelete[0], array($tableDelete[1] => $word));
 	}
 }
 ?>
