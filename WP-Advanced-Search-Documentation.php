@@ -78,7 +78,7 @@ function WP_Advanced_Search_Callback_Documentation() {
     </div>
     <div class="block clear">
         <div class="col">
-        	<p class="tr"><?php _e('<strong>N.B. : particularités des index FULLTEXT !</strong>'); ?></p>
+        	<p class="tr"><?php _e('<strong>N.B. : particularités des index FULLTEXT !</strong>','wp-advanced-search'); ?></p>
             <div class="tr-info">
             	<p><?php _e('La recherche en texte intégrale (FULLTEXT) est la plus aboutie mais demande quelques paramétrages.','wp-advanced-search') ?></p>
                 <ol>
