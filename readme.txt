@@ -7,7 +7,7 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 3.9
-Stable Tag: 2.4
+Stable Tag: 2.4.1
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -167,3 +167,8 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 = Version 2.4 (28/04/2014) =
 
 - Ajout d'un syst&egrave;me de suppression de mots et expressions dans l'index invers&eacute; de l'autosuggestion (Adding a delete option for the words and expressions of the autosuggest index)
+
+= Version 2.4.1 (21/05/2014) =
+
+- Solution au probl&egrave;me "Erreur :" caus&eacute; par l'autocompletion par d&eacute;faut (Fixed problem with the message "Erreur :" caused by the autocomplete function by default)
+- Correction d'une phrase en anglais qui ne se traduisait pas (Fixed an English translation)

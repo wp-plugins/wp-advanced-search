@@ -792,7 +792,7 @@ class autoCompletion {
 						 idindex INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						 ".$this->column." VARCHAR(250) NOT NULL)
 						 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
-			$this->db->query($createSQL) or die("Erreur : ".$this->db->show_errors());
+			$this->db->query($createSQL) or die("Erreur avec l'autocompletion");
 		}
 		
 		// Gère l'autofocus et la sélection automatique du premier résultat
@@ -876,9 +876,8 @@ class autoCompletion {
 			}
 
 			// Récupération des mots dans l'index inversé
-			$selectWords = $this->db->get_results("SELECT ".$column." FROM ".$table, ARRAY_A) or die("Erreur : ".$this->db->show_errors());
+			$selectWords = $this->db->get_results("SELECT ".$column." FROM ".$table, ARRAY_A);
 			$selected = array();
-			
 			foreach($selectWords as $w) {
 				$selected[] = $w[$column];
 			}
@@ -887,7 +886,7 @@ class autoCompletion {
 				if(strlen($word) > $minLength) {						
 					if(!in_array($word, $selected)) {
 						$addWordsSQL = "INSERT INTO ".$this->table." SET ".$this->column." = '".$word."'";
-						$this->db->query($addWordsSQL) or die("Erreur : ".$this->db->show_errors());
+						$this->db->query($addWordsSQL) or die("Erreur avec l'ajout dans l'autocompletion");
 					}
 				}
 			}
