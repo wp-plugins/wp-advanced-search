@@ -253,7 +253,7 @@ function WP_Advanced_Search_Autocompletion_DeleteWords() {
 	$tabWords = $_POST['wp_advanced_search_autocompletion_deletewords'];
 	
 	foreach($tabWords as $word) {
-		$wpdb->delete($tableDelete[0], array($tableDelete[1] => $word));
+		$wpdb->delete($tableDelete[0], array($tableDelete[1] => stripslashes($word)));
 	}
 }
 ?>
