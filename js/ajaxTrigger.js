@@ -8,7 +8,7 @@
 // More informations: it works perfectly with jQuery 1.7.2
 /*-------------------------------------------------------------*/
 (function($){
-	$.fn.ajaxTrigger = function(args, options) {
+	$.fn.ajaxTrigger = function(args, options) {	
 		// Paramètres par défaut (récupérés dans la fonction avec args.NOM_ARGUMENT)
 		args = $.extend({
 			target: 'resultatsAjax.php',	// Cible contenant le contenu à charger (boucle PHP/MySQL en général)
