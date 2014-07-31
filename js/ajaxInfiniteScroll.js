@@ -3,8 +3,8 @@
 // Author: Mathieu Chartier
 // Website: http://blog.internet-formation.fr
 // Origin: France
-// Date: April 25th 2014
-// Version: 1.1
+// Date: July 31th 2014
+// Version: 1.2
 // More informations: it works perfectly with jQuery 1.7.2
 /*-------------------------------------------------------------*/
 (function($){
@@ -26,13 +26,17 @@
 
 		// Lancement de la fonction (au scroll ou autre)
 		loader.bind(args.evt, function(e) {
-
-			// Initialisation du nombre de résultats par "tranche"
-			var limit = args.limit;
-
 			// Récupération des variables utiles pour développer le nombre de résultats affiché
 			var nb = parseInt($(args.classLast+':last').attr(args.attrID));
-			var page = Math.ceil((nb + 1) / limit);
+			var page = Math.ceil((nb + 1) / parseInt(args.limit));
+
+			// Initialisation du nombre de résultats par "tranche"
+			if(nb <= parseInt(args.limit)) {
+				var limit = parseInt(nb);
+				var page = page + 1;
+			} else {
+				var limit = parseInt(args.limit);			
+			}
 
 			// Paramètres implicites de base
 			params = {
@@ -68,7 +72,8 @@
 			}
 			
 			// Si on arrive en bas de la fenêtre, le scroll actif déclenche la fonction
-			if(((loader.scrollTop() + $(window).height()) == $(document).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
+			if(($(window).scrollTop() == $(document).height() - $(window).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
+			// Alternative : if(((loader.scrollTop() + $(window).height()) == $(document).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
 				// Appel Ajax
 				$.ajax({
 					url: args.target+'?'+options.queryNameAS,

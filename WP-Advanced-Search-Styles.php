@@ -103,6 +103,7 @@ function WP_Advanced_Search_Callback_Styles() {
                         <option value="flat" <?php if($select->Style == "flat") { echo 'selected="selected"'; } ?>><?php _e('Sober flat design','wp-advanced-search'); ?></option>
                         <option value="flat-2" <?php if($select->Style == "flat-2") { echo 'selected="selected"'; } ?>><?php _e('Sober flat design blue','wp-advanced-search'); ?></option>
                         <option value="flat-color" <?php if($select->Style == "flat-color") { echo 'selected="selected"'; } ?>><?php _e('Colored flat design','wp-advanced-search'); ?></option>
+						<option value="orange-grey" <?php if($select->Style == "orange-grey") { echo 'selected="selected"'; } ?>><?php _e('New Orange Grey','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_style"><strong><?php _e('Style CSS pour les blocs','wp-advanced-search'); ?></strong></label>
                 </p>

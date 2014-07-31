@@ -144,7 +144,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 					} else // Ordre : Date - Catégorie - Auteur
 					if($select->BlocOrder == "D-C-A") {
@@ -168,7 +170,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 						// Affichage conditionné de l'auteur
 						if($select->AuthorOK == true) {
@@ -201,7 +205,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 						// Affichage conditionné de la date
 						if($select->DateOK == true) {
@@ -237,7 +243,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 					} else // Ordre : Catégorie - Date - Auteur
 					if($select->BlocOrder == "C-D-A") {
@@ -256,7 +264,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 						// Affichage conditionné de la date
 						if($select->DateOK == true) {
@@ -287,7 +297,9 @@ function WP_Advanced_Search_Ajax_Results() {
 								}
 								$counter++;
 							}
-							$output .= '</span>'."\n";
+							if($nbCategory > 0) {
+								$output .= '</span>'."\n";
+							}
 						}
 						// Affichage conditionné de l'auteur
 						if($select->AuthorOK == true) {

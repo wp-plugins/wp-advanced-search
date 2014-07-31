@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
 	var args = {
 		target: ASTrigger.ajaxurl,		// Cible contenant le contenu à charger (boucle PHP/MySQL en général)
 		limit: ASTrigger.limitR,		// Nombre de résultats à afficher par chargement
-		nbResult: jQuery('.numR').text(),	// Nombre total de résultats (récupéré dynamiquement)
+		nbResult: jQuery('.WPAdvancedSearch').attr('id'), // Nombre total de résultats (récupéré dynamiquement)
 		duration: ASTrigger.duration,	// Durée d'affichage de l'image de chargement (en ms) --> 0 pour annuler !
 		classLast: '.WPBlockSearch',	// Class des résultats affichés (obligatoire pour fonctionner !)
 		loadImg: ASTrigger.loadImg,		// Image de chargement ('' pour ne pas afficher d'image)

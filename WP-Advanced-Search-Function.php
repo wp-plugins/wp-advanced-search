@@ -87,9 +87,9 @@ function WP_Advanced_Search() {
 		function affichage($query, $nbResults, $words) {
 			global $select, $wpdb, $moteur, $wp_rewrite;
 
-			$outputBeg = '<div class="WPAdvancedSearch">'."\n";
+			$outputBeg = '<div class="WPAdvancedSearch" id="'.$nbResults.'">'."\n";
 			$outputBeg .= '<h3>'.__($select->ResultText,'wp-advanced-search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
-
+			
 			if($nbResults == 0) {
 				$output = "<div class=\"WPBlockSearch\">\n";	
 				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'wp-advanced-search').'</p>'."\n";
@@ -186,7 +186,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 						} else // Ordre : Date - Catégorie - Auteur
 						if($select->BlocOrder == "D-C-A") {
@@ -210,7 +212,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 							// Affichage conditionné de l'auteur
 							if($select->AuthorOK == true) {
@@ -243,7 +247,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 							// Affichage conditionné de la date
 							if($select->DateOK == true) {
@@ -279,7 +285,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 						} else // Ordre : Catégorie - Date - Auteur
 						if($select->BlocOrder == "C-D-A") {
@@ -298,7 +306,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 							// Affichage conditionné de la date
 							if($select->DateOK == true) {
@@ -329,7 +339,9 @@ function WP_Advanced_Search() {
 									}
 									$counter++;
 								}
-								$output .= '</span>'."\n";
+								if($nbCategory > 0) {
+									$output .= '</span>'."\n";
+								}
 							}
 							// Affichage conditionné de l'auteur
 							if($select->AuthorOK == true) {
