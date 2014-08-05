@@ -218,6 +218,7 @@ function WP_Advanced_Search_Callback() {
                 <p class="tr">
                 <input value="<?php echo $select->ResultText; ?>" name="wp_advanced_search_resulttext" id="wp_advanced_search_resulttext" type="text" />
                 <label for="wp_advanced_search_resulttext"><strong><?php _e('Texte pour la requête recherchée','wp-advanced-search'); ?></strong></label>
+                <br/><em><?php _e('Laissez vide pour masquer le texte','wp-advanced-search'); ?></em>
                 </p>
                 <p class="tr">
                 <input value="<?php echo $select->ErrorText; ?>" name="wp_advanced_search_errortext" id="wp_advanced_search_errortext" type="text" />

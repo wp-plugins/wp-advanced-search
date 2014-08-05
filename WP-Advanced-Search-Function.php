@@ -88,7 +88,10 @@ function WP_Advanced_Search() {
 			global $select, $wpdb, $moteur, $wp_rewrite;
 
 			$outputBeg = '<div class="WPAdvancedSearch" id="'.$nbResults.'">'."\n";
-			$outputBeg .= '<h3>'.__($select->ResultText,'wp-advanced-search').' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
+		
+			if(!empty($select->ResultText)) {
+				$outputBeg .= '<h3>'.trim(__($select->ResultText,'wp-advanced-search')).' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
+			}
 			
 			if($nbResults == 0) {
 				$output = "<div class=\"WPBlockSearch\">\n";	
@@ -388,7 +391,7 @@ function WP_Advanced_Search() {
 						} else {
 							$output .= '<div class="WPtextSearch">'.$key['post_content'].'</div>'."\n";
 						}
-						$output .= '<p class="clearBlock"></p>'."\n";
+						$output .= '<div class="clearBlock"></div>'."\n";
 						$output .= '</div>'."\n";
 					
 					// Affichage conditionné de l'image à la Une sans titre ou extrait (déconseillé)
@@ -407,7 +410,7 @@ function WP_Advanced_Search() {
 						} else {
 							$output .= '<div class="WPtextSearch">'.$key['post_content'].'</div>'."\n";
 						}
-						$output .= '<p class="clearBlock"></p>'."\n";
+						$output .= '<div class="clearBlock"></div>'."\n";
 						$output .= '</div>';					
 					
 					// Affichage conditionné de l'image à la Une sans titre ou extrait (déconseillé)
@@ -415,7 +418,7 @@ function WP_Advanced_Search() {
 						$output .= '<div class="WPBlockContent">'."\n";
 						
 						$output .= get_the_post_thumbnail($key['ID'],'thumbnail');
-						$output .= '<p class="clearBlock"></p>'."\n";
+						$output .= '<div class="clearBlock"></div>'."\n";
 						$output .= '</div>'."\n";
 					}
 					$output .= "</div>\n";

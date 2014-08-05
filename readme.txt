@@ -7,7 +7,7 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 3.9.1
-Stable Tag: 2.5
+Stable Tag: 2.5.1
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -80,32 +80,80 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 
 == Changelog ==
 
-= Version 1.0 (05/10/2013) =
+= Version 2.5.1 (05/08/2014) =
 
-- Premi&egrave;re version du moteur de recherche (first version of advanced search engine)
-- Possibilit&eacute; de d&eacute;sactiver chaque &eacute;l&eacutement (all options can be disabled)
-- Possibilit&eacute; d'ordonner les r&eacute;sultats avec ou sans algorithme de pertinence (ability to order the results with or without relevance algorithm)
-- Possibilit&eacute; d'ajouter une pagination automatique (ability to add an automatic pagination)
-- Possibilit&eacute; de mettre les mots recherch&eacute;s en gras (ability to put search words in bold)
-- Ajout d'un syst&egrave;me de traduction (fran&ccedil;ais et anglais par d&eacute;faut) (French and English translation included)
+- Possibilit&eacute; de masquer le texte et la requ&ecirc;te de recherche (Ability to hide the text and the query)
+- Correction d'un bug avec le nouveau template Orange-Gris (Fixed a problem with the new template orange-grey)
 
-= Version 1.1 (06/10/2013) =
+= Version 2.5 (31/07/2014) =
 
-- Correction de petits bugs (Fixed small bugs)
-- Ajout du type de contenus &agrave; prendre en compte : pages, articles, les deux ou tout (Adding the type of content to consider: pages, sections, or both)
-- Possibilit&eacute; de modifier la phrase d'erreur (Ability to change the error sentence)
-- Possibilit&eacute; de modifier la phrase qui rappelle la requ&ecirc;te recherch&eacute;e (Ability to change the sentence that reminds the search query)
+- Ajout d'un nouveau th&egrave;me graphique orange-gris (Adding a new templates "orange-grey")
+- Correction d'un souci avec le trigger (Fixed a problem with trigger pagination)
+- Correction d'une erreur HTML pour le W3C (Fixed an error of HTML for W3C)
 
-= Version 1.1.5 (06/10/2013) =
+= Version 2.4.3 - 2.4.4 (22/07/2014) =
 
-- Corrige quelques bugs de mise &agrave; jour (fix some bugs with upgrade)
+- Correction de conflits avec jQuery pour l'autocompletion (Fixed a problem with jQuery and autocomplete system)
+- Correction du souci de suppression des mots contenant des apostrophes (Fixed problem deleting the words containing apostrophes)
 
+= Version 2.4.1 - 2.4.2 (22/05/2014) =
 
-= Version 1.2 (10/10/2013) =
+- Solution au probl&egrave;me "Erreur :" caus&eacute; par l'autocompletion par d&eacute;faut (Fixed problem with the message "Erreur :" caused by the autocomplete function by default)
+- Correction d'une phrase en anglais qui ne se traduisait pas (Fixed an English translation)
+- Correction d'un souci avec les regex PCRE (Fixed a problem with PCRE regex)
 
-- D&eacute;sactivez puis r&eacute;activez l'extension pour ceux qui rencontrent des probl&egrave;mes avec l'ancienne mise &agrave; jour... Pardon ! (Deactivate and reactivate the extension for those who have problems with the old update ... Sorry!)
-- Ajout des stop words dans plusieurs langues (adding stop words in several languages)
-- Correction de la gestion des images à la Une trop grandes... (Fixed post thumbnails too large ...)
+= Version 2.4 (28/04/2014) =
+
+- Ajout d'un syst&egrave;me de suppression de mots et expressions dans l'index invers&eacute; de l'autosuggestion (Adding a delete option for the words and expressions of the autosuggest index)
+
+= Version 2.3 (26/04/2014) =
+
+- Ajout d'un "trigger" (bouton cliquable) pour afficher plus de r&eacute;sultats (Adding a "trigger" to display more results instead of the classic pagination)
+- Ajout d'un scroll infini pour afficher plus de r&eacute;sultats (Adding an infinite scroll to display more results instead of the classic pagination)
+- Quelques retouches sur les templates (Fixed little bugs with templates)
+- Quelques petites corrections sur l'ensemble de l'outil (Fixed several little bugs with the search engine)
+
+= Version 2.2.1 (22/04/2014) =
+
+- Correction d'un petit bug avec les recherches sans r&eacute;sultat (fixed problem with no results searches)
+
+= Version 2.2 (18/04/2014) =
+
+- Adaptation compl&egrave;te pour WordPress 3.9 et PHP 5.5 (fixed version for WordPress 3.9 and PHP 5.5)
+
+= Version 2.1 (04/04/2014) =
+
+- Ajout d'un syst&egrave;me complet d'autosuggestion (Adding a complete system for autocompletion)
+- R&eacute;solution de bugs passagers (Fixed some errors)
+
+= Version 2.0.3 (07/03/2014) =
+
+- Correction de quelques traductions (Correction for several translations)
+
+= Version 2.0 (17/02/2014) =
+
+- Ajout d'une option pour g&eacute;rer l'affichage de r&eacute;sultats issus d'une ou plusieurs cat&eacute;gories spécifiques (Added an option to control the display of results from one or more specific categories)
+
+= Version 1.8 (15/01/2014) =
+
+- Am&eacute;lioration de l'affichage de la ligne de la date, cat&eacute;gorie... (better display for the row that contains the date, the category...)
+- Gestion de l'affichage lorsqu'un article est dans plusieurs cat&eacute;gories (better display when a post is in multiple categories)
+- Am&eacute;lioration et corrections de certaines traductions (Improvement and corrections of some translations)
+
+= Version 1.7.1 (27/12/2013) =
+
+- Modification de la s&eacute;curit&eacute; de la pagination (fixed problem of security with pagination)
+
+= Version 1.7 (25/11/2013) =
+
+- Affichage possible du nombre de r&eacute;sultats (adding option to show the number of search results)
+- D&eacute;bogage des recherches en majuscules (Fixed problems with search queries in uppercase)
+- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
+- Am&eacute;lioration de la documentation sur la recherche FULLTEXT (Improved documentation about FULLTEXT search)
+
+= Version 1.6 (19/11/2013) =
+
+- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
 
 = Version 1.5 (17/11/2013) =
 
@@ -115,72 +163,28 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 - Ajout d'une page de documentation pour accompagner l'installation (A help page added to support the installation)
 - Mise &agrave; jour des traductions anglaises (English translation updated)
 
-= Version 1.6 (19/11/2013) =
+= Version 1.2 (10/10/2013) =
 
-- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
+- D&eacute;sactivez puis r&eacute;activez l'extension pour ceux qui rencontrent des probl&egrave;mes avec l'ancienne mise &agrave; jour... Pardon ! (Deactivate and reactivate the extension for those who have problems with the old update ... Sorry!)
+- Ajout des stop words dans plusieurs langues (adding stop words in several languages)
+- Correction de la gestion des images à la Une trop grandes... (Fixed post thumbnails too large ...)
 
-= Version 1.7 (25/11/2013) =
+= Version 1.1.5 (06/10/2013) =
 
-- Affichage possible du nombre de r&eacute;sultats (adding option to show the number of search results)
-- D&eacute;bogage des recherches en majuscules (Fixed problems with search queries in uppercase)
-- D&eacute;bogage et am&eacute;lioration de la mise en gras des mots recherch&eacute;s (Fixed problems with highlight search terms)
-- Am&eacute;lioration de la documentation sur la recherche FULLTEXT (Improved documentation about FULLTEXT search)
+- Corrige quelques bugs de mise &agrave; jour (fix some bugs with upgrade)
 
-= Version 1.7.1 (27/12/2013) =
+= Version 1.1 (06/10/2013) =
 
-- Modification de la s&eacute;curit&eacute; de la pagination (fixed problem of security with pagination)
+- Correction de petits bugs (Fixed small bugs)
+- Ajout du type de contenus &agrave; prendre en compte : pages, articles, les deux ou tout (Adding the type of content to consider: pages, sections, or both)
+- Possibilit&eacute; de modifier la phrase d'erreur (Ability to change the error sentence)
+- Possibilit&eacute; de modifier la phrase qui rappelle la requ&ecirc;te recherch&eacute;e (Ability to change the sentence that reminds the search query)
 
-= Version 1.8 (15/01/2014) =
+= Version 1.0 (05/10/2013) =
 
-- Am&eacute;lioration de l'affichage de la ligne de la date, cat&eacute;gorie... (better display for the row that contains the date, the category...)
-- Gestion de l'affichage lorsqu'un article est dans plusieurs cat&eacute;gories (better display when a post is in multiple categories)
-- Am&eacute;lioration et corrections de certaines traductions (Improvement and corrections of some translations)
-
-= Version 2.0 (17/02/2014) =
-
-- Ajout d'une option pour g&eacute;rer l'affichage de r&eacute;sultats issus d'une ou plusieurs cat&eacute;gories spécifiques (Added an option to control the display of results from one or more specific categories)
-
-= Version 2.0.3 (07/03/2014) =
-
-- Correction de quelques traductions (Correction for several translations)
-
-= Version 2.1 (04/04/2014) =
-
-- Ajout d'un syst&egrave;me complet d'autosuggestion (Adding a complete system for autocompletion)
-- R&eacute;solution de bugs passagers (Fixed some errors)
-
-= Version 2.2 (18/04/2014) =
-
-- Adaptation compl&egrave;te pour WordPress 3.9 et PHP 5.5 (fixed version for WordPress 3.9 and PHP 5.5)
-
-= Version 2.2.1 (22/04/2014) =
-
-- Correction d'un petit bug avec les recherches sans r&eacute;sultat (fixed problem with no results searches)
-
-= Version 2.3 (26/04/2014) =
-
-- Ajout d'un "trigger" (bouton cliquable) pour afficher plus de r&eacute;sultats (Adding a "trigger" to display more results instead of the classic pagination)
-- Ajout d'un scroll infini pour afficher plus de r&eacute;sultats (Adding an infinite scroll to display more results instead of the classic pagination)
-- Quelques retouches sur les templates (Fixed little bugs with templates)
-- Quelques petites corrections sur l'ensemble de l'outil (Fixed several little bugs with the search engine)
-
-= Version 2.4 (28/04/2014) =
-
-- Ajout d'un syst&egrave;me de suppression de mots et expressions dans l'index invers&eacute; de l'autosuggestion (Adding a delete option for the words and expressions of the autosuggest index)
-
-= Version 2.4.1 - 2.4.2 (22/05/2014) =
-
-- Solution au probl&egrave;me "Erreur :" caus&eacute; par l'autocompletion par d&eacute;faut (Fixed problem with the message "Erreur :" caused by the autocomplete function by default)
-- Correction d'une phrase en anglais qui ne se traduisait pas (Fixed an English translation)
-- Correction d'un souci avec les regex PCRE (Fixed a problem with PCRE regex)
-
-= Version 2.4.3 - 2.4.4 (22/07/2014) =
-
-- Correction de conflits avec jQuery pour l'autocompletion (Fixed a problem with jQuery and autocomplete system)
-- Correction du souci de suppression des mots contenant des apostrophes (Fixed problem deleting the words containing apostrophes)
-
-= Version 2.5 (31/07/2014) =
-
-- Ajout d'un nouveau th&egrave;me graphique orange-gris (Adding a new templates "orange-grey")
-- Correction d'un souci avec le trigger (Fixed a problem with trigger pagination)
-- Correction d'une erreur HTML pour le W3C (Fixed an error of HTML for W3C)
+- Premi&egrave;re version du moteur de recherche (first version of advanced search engine)
+- Possibilit&eacute; de d&eacute;sactiver chaque &eacute;l&eacutement (all options can be disabled)
+- Possibilit&eacute; d'ordonner les r&eacute;sultats avec ou sans algorithme de pertinence (ability to order the results with or without relevance algorithm)
+- Possibilit&eacute; d'ajouter une pagination automatique (ability to add an automatic pagination)
+- Possibilit&eacute; de mettre les mots recherch&eacute;s en gras (ability to put search words in bold)
+- Ajout d'un syst&egrave;me de traduction (fran&ccedil;ais et anglais par d&eacute;faut) (French and English translation included)

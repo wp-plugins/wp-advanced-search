@@ -300,7 +300,7 @@ function WP_Advanced_Search_Admin_CSS() {
 	$style	= plugins_url('css/wp-advanced-search-admin.css', __FILE__);
 	wp_enqueue_style($handle, $style, 15);
 }
-add_action('admin_print_styles', 'WP_Advanced_Search_Admin_CSS');
+add_action('admin_enqueue_scripts', 'WP_Advanced_Search_Admin_CSS');
 
 // Ajout conditionné d'une feuille de style personnalisée pour la pagination
 function WP_Advanced_Search_CSS($bool) {
@@ -344,7 +344,7 @@ function WP_Advanced_Search_CSS($bool) {
 		wp_register_style('style-colored-flat-design', $url);
 		wp_enqueue_style('style-colored-flat-design');
 	}
-	if($bool == "orange-grey") {
+	if($bool == "o-grey") {
 		$url = plugins_url('css/templates/orange-grey/style-orange-design.css',__FILE__);
 		wp_register_style('style-orange-grey', $url);
 		wp_enqueue_style('style-orange-grey');
