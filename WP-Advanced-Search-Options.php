@@ -20,10 +20,10 @@ function WP_Advanced_Search_update() {
 	global $wpdb, $table_WP_Advanced_Search; // insérer les variables globales
 
 	// Réglages de base
-	$wp_advanced_search_table			= $_POST['wp_advanced_search_table'];
-	$wp_advanced_search_name			= $_POST['wp_advanced_search_name'];
-	$wp_advanced_search_resulttext		= $_POST['wp_advanced_search_resulttext'];
-	$wp_advanced_search_errortext		= $_POST['wp_advanced_search_errortext'];
+	$wp_advanced_search_table			= esc_html($_POST['wp_advanced_search_table']);
+	$wp_advanced_search_name			= esc_html($_POST['wp_advanced_search_name']);
+	$wp_advanced_search_resulttext		= esc_html($_POST['wp_advanced_search_resulttext']);
+	$wp_advanced_search_errortext		= esc_html($_POST['wp_advanced_search_errortext']);
 	$wp_advanced_search_colonneswhere	= $_POST['wp_advanced_search_colonneswhere'];
 	$wp_advanced_search_typesearch		= $_POST['wp_advanced_search_typesearch'];
 	$wp_advanced_search_encoding		= $_POST['wp_advanced_search_encoding'];
@@ -32,12 +32,14 @@ function WP_Advanced_Search_update() {
 	$wp_advanced_search_exclusionwords	= $_POST['wp_advanced_search_exclusionwords'];
 	$wp_advanced_search_stopwords		= $_POST['wp_advanced_search_stopwords'];
 	$wp_advanced_search_posttype		= $_POST['wp_advanced_search_posttype'];
+	$wp_advanced_search_placeholder		= esc_html($_POST['wp_advanced_search_placeholder']);
+	
 	$wp_advanced_search_categories 		= array();
 	foreach($_POST['wp_advanced_search_categories'] as $ctgSave) {
 		array_push($wp_advanced_search_categories, $ctgSave);
 	}
 	if(is_numeric($_POST['wp_advanced_search_numberPerPage']) || !empty($_POST['wp_advanced_search_numberPerPage'])) {
-		$wp_advanced_search_numberPerPage = $_POST['wp_advanced_search_numberPerPage'];
+		$wp_advanced_search_numberPerPage = esc_html($_POST['wp_advanced_search_numberPerPage']);
 	} else {
 		$wp_advanced_search_numberPerPage = 0;
 	}
@@ -62,6 +64,7 @@ function WP_Advanced_Search_update() {
 			"exclusionWords" => $wp_advanced_search_exclusionwords,
 			"stopWords" => $wp_advanced_search_stopwords,
 			"NumberPerPage" => $wp_advanced_search_numberPerPage,
+			"placeholder" => $wp_advanced_search_placeholder,
 			"strongWords" => $wp_advanced_search_strong,
 			"OrderOK" => $wp_advanced_search_orderOK,
 			"OrderColumn" => $wp_advanced_search_orderColumn,
@@ -203,6 +206,11 @@ function WP_Advanced_Search_Callback() {
                     <input value="<?php echo $select->NumberPerPage; ?>" name="wp_advanced_search_numberPerPage" id="wp_advanced_search_numberPerPage" type="text" />
                     <label for="wp_advanced_search_numberPerPage"><strong><?php _e('Nombre de résultats par page','wp-advanced-search'); ?></strong></label>
                     <br/><em><?php _e('0 ou vide pour tout afficher dans une page (sans pagination)','wp-advanced-search'); ?></em>
+                </p>
+				<p class="tr">
+                    <input value="<?php echo $select->placeholder; ?>" name="wp_advanced_search_placeholder" id="wp_advanced_search_placeholder" type="text" />
+                    <label for="wp_advanced_search_placeholder"><strong><?php _e('Placeholder du champ de recherche','wp-advanced-search'); ?></strong></label>
+                    <br/><em><?php _e('Blocage de la soumission du formulaire de recherche si un "placeholder" est précisé.','wp-advanced-search'); ?></em>
                 </p>
 
                 <h4><br/><?php _e('Mise en surbrillance et rendu','wp-advanced-search'); ?></h4>

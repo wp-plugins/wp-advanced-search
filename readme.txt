@@ -6,8 +6,8 @@ Plugin URI: http://wordpress.org/extend/plugins/wordpress-wp-advanced-search/
 Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest, infinite scroll, trigger, scroll, infini, clic, click
 License: GPLv2 or later
 Requires at least: 2.5
-Tested up to: 3.9.1
-Stable Tag: 2.5.1
+Tested up to: 3.9.2
+Stable Tag: 2.6
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -80,10 +80,12 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 
 == Changelog ==
 
-= Version 2.5.1 (05/08/2014) =
+= Version 2.6 (07/08/2014) =
 
+- Possibilit&eacute; de bloquer la soumission du formulaire de recherche avec un placeholder (Ability to block the submission of the search form with a placeholder)
 - Possibilit&eacute; de masquer le texte et la requ&ecirc;te de recherche (Ability to hide the text and the query)
 - Correction d'un bug avec le nouveau template Orange-Gris (Fixed a problem with the new template orange-grey)
+- Am&eacute;lioration de la s&eacute;curit&eacute; des champs (Upgrade security)
 
 = Version 2.5 (31/07/2014) =
 
