@@ -71,8 +71,8 @@ function WP_Advanced_Search_Trigger() {
 	);
 	
 	// Chargement des variables et des scripts
-	wp_enqueue_script('ajaxTrigger', plugins_url('js/ajaxTrigger.js',__FILE__), array('jquery'), '1.0');
-	wp_enqueue_script('ajaxTriggerStart', plugins_url('js/ajaxTriggerStart.js',__FILE__), array('jquery'), '1.0');
+	wp_enqueue_script('ajaxTrigger', plugins_url('js/ajaxTrigger-min.js',__FILE__), array('jquery'), '1.0');
+	wp_enqueue_script('ajaxTriggerStart', plugins_url('js/ajaxTriggerStart-min.js',__FILE__), array('jquery'), '1.0');
 	wp_localize_script('ajaxTriggerStart', 'ASTrigger', $scriptData);
 }
 // Fonction de l'infinite scroll
@@ -98,8 +98,8 @@ function WP_Advanced_Search_InfiniteScroll() {
 	);
 	
 	// Chargement des variables et des scripts
-	wp_enqueue_script('ajaxInfiniteScroll', plugins_url('js/ajaxInfiniteScroll.js',__FILE__), array('jquery'), '1.0');
-	wp_enqueue_script('ajaxInfiniteScrollStart', plugins_url('js/ajaxInfiniteScrollStart.js',__FILE__), array('jquery'), '1.0');
+	wp_enqueue_script('ajaxInfiniteScroll', plugins_url('js/ajaxInfiniteScroll-min.js',__FILE__), array('jquery'), '1.0');
+	wp_enqueue_script('ajaxInfiniteScrollStart', plugins_url('js/ajaxInfiniteScrollStart-min.js',__FILE__), array('jquery'), '1.0');
 	wp_localize_script('ajaxInfiniteScrollStart', 'ASInfiniteScroll', $scriptDataIS);
 }
 ?>
