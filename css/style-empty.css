@@ -1,0 +1,18 @@
+.clearBlock{clear:both}
+.WPAdvancedSearch h3{}
+.WPFirstSearch a{}
+.WPFirstSearch a:hover,.WPcommentSearch a:hover,.WPReadMoreSearch a:hover,.WPtextSearch a:hover{}
+.WPSecondSearch{}
+.WPdateSearch,.WPauthorSearch,.WPcategorySearch,.WPtextSearch{}
+.WPauthorSearch a,.WPcategorySearch a{}
+.WPauthorSearch a:hover,.WPcategorySearch a:hover{}
+.WPcommentSearch a{}
+.WPnumberSearch{}
+.WPtitleSearch{}
+.WPBlockContent{}
+.WPBlockContent img {float:left;}
+.WPtextSearch a{}
+.WPtextSearch strong{}
+.WPReadMoreSearch{}
+.WPReadMoreSearch a{}
+.WPErrorSearch{}
