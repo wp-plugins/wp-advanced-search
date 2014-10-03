@@ -310,7 +310,6 @@ class moteurRecherche {
 	/*-- 1. Tableau des colonnes dans lesquelles chercher (condition WHERE...) --*/
 	/*---------------------------------------------------------------------------*/
 	public function moteurRequetes($colonnesWhere = array()) {
-
 		$this->colonnesWhere = $colonnesWhere;
 		// Opérateur entre les champs de requête (OR si vous voulez beaucoup de laxisme)
 		$operateur = "AND";
@@ -358,14 +357,16 @@ class moteurRecherche {
 	/*-------- 6 arguments possibles... -----------------------------------------------*/
 	/*-- 1. appel à la fonction callback d'affichage (obligatoire) --------------------*/
 	/*-- 2. colonnes à sélectionner dans la base (toutes s'il est laissé "vide") ------*/
-	/*-- 3. LIMIT en SQL : tableau avec 3 valeurs : true/false, numDépart, intervale --*/
+	/*-- 3. LIMIT en SQL : tableau avec 4 valeurs : true/false, numDépart, intervale --*/
+	/*-- true/false (4e valeur) --> true pour pagination classique, false pour autre --*/
 	/*-- 4. ORDER BY : tableau avec 3 valeurs : true/false, colonne d'ordre, ASC/DESC -*/
 	/*-- 5. ORDER BY avec algorithme de pertinence : tableau avec 4 valeurs : ---------*/
 	/*-- => true/false, colonne de classement (inédite !), ASC/DESC, colonne de l'ID --*/
 	/*-- N.B. : la fonction ajoute la colonne de classement si elle n'existe pas ! ----*/
 	/*-- 6. Fin de requête perso : écriture de son propre ORDER BY et/ou LIMIT --------*/
+	/*-- 7. Condition supplémentaire utilisée pour WordPress --------------------------*/
 	/*---------------------------------------------------------------------------------*/
-	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10), $ordre = array(false, "id", "DESC"), $algo = array(false,'algo','DESC','ID'), $orderLimitPerso = '', $conditionsPlus = '') {
+	public function moteurAffichage($callback = '', $colonnesSelect = '', $limit = array(false, 0, 10, false), $ordre = array(false, "id", "DESC"), $algo = array(false,'algo','DESC','ID'), $orderLimitPerso = '', $conditionsPlus = '') {
 		// Ajout d'une conditions spécifique à WordPress
 		if(empty($conditionsPlus)) {
 			$conditions = "WHERE";	
@@ -381,17 +382,17 @@ class moteurRecherche {
 		} else {
 			$selectColumn = $colonnesSelect;
 		}
-		
 		// Limite le nombre d'affichage par page
 		if($limit[0] == true) {
 			self::$limitArg = $limit[1];
 			self::$limit	= $limit[2];
-			
+
 			if(!isset($limit[1])) {
 				$limitDeb = 0;
-			} else
-			if($limit[1] == 0) {
+			} else if($limit[1] == 0) {
 				$limitDeb = $limit[1] * $limit[2];
+			} else if($limit[3] == false) {
+				$limitDeb = $limit[1];
 			} else {
 				$limitDeb = ($limit[1] - 1) * $limit[2];
 			}
@@ -411,7 +412,7 @@ class moteurRecherche {
 			}
 			
 			$colonnesStrSQL = implode(', ',$this->colonnesWhere);
-			$requeteType = $this->db->get_row("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso") or die("Erreur d'algorithme : ".$this->db->show_errors());
+			$requeteType = $this->db->get_results("SELECT $algo[3], $colonnesStrSQL FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_N) or die("Erreur d'algorithme ! ".$this->db->show_errors());
 
 			foreach($requeteType as $ligne) {
 				$count = 0;
@@ -420,6 +421,7 @@ class moteurRecherche {
 						$count += substr_count(utf8_encode(strtolower($ligne[$p])), strtolower($mots));
 					}
 				}
+				
 				// Met à jour la colonne de l'algorithme avec les nouvelles valeurs
 				$requeteAdd = $this->db->query("UPDATE $this->tableBDD SET $algo[1] = '$count' ".$conditions." $this->condition AND $algo[3] = '$ligne[0]'");
 			}
@@ -450,9 +452,9 @@ class moteurRecherche {
 			$compte = $this->db->get_var("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition") or die("<div>Erreur dans le comptage des résultats (problème de requête) !</div>");
 		} else if(!empty($orderLimitPerso) && $numberWP[0] != 0) {
 			if($limit[0] == true && $ordre[0] == true) {
-				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->orderBy $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien si les mots recherchés ne posent pas problème !</div>");
 			} else if($limit[0] == true && $ordre[0] == false) {
-				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
+				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso $this->limitMinMax", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez votre paramétrage !</div>");
 			} else {
 				$this->requeteTotale = $this->db->get_results("SELECT $selectColumn FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_A) or die("<div>Erreur dans la requête, vérifiez bien votre paramétrage complet !</div>");
 			}
@@ -460,7 +462,7 @@ class moteurRecherche {
 			$this->nbResults = $this->db->get_results("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_N);
 			$compte = $this->db->get_var("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso");
 		}
-
+		
 		$this->nbResults = $this->nbResults[0][0];
 
 		// Récupération du nombre de résultats

@@ -60,16 +60,17 @@ function WP_Advanced_Search() {
 	} else {
 		$colonnesWhere = explode(',',trim($select->colonnesWhere));
 	}
+
 	if($select->stopWords == true) {
 		// Récupération de la langue par défaut et des stopwords adaptés
-		if (WPLANG == '') {
+		if(!defined(WPLANG)) {
 			$lang = "fr_FR";
 		} else {
 			$lang = WPLANG;
 		}
 		include('class.inc/stopwords/stopwords-'.$lang.'.php');
 	} else {
-		$stopwords = '';	
+		$stopwords = '';
 	}
 
 	// Ajout conditionné des feuilles de style pour l'affichage
@@ -77,7 +78,7 @@ function WP_Advanced_Search() {
 
 	// Ajout conditionné des feuilles de style pour la pagination
 	WP_Advanced_Search_Pagination_CSS($select->paginationStyle);
-
+	
 	// Lancement du moteur de recherche
 	$moteur = new moteurRecherche($wpdb, stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
 	$moteur->moteurRequetes($colonnesWhere);
@@ -473,14 +474,14 @@ function WP_Advanced_Search() {
 		
 		// Lancement de la fonction d'affichage	
 		if($select->NumberPerPage == 0) {
-			$moteur->moteurAffichage('affichage', '', array(false, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(false, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage), false), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		} else if ($select->paginationActive == true && $select->NumberPerPage != 0 && ($select->paginationType == "trigger" || $select->paginationType == "infinite")) {
-			$moteur->moteurAffichage('affichage', '', array(true, 0, htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(true, 0, htmlspecialchars($select->NumberPerPage), false), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		} else if ($select->paginationActive == true && $select->NumberPerPage != 0 && $select->paginationType == "classic") {
-			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage), true), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 			$paginationValide = true;
 		} else if ($select->paginationActive == false && $select->NumberPerPage != 0) {
-			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage)), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+			$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['page']), htmlspecialchars($select->NumberPerPage), true), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 		}
 		
 		// Lancement de la fonction de pagination si elle est activée...

@@ -57,7 +57,7 @@ function WP_Advanced_Search_Trigger() {
 	$duration	= $select->paginationDuration;					// temps d'attente avant la réponse
 	$limitR		= $select->paginationNbLimit;					// Pallier d'affichage des résultats
 	if(isset($_GET[$nameSearch])) {
-		$queryAS = $_GET[$nameSearch];
+		$queryAS = stripslashes($_GET[$nameSearch]);
 	}
 	
 	// Tableau des données envoyées au script
@@ -85,7 +85,7 @@ function WP_Advanced_Search_InfiniteScroll() {
 	$duration	= $select->paginationDuration;	// temps d'attente avant la réponse
 	$limitR		= $select->paginationNbLimit;	// Pallier d'affichage des résultats
 	if(isset($_GET[$nameSearch])) {
-		$queryAS = $_GET[$nameSearch];
+		//$queryAS = stripslashes($_GET[$nameSearch]);
 	}
 
 	// Tableau des données envoyées au script

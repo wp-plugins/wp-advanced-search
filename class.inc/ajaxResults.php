@@ -45,9 +45,10 @@ function WP_Advanced_Search_Ajax_Results() {
 	} else {
 		$colonnesWhere = explode(',',$select->colonnesWhere);
 	}
+
 	if($select->stopWords == true) {
 		// Récupération de la langue par défaut et des stopwords adaptés
-		if (WPLANG == '') {
+		if(!defined(WPLANG)) {
 			$lang = "fr_FR";
 		} else {
 			$lang = WPLANG;
@@ -56,7 +57,7 @@ function WP_Advanced_Search_Ajax_Results() {
 	} else {
 		$stopwords = '';	
 	}
-
+	
 	// Lancement du moteur de recherche
 	$moteur = new moteurRecherche($wpdb, stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
 	$moteur->moteurRequetes($colonnesWhere);
@@ -418,15 +419,20 @@ function WP_Advanced_Search_Ajax_Results() {
 
 		// Nombre de résultats par "tranche d'affichage"
 		$limit = htmlspecialchars($_GET['limit']);
+
+/*-------------------------------------------------------*/
+/* PROBLEME de COMPTAGE des PAGES + langues */
+/*-------------------------------------------------------*/
 		
 		// Numéro de page récupéré dynamiquement
 		if(isset($_GET['page'])) {
 			$page = htmlspecialchars($_GET['page']);
 		} else {
-			$page = 1;
+			$page = 0;
 		}
-		// Lancement de la fonction d'affichage
-		$moteur->moteurAffichage('affichage', '', array(true, $page, $limit), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), $algo = array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
+
+		// Lancement de la fonction d'affichage	
+		$moteur->moteurAffichage('affichage', '', array(true, htmlspecialchars($_GET['nb']), htmlspecialchars($select->paginationNbLimit), false), array($select->OrderOK, $select->OrderColumn, $select->AscDesc), array($select->AlgoOK,'algo','DESC','ID'), $wpAdaptation, $conditions);
 	}
 	
 	// Fin de l'Ajax pour Wordpress !
