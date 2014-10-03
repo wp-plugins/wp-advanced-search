@@ -1,0 +1,21 @@
+.clearBlock{clear:both}
+.WPAdvancedSearch h3{color:#666;margin-bottom:2em;text-transform:uppercase;font-size:.8em}
+.WPFirstSearch a{font-size:1.1em; color:#242424;text-decoration:none}
+.WPFirstSearch a:hover,.WPcommentSearch a:hover{text-decoration:underline}
+.WPSecondSearch{margin:.2em 0 .7em}
+.WPdateSearch,.WPauthorSearch,.WPcategorySearch,.WPtextSearch{font-size:.8em}
+.WPauthorSearch a,.WPcategorySearch a{color:#242424}
+.WPauthorSearch a:hover,.WPcategorySearch a:hover,.WPtextSearch a:hover{text-decoration:none}
+.WPcommentSearch a{font-size:.8em;margin-left:.8em;color:#666;text-decoration:none;font-style:italic}
+.WPnumberSearch{color:#242424;margin-right:.3em}
+.WPnumberSearch:after{content:'.';}
+.WPtitleSearch{margin-right:.5em}
+.WPBlockContent{margin-bottom:1em}
+.WPBlockContent img {float:left;width:14%;margin-right:.5em}
+.WPtextSearch{color:#666}
+.WPtextSearch a{color:#666}
+.WPtextSearch strong{font-weight:normal}
+.WPReadMoreSearch{text-align:right;margin-top:.3em;}
+.WPReadMoreSearch a{font-size:.9em;color:#666;text-decoration:none;font-style:italic;text-transform:uppercase}
+.WPReadMoreSearch a:hover{text-decoration:underline}
+.WPErrorSearch{font-size:1.1em; color:#242424}
