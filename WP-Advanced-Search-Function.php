@@ -68,7 +68,12 @@ function WP_Advanced_Search() {
 		} else {
 			$lang = WPLANG;
 		}
-		include('class.inc/stopwords/stopwords-'.$lang.'.php');
+
+		// Tableau des langues actuellement autorisées pour les stop words
+		$tabLang = array("fr_FR", "en_GB", "en_US", "de_DE", "es_ES", "it_IT", "pl_PL", "pt_BR", "pt_PT", "ru_RU");
+		if(in_array($lang, $tabLang)) {
+			include('class.inc/stopwords/stopwords-'.$lang.'.php');
+		}
 	} else {
 		$stopwords = '';
 	}
@@ -468,7 +473,9 @@ function WP_Advanced_Search() {
 			$wpAdaptation = "AND post_type = 'page' AND post_status = 'publish'";
 		} else if($select->postType == "pagepost") {
 			$wpAdaptation = "AND (post_type = 'page' OR post_type = 'post') AND post_status = 'publish'";
-		} else {
+		} else if($select->postType == "all") {
+			$wpAdaptation = "";
+		} else { // Au cas où...
 			$wpAdaptation = "AND post_status = 'publish'";
 		}
 		

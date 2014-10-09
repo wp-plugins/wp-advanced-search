@@ -2,9 +2,9 @@
 /*
 Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
-Description: ajout d'un moteur de recherche avancé dans WordPress plutôt que le moteur de base (mise en surbrillance, trois types de recherche, algorithme optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, algorithm...</em>).
+Description: Moteur de recherche avancé pour WordPress à la place du moteur initial (mise en surbrillance, trois types de recherche, styles, paginations, algorithme de pertinence optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, three method for pagination, relevancy algorithm...</em>).
 Author: Mathieu Chartier
-Version: 2.6.2
+Version: 2.7
 Author URI: http://blog.internet-formation.fr
 */
 
@@ -13,7 +13,7 @@ global $wpdb, $table_WP_Advanced_Search, $WP_Advanced_Search_Version;
 $table_WP_Advanced_Search = $wpdb->prefix.'advsh';
 
 // Version du plugin
-$WP_Advanced_Search_Version = "2.6";
+$WP_Advanced_Search_Version = "2.7";
 
 function WP_Advanced_Search_Lang() {
 	load_plugin_textdomain('wp-advanced-search', false, dirname(plugin_basename( __FILE__ )).'/lang/');
@@ -44,6 +44,7 @@ function WP_Advanced_Search_install() {
 		nbResultsOK BOOLEAN NOT NULL,
 		NumberOK BOOLEAN NOT NULL,
 		NumberPerPage INT(2),
+		idform VARCHAR(200),
 		placeholder VARCHAR(200),
 		Style VARCHAR(10) NOT NULL,
 		formatageDate VARCHAR(25),
@@ -114,6 +115,7 @@ function WP_Advanced_Search_install_data() {
 			"nbResultsOK" => false,
 			"NumberOK" => true,
 			"NumberPerPage" => 10,
+			"idform" => 's',
 			"placeholder" => '',
 			"Style" => 'aucun',
 			"formatageDate" => 'j F Y',
@@ -159,7 +161,7 @@ function WP_Advanced_Search_install_data() {
 			"autoCompleteSizeMin" => 2
 		);
 		$champ = wp_parse_args($instance, $defaut);
-		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'nbResultsOK' => $champ['nbResultsOK'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'placeholder' => $champ['placeholder'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'BlocOrder' => $champ['BlocOrder'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'paginationType' => $champ['paginationType'], 'paginationNbLimit' => $champ['paginationNbLimit'], 'paginationDuration' => $champ['paginationDuration'], 'paginationText' => $champ['paginationText'], 'postType' => $champ['postType'], 'categories' => $champ['categories'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText'], 'autoCompleteActive' => $champ['autoCompleteActive'], 'autoCompleteSelector' => $champ['autoCompleteSelector'], 'autoCompleteAutofocus' => $champ['autoCompleteAutofocus'], 'autoCompleteType' => $champ['autoCompleteType'], 'autoCompleteNumber' => $champ['autoCompleteNumber'], 'autoCompleteCreate' => $champ['autoCompleteCreate'], 'autoCompleteTable' => $champ['autoCompleteTable'], 'autoCompleteColumn' => $champ['autoCompleteColumn'], 'autoCompleteTypeSuggest' => $champ['autoCompleteTypeSuggest'], 'autoCompleteGenerate' => $champ['autoCompleteGenerate'], 'autoCompleteSizeMin' => $champ['autoCompleteSizeMin']));
+		$default = $wpdb->insert($table_WP_Advanced_Search, array('db' => $champ['db'], 'tables' => $champ['tables'], 'nameField' => $champ['nameField'], 'colonnesWhere' => $champ['colonnesWhere'], 'typeSearch' => $champ['typeSearch'], 'encoding' => $champ['encoding'], 'exactSearch' => $champ['exactSearch'], 'accents' => $champ['accents'], 'exclusionWords' => $champ['exclusionWords'], 'stopWords' => $champ['stopWords'], 'nbResultsOK' => $champ['nbResultsOK'], 'NumberOK' => $champ['NumberOK'], 'NumberPerPage' => $champ['NumberPerPage'], 'idform' => $champ['idform'], 'placeholder' => $champ['placeholder'], 'Style' => $champ['Style'], 'formatageDate' => $champ['formatageDate'], 'DateOK' => $champ['DateOK'], 'AuthorOK' => $champ['AuthorOK'], 'CategoryOK' => $champ['CategoryOK'], 'TitleOK' => $champ['TitleOK'], 'ArticleOK' => $champ['ArticleOK'], 'CommentOK' => $champ['CommentOK'], 'ImageOK' => $champ['ImageOK'], 'BlocOrder' => $champ['BlocOrder'], 'strongWords' => $champ['strongWords'], 'OrderOK' => $champ['OrderOK'], 'OrderColumn' => $champ['OrderColumn'], 'AscDesc' => $champ['AscDesc'], 'AlgoOK' => $champ['AlgoOK'], 'paginationActive' => $champ['paginationActive'], 'paginationStyle' => $champ['paginationStyle'], 'paginationFirstLast' => $champ['paginationFirstLast'], 'paginationPrevNext' => $champ['paginationPrevNext'], 'paginationFirstPage' => $champ['paginationFirstPage'], 'paginationLastPage' => $champ['paginationLastPage'], 'paginationPrevText' => $champ['paginationPrevText'], 'paginationNextText' => $champ['paginationNextText'], 'paginationType' => $champ['paginationType'], 'paginationNbLimit' => $champ['paginationNbLimit'], 'paginationDuration' => $champ['paginationDuration'], 'paginationText' => $champ['paginationText'], 'postType' => $champ['postType'], 'categories' => $champ['categories'], 'ResultText' => $champ['ResultText'], 'ErrorText' => $champ['ErrorText'], 'autoCompleteActive' => $champ['autoCompleteActive'], 'autoCompleteSelector' => $champ['autoCompleteSelector'], 'autoCompleteAutofocus' => $champ['autoCompleteAutofocus'], 'autoCompleteType' => $champ['autoCompleteType'], 'autoCompleteNumber' => $champ['autoCompleteNumber'], 'autoCompleteCreate' => $champ['autoCompleteCreate'], 'autoCompleteTable' => $champ['autoCompleteTable'], 'autoCompleteColumn' => $champ['autoCompleteColumn'], 'autoCompleteTypeSuggest' => $champ['autoCompleteTypeSuggest'], 'autoCompleteGenerate' => $champ['autoCompleteGenerate'], 'autoCompleteSizeMin' => $champ['autoCompleteSizeMin']));
 
 		// Création de l'index inversé par défaut (pour l'autocomplétion)
 		$wpdb->query("CREATE TABLE IF NOT EXISTS ".$champ['autoCompleteTable']." (
@@ -284,6 +286,17 @@ function WP_Advanced_Search_install_update() {
 			// Mise à jour de la version
 			update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
 		}
+
+		$sqlShowID = $wpdb->query("SHOW COLUMNS FROM $table_WP_Advanced_Search LIKE 'idform'");
+		if($sqlShowID != 1) {
+			$tableIDUpgrade = $wpdb->query("ALTER TABLE $table_WP_Advanced_Search ADD (idform VARCHAR(200))");
+			$defautsID = array("idform" => "s");
+			$fldID = wp_parse_args($instance, $defautsID);
+			$IDUpgrade = $wpdb->update($table_WP_Advanced_Search, array('idform' => $fldID['idform']), array('id' => 1));
+			
+			// Mise à jour de la version
+			update_option("wp_advanced_search_version", $WP_Advanced_Search_Version);
+		}
 	}
 }
 
@@ -315,14 +328,16 @@ function WP_Advanced_Search_Stop_Form($form) {
 	$select = $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
 	
 	// Variables utiles (name et placeholder)
-	$nameSearch = $select->nameField;
+	$idSearch = $select->idform;
 	$placeholder = $select->placeholder;
 
 	// Ajoute le code Javascript bloquant
-	if(empty($placeholder)) {
-		$form = str_ireplace('<form', '<form onsubmit="if(document.getElementById(\''.$nameSearch.'\').value == \''.$placeholder.'\') { return false; }"', $form);
-	} else {
-		$form = str_ireplace('<form', '<form onsubmit="if(document.getElementById(\''.$nameSearch.'\').value == \''.$placeholder.'\' || document.getElementById(\''.$nameSearch.'\').value == \'\') { return false; }"', $form);
+	if(!empty($idSearch)) {
+		if(empty($placeholder)) {
+			$form = str_ireplace('<form', '<form onsubmit="if(document.getElementById(\''.$idSearch.'\').value == \'\') { return false; }"', $form);
+		} else {
+			$form = str_ireplace('<form', '<form onsubmit="if(document.getElementById(\''.$idSearch.'\').value == \''.$placeholder.'\' || (document.getElementById(\''.$idSearch.'\').placeholder == \''.$placeholder.'\' && document.getElementById(\''.$idSearch.'\').value == \'\')) { return false; }"', $form);
+		}
 	}
 	
 	// Retourne le "nouveau" formulaire

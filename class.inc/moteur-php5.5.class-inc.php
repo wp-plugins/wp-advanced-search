@@ -3,9 +3,9 @@
 Class Name: SearchEnginePOO WordPress
 Creator: Mathieu Chartier
 Website: http://blog.internet-formation.fr/2013/09/moteur-de-recherche-php-objet-poo-complet-pagination-surlignage-fulltext/
-Version: 2.1.1
+Version: 2.2
 Note: PHP 5.5 compatible
-Date: 2014-04-17
+Date: 10 octobre 2014
 */
 ?>
 
@@ -86,17 +86,18 @@ class moteurRecherche {
 	public $requeteTotale;		// Requete SQL finale (après algorithme, etc.)
 
 	/*------------------------------------------------------------------------------------*/
-	/*------------------------ Constructeur de la class (8 paramètres)- ------------------*/
-	/*-- 1. $champ est la requête de recherche -------------------------------------------*/
-	/*-- 2. $table est la table de la base de données dans laquelle chercher -------------*/
-	/*-- 3. $typeRecherche pour choisir son mode de recherche (like, regexp ou fulltext) -*/
-	/*-- 4. $stopWords permet d'exclure les mots "vides" provenant d'un tableau ----------*/
+	/*------------------------ Constructeur de la class (9 paramètres)- ------------------*/
+	/*-- 1. $bdd correspond à la connexion mysqli ou pdo (obligatoire pour PHP 5.5) ------*/
+	/*-- 2. $champ est la requête de recherche -------------------------------------------*/
+	/*-- 3. $table est la table de la base de données dans laquelle chercher -------------*/
+	/*-- 4. $typeRecherche pour choisir son mode de recherche (like, regexp ou fulltext) -*/
+	/*-- 5. $stopWords permet d'exclure les mots "vides" provenant d'un tableau ----------*/
 	/*-- => Inclure le fichier stopwords.php (variable $stowords) pour gagner du temps ---*/
-	/*-- 5. $exclusion permet d'exclure les mots plus courts que la taille donnée --------*/
+	/*-- 6. $exclusion permet d'exclure les mots plus courts que la taille donnée --------*/
 	/*-- => Si vide, aucune exclusion ne sera faite (mais les résultats moins précis) ----*/
-	/*-- 6. $encoding est l'encodage souhaité (utf8, utf-8, iso-8859-1, latin1...) -------*/
-	/*-- 7. $exact (true/false) pour une recherche exacte ou d'un ou plusieurs des mots --*/
-	/*-- 8. $accent (true/false) faire des recherches sans accent si la BDD le permet ----*/
+	/*-- 7. $encoding est l'encodage souhaité (utf8, utf-8, iso-8859-1, latin1...) -------*/
+	/*-- 8. $exact (true/false) pour une recherche exacte ou d'un ou plusieurs des mots --*/
+	/*-- 9. $accent (true/false) faire des recherches sans accent si la BDD le permet ----*/
 	/*------------------------------------------------------------------------------------*/
 	public function __construct($bdd = '', $champ = '', $table = '', $typeRecherche = 'regexp', $stopWords = array(), $exclusion = '', $encoding = 'utf-8', $exact = true, $accent = false) {
 		$this->db			= $bdd;
@@ -400,7 +401,7 @@ class moteurRecherche {
 		} else {
 			$this->limitMinMax = "";
 		}
-		
+
 		// Algorithme de pertinence (plus il y a de mots dans le résultat, plus c'est haut)
 		$numberWP = $this->db->get_row("SELECT count(*) FROM $this->tableBDD ".$conditions." $this->condition $orderLimitPerso", ARRAY_N);
 		if($algo[0] == true && $numberWP[0] != 0) {

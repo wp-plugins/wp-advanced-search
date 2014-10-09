@@ -32,8 +32,10 @@ function WP_Advanced_Search_update() {
 	$wp_advanced_search_exclusionwords	= $_POST['wp_advanced_search_exclusionwords'];
 	$wp_advanced_search_stopwords		= $_POST['wp_advanced_search_stopwords'];
 	$wp_advanced_search_posttype		= $_POST['wp_advanced_search_posttype'];
+	$wp_advanced_search_idform			= esc_html($_POST['wp_advanced_search_idform']);
 	$wp_advanced_search_placeholder		= esc_html($_POST['wp_advanced_search_placeholder']);
 	
+	// Catégories
 	$wp_advanced_search_categories 		= array();
 	foreach($_POST['wp_advanced_search_categories'] as $ctgSave) {
 		array_push($wp_advanced_search_categories, $ctgSave);
@@ -64,6 +66,7 @@ function WP_Advanced_Search_update() {
 			"exclusionWords" => $wp_advanced_search_exclusionwords,
 			"stopWords" => $wp_advanced_search_stopwords,
 			"NumberPerPage" => $wp_advanced_search_numberPerPage,
+			"idform" => $wp_advanced_search_idform,
 			"placeholder" => $wp_advanced_search_placeholder,
 			"strongWords" => $wp_advanced_search_strong,
 			"OrderOK" => $wp_advanced_search_orderOK,
@@ -168,9 +171,10 @@ function WP_Advanced_Search_Callback() {
                         <option value="post" <?php if($select->postType == 'post') { echo 'selected="selected"'; } ?> onclick="montrer('ctgBlock')";><?php _e('Articles','wp-advanced-search'); ?></option>
                         <option value="page" <?php if($select->postType == 'page') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')";><?php _e('Pages','wp-advanced-search'); ?></option>
                         <option value="pagepost" <?php if($select->postType == 'pagepost') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Articles + Pages','wp-advanced-search'); ?></option>
-                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Tout','wp-advanced-search'); ?></option>
+                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Autres','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_posttype"><strong><?php _e('Type de contenus pour la recherche ?','wp-advanced-search'); ?></strong></label>
+                    <br/><em><?php _e('"Autres" si vous n\'utilisez pas la table de recherche "xx_posts"','wp-advanced-search'); ?></em>
                 </p>
                 <p class="tr" id="ctgBlock" <?php if($select->postType == 'post') { echo 'style="display:block;"'; } else { echo 'style="display:none;"'; } ?>>
 					<?php
@@ -208,9 +212,14 @@ function WP_Advanced_Search_Callback() {
                     <br/><em><?php _e('0 ou vide pour tout afficher dans une page (sans pagination)','wp-advanced-search'); ?></em>
                 </p>
 				<p class="tr">
+                    <input value="<?php echo $select->idform; ?>" name="wp_advanced_search_idform" id="wp_advanced_search_idform" type="text" />
+                    <label for="wp_advanced_search_idform"><strong><?php _e('ID du champ de recherche','wp-advanced-search'); ?></strong></label>
+                    <br/><em><?php _e('Indiquez l\'ID du champ de recherche (HTML) pour aider les options en Javascript (souvent identique à l\'attribut name)','wp-advanced-search'); ?></em>
+                </p>
+				<p class="tr">
                     <input value="<?php echo $select->placeholder; ?>" name="wp_advanced_search_placeholder" id="wp_advanced_search_placeholder" type="text" />
                     <label for="wp_advanced_search_placeholder"><strong><?php _e('Placeholder du champ de recherche','wp-advanced-search'); ?></strong></label>
-                    <br/><em><?php _e('Blocage de la soumission du formulaire de recherche si un "placeholder" est précisé.','wp-advanced-search'); ?></em>
+                    <br/><em><?php _e('Blocage de la soumission du formulaire de recherche si un "placeholder" est précisé (texte par défaut écrit dans un champ de recherche)','wp-advanced-search'); ?></em>
                 </p>
 
                 <h4><br/><?php _e('Mise en surbrillance et rendu','wp-advanced-search'); ?></h4>
@@ -264,7 +273,7 @@ function WP_Advanced_Search_Callback() {
 							}
 						?>
                     </select>
-                    <label for="wp_advanced_search_orderColumn"><strong><?php _e('Colonne de classement','wp-advanced-search'); ?></strong></label>
+                    <label for="wp_advanced_search_orderColumn"><strong><?php _e('Colonne de classement des résultats','wp-advanced-search'); ?></strong></label>
                 </p>
                 <p class="tr">
                     <select name="wp_advanced_search_ascdesc" id="wp_advanced_search_ascdesc">
@@ -281,6 +290,7 @@ function WP_Advanced_Search_Callback() {
                         <option value="0" <?php if($select->stopWords == false) { echo 'selected="selected"'; } ?>><?php _e('Non','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_stopwords"><strong><?php _e('Activer les "stop words" ?','wp-advanced-search'); ?></strong></label>
+					<br/><em><?php _e('L\'activation permet d\'ignorer les mots courts classiques (articles, conjonctions de coordination...)','wp-advanced-search'); ?></em>
                 </p>
                 <p class="tr">
                     <select name="wp_advanced_search_exclusionwords" id="wp_advanced_search_exclusionwords">
@@ -303,6 +313,7 @@ function WP_Advanced_Search_Callback() {
                         <option value="0" <?php if($select->exactSearch == false) { echo 'selected="selected"'; } ?>><?php _e('Approchante','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_exactsearch"><strong><?php _e('Recherche exacte ou approchante ?','wp-advanced-search'); ?></strong></label>
+					<br/><em><?php _e('"Exacte" pour chercher le mot précis ou "Approchante" pour trouver les mots contenant la chaîne de caractères correspondante','wp-advanced-search'); ?></em>
                 </p>
                 <p class="tr">
                     <select name="wp_advanced_search_encoding" id="wp_advanced_search_encoding">

@@ -3,11 +3,11 @@ Contributors: Mathieu Chartier
 Donate link: http://www.mathieu-chartier.com
 Author URI: http://blog.internet-formation.fr/2013/07/wp-advanced-search/
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-wp-advanced-search/
-Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest, infinite scroll, trigger, scroll, infini, clic, click
+Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest, infinite scroll, trigger, scroll, infini, clic, click, placeholder
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 4.0
-Stable Tag: 2.6.2
+Stable Tag: 2.7
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -79,6 +79,14 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 8. Usage du trigger pour afficher les r&eacute;sultats (example with trigger to display results).
 
 == Changelog ==
+
+= Version 2.7 (09/10/2014) =
+
+- Am&eacute;lioration de la gestion des langues pour les stopwords notamment (Fixed a problem with the selection of the languages for stop words)
+- Correction du blocage du placeholder HTML 5 (Fixed a problem for the placeholder HTML5)
+- Ajout d'un champ ID du formulaire pour mieux g&eacute;rer les codes Javascript (Adding a field for the attribute "id" for the search form)
+- Ajout du choix "Autres" dans les types de contenus si vous n'utilisez pas la table xx_posts (Adding a new choice called "Others" in the content types if you don't use the classic table xx_posts)
+- Ajout de nouvelles phrases d'explication et am&eacute;lioration des traductions (Adding new phrases to provide better explanations and improved translations)
 
 = Version 2.6.2 (03/10/2014) =
 

@@ -413,7 +413,9 @@ function WP_Advanced_Search_Ajax_Results() {
 			$wpAdaptation = "AND post_type = 'page' AND post_status = 'publish'";
 		} else if($select->postType == "pagepost") {
 			$wpAdaptation = "AND (post_type = 'page' OR post_type = 'post') AND post_status = 'publish'";
-		} else {
+		} else if($select->postType == "all") {
+			$wpAdaptation = "";
+		} else { // Au cas où...
 			$wpAdaptation = "AND post_status = 'publish'";
 		}
 
@@ -425,8 +427,8 @@ function WP_Advanced_Search_Ajax_Results() {
 /*-------------------------------------------------------*/
 		
 		// Numéro de page récupéré dynamiquement
-		if(isset($_GET['page'])) {
-			$page = htmlspecialchars($_GET['page']);
+		if(isset($_GET['nb'])) {
+			$page = htmlspecialchars($_GET['nb']);
 		} else {
 			$page = 0;
 		}
