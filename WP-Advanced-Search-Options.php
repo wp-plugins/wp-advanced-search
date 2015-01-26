@@ -133,24 +133,13 @@ function WP_Advanced_Search_Callback() {
             <div class="col">
             	<h4><?php _e('Options générales du moteur','wp-advanced-search'); ?></h4>
                 <p class="tr">
-                <select name="wp_advanced_search_table" id="wp_advanced_search_table" />
-                <?php
-                    $tablesSearch = $wpdb->get_results("SHOW TABLES FROM ".$select->db." LIKE '".$wpdb->prefix."%'");					
-                    $numberTables = count($tablesSearch,1);
-                    for($i=0; $i < $numberTables; $i++) {
-                        foreach($tablesSearch[$i] as $table => $value) {
-                    ?>
-                        <option value="<?php echo $value; ?>" <?php if($select->tables == $value) { echo 'selected="selected"'; } ?>><?php _e($value,'wp-advanced-search'); ?></option>
-                    <?php
-                        }
-                    }
-                ?>
-                </select>
-				<label for="wp_advanced_search_table"><strong><?php _e('Table de recherche','wp-advanced-search'); ?></strong></label>
+					<input type="text" name="wp_advanced_search_table" id="wp_advanced_search_table" value="<?php echo $select->tables; ?>" />
+					<label for="wp_advanced_search_table"><strong><?php _e('Table de recherche','wp-advanced-search'); ?></strong></label>
+					<br/><em><?php _e('Il est recommandé de laisser la table "xx_posts" contenant toutes les publications','wp-advanced-search'); ?></em>
 				</p>
                 <p class="tr">
-                <input value="<?php echo $select->nameField; ?>" name="wp_advanced_search_name" id="wp_advanced_search_name" type="text" />
-                <label for="wp_advanced_search_name"><strong><?php _e('Attribut "name" du champ de recherche','wp-advanced-search'); ?></strong></label>
+					<input value="<?php echo $select->nameField; ?>" name="wp_advanced_search_name" id="wp_advanced_search_name" type="text" />
+					<label for="wp_advanced_search_name"><strong><?php _e('Attribut "name" du champ de recherche','wp-advanced-search'); ?></strong></label>
 				</p>
                 <p class="tr">
                     <input value="<?php echo $select->colonnesWhere; ?>" name="wp_advanced_search_colonneswhere" id="wp_advanced_search_colonnewhere" type="text" />
@@ -171,7 +160,8 @@ function WP_Advanced_Search_Callback() {
                         <option value="post" <?php if($select->postType == 'post') { echo 'selected="selected"'; } ?> onclick="montrer('ctgBlock')";><?php _e('Articles','wp-advanced-search'); ?></option>
                         <option value="page" <?php if($select->postType == 'page') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')";><?php _e('Pages','wp-advanced-search'); ?></option>
                         <option value="pagepost" <?php if($select->postType == 'pagepost') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Articles + Pages','wp-advanced-search'); ?></option>
-                        <option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Autres','wp-advanced-search'); ?></option>
+						<option value="all" <?php if($select->postType == 'all') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Tous les contenus publiés','wp-advanced-search'); ?></option>
+                        <option value="others" <?php if($select->postType == 'others') { echo 'selected="selected"'; } ?> onclick="cacher('ctgBlock')"><?php _e('Autres','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_posttype"><strong><?php _e('Type de contenus pour la recherche ?','wp-advanced-search'); ?></strong></label>
                     <br/><em><?php _e('"Autres" si vous n\'utilisez pas la table de recherche "xx_posts"','wp-advanced-search'); ?></em>

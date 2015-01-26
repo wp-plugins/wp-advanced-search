@@ -474,6 +474,8 @@ function WP_Advanced_Search() {
 		} else if($select->postType == "pagepost") {
 			$wpAdaptation = "AND (post_type = 'page' OR post_type = 'post') AND post_status = 'publish'";
 		} else if($select->postType == "all") {
+			$wpAdaptation = "AND post_status = 'publish'";
+		} else if($select->postType == "others") {
 			$wpAdaptation = "";
 		} else { // Au cas où...
 			$wpAdaptation = "AND post_status = 'publish'";
