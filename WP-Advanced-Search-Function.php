@@ -499,4 +499,7 @@ function WP_Advanced_Search() {
 		}
 	}
 }
+
+// Ajout d'un shortcode [advanced-search] --> echo do_shortcode('[advanced-search]');
+add_shortcode('advanced-search', 'WP_Advanced_Search');
 ?>

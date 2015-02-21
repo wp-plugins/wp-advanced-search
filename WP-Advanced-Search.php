@@ -4,7 +4,7 @@ Plugin Name: WP-Advanced-Search
 Plugin URI: http://blog.internet-formation.fr/2013/10/wp-advanced-search/
 Description: Moteur de recherche avancé pour WordPress à la place du moteur initial (mise en surbrillance, trois types de recherche, styles, paginations, algorithme de pertinence optionnel...). (<em>Plugin adds a advanced search engine for WordPress with a lot of options (three type of search, bloded request, three method for pagination, relevancy algorithm...</em>).
 Author: Mathieu Chartier
-Version: 2.7.1
+Version: 2.8
 Author URI: http://blog.internet-formation.fr
 */
 

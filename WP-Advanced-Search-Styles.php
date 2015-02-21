@@ -127,8 +127,10 @@ function WP_Advanced_Search_Callback_Styles() {
                     <label for="wp_advanced_search_numberOK"><strong><?php _e('Numéroter les résultats ?','wp-advanced-search'); ?></strong></label>
                 </p>
         	</div>
+			<p class="clear"></p>
+			<p><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
 		</div>
-        <p class="clear"><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
+		<p class="clear"></p>
         </form>
 <?php
 	echo '</div>'; // Fin de la page d'admin

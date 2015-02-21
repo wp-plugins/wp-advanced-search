@@ -7,7 +7,7 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 4.1
-Stable Tag: 2.7.1
+Stable Tag: 2.8
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -15,7 +15,7 @@ Stable Tag: 2.7.1
 
 <p><em>En fran&ccedil;ais</em></p>
 <p><strong>WP-Advanced-Search</strong> fonctionne en anglais et en fran&ccedil;ais<br/>
-<strong>WP-Advanced-Search</strong> fonctionne avec un code court <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong> &agrave; ajouter dans la page de recherche du th&egrave;me WordPress (search.php). <strong>Tout est enti&egrave;rement param&eacute;trable</strong> dans les r&eacute;glages de WordPress (sous-menu 'Advanced Search').</p>
+<strong>WP-Advanced-Search</strong> fonctionne avec un code court <strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong> ou le shortcode <strong>[advanced-search]</strong> &agrave; ajouter dans la page de recherche du th&egrave;me WordPress (search.php). <strong>Tout est enti&egrave;rement param&eacute;trable</strong> dans les r&eacute;glages de WordPress (sous-menu 'Advanced Search').</p>
 <p>
 Quelques exemples d'options existantes :
 <ul>
@@ -27,7 +27,7 @@ Quelques exemples d'options existantes :
 <li>Autocompl&eacute;tion et ajout automatique de mots dans l'index</li>
 <li>Gestion des blocs &agrave; afficher dans les r&eacute;sultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
-<li>Possibilit&eacute; de faire une recherche exacte avec des mots entre guillemets</li>
+<li>Possibilit&eacute; de rechercher une expression précise (mots entre guillemets)</li>
 <li>Possibilit&eacute; de rechercher des articles plac&eacute;s dans des cat&eacute;gories pr&eacute;cises</li>
 <li>...</li>
 </ul>
@@ -58,13 +58,15 @@ Some examples of existing options:
 <p><em>En fran&ccedil;ais</em></p>
 <p>1. Recopier le contenu de l'archive dans le r&eacute;pertoire des extensions (wp-content/plugins) et activer dans le panneau des extensions du backoffice de Wordpress.<br/>
 2. R&eacute;gler les param&egrave;tres dans les options de l'extension.<br/>
-3. Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+3.1 Remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+3.2 Variante : remplacer la boucle d'affichage de la page de recherche (search.php) par <br/><strong>&lt;?php echo do_shortcode('[advanced-search]'); ?&gt;</strong>.<br/>
 N.B. : Pensez &agrave; installer les index FULLTEXT si vous utilisez ce mode de recherche (lien en dessous du choix du type de recherche)</p>
 
 <p><em>For English people</em></p>
 <p>1. Copy the content of the archive in "wp-content/plugins" and activate the plugin.<br/>
 2. Adjust the settings in the options.<br/>
-3. Replace the display loop search page (search.php) by <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+3.1 Replace the display loop search page (search.php) by <br/><strong>&lt;?php WP_Advanced_Search(); ?&gt;</strong>.<br/>
+3.2 Other solution: replace the display loop search page (search.php) by <br/><strong>&lt;?php echo do_shortcode('[advanced-search]'); ?&gt;</strong>.<br/>
 NB: Remember to install the FULLTEXT index if you use this method of research (link below choosing the type of research)</p>
 
 == Screenshots ==
@@ -79,6 +81,12 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 8. Usage du trigger pour afficher les r&eacute;sultats (example with trigger to display results).
 
 == Changelog ==
+
+= Version 2.8 (21/02/2015) =
+
+- Correction d'un souci de disparition des boutons d'enregistrement (Fixed a problem with the display of the 'save' button)
+- Ajout d'un shortcode pour g&eacute;rer l'affichage des r&eacute;sultats de recherche (Adding a shortcode to display the result page)
+- Gestion des expressions pr&eacute;cises dans le syst&egrave;me d'autocompl&eacute;tion (Management of the exact expressions in autocompletion)
 
 = Version 2.7.1 (26/01/2015) =
 

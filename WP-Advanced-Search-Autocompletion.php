@@ -93,7 +93,8 @@ function WP_Advanced_Search_Callback_Autocompletion() {
                     </select>
                     <label for="wp_advanced_search_autocompletion_typesuggest"><strong><?php _e('Type d\'utilisation des auto-suggestions','wp-advanced-search'); ?></strong></label>
                 </p>
-                <p class="clear"><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
+				<p class="clear"></p>
+                <p><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
             </div>
             <div class="col">
                 <h4><?php _e('Personnalisation technique (optionnel)','wp-advanced-search'); ?></h4>

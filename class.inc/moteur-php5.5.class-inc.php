@@ -101,7 +101,7 @@ class moteurRecherche {
 	/*------------------------------------------------------------------------------------*/
 	public function __construct($bdd = '', $champ = '', $table = '', $typeRecherche = 'regexp', $stopWords = array(), $exclusion = '', $encoding = 'utf-8', $exact = true, $accent = false) {
 		$this->db			= $bdd;
-		$this->requete		= $champ;
+		$this->requete		= trim($champ);
 		$this->tableBDD		= $table;
 		$this->encode		= strtolower($encoding);
 		$this->searchType	= $typeRecherche;
@@ -833,7 +833,7 @@ class autoCompletion {
 			$mb_encode = $encoding;	
 		}
 		$field = mb_strtolower(strip_tags($field), $mb_encode);
-
+		
 		// 1. si une expression est entre guillemets, on cherche l'expression complète (suite de mots)
 		// 2. si les mots clés sont hors des guillemets, la recherche mot par mot est activée
 		if(preg_match_all('/["]{1}([^"]+[^"]+)+["]{1}/i', $field, $entreGuillemets)) {

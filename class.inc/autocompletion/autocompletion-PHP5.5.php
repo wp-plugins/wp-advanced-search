@@ -38,10 +38,15 @@ if(isset($_GET['q']) && !empty($_GET['q'])) {
     
 	// Retourne les résultats avec le système d'autocomplétion
     while($donnees = mysqli_fetch_assoc($results)) {
+		$mots = $donnees[$field];
+		if(preg_match("#([ ]+)#", $mots)) {
+			$mots = '"'.$mots.'"';
+		}
+	
         if($encode == "utf-8" || $encode == "utf8" || $encode == "UTF-8" || $encode == "UTF8") {
-			echo utf8_encode($donnees[$field])."\n";
+			echo utf8_encode($mots)."\n";
 		} else {
-			echo $donnees[$field]."\n";	
+			echo $mots."\n";	
 		}
     }
 }

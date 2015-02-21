@@ -321,8 +321,10 @@ function WP_Advanced_Search_Callback() {
                     <br/><em><?php _e('Utile si les contenus sont sans accent dans la base de données','wp-advanced-search'); ?></em>
                 </p>
 			</div>
+			<p class="clear"></p>
+			<p><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
         </div>
-        <p class="clear"><input type="submit" name="wp_advanced_search_action" class="button-primary" value="<?php _e('Enregistrer' , 'wp-advanced-search'); ?>" /></p>
+        <p class="clear"></p>
         </form>
 <?php
 	echo '</div>'; // Fin de la page d'admin
