@@ -104,6 +104,7 @@ function WP_Advanced_Search() {
 				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'wp-advanced-search').'</p>'."\n";
 				$output .= "</div>\n";
 			} else {
+				$output = '';
 				$nb = 0;
 				if(isset($_GET['page'])) {
 					$nb = $nb + ($select->NumberPerPage * ($_GET['page']-1));
@@ -149,11 +150,11 @@ function WP_Advanced_Search() {
 					if($select->TitleOK == true && $select->NumberOK == true) {
 						$output .= '<div class="WPFirstSearch">'."\n";
 						$output .= '<p class="WPnumberSearch">'.$nb.'</p>'."\n";
-						$output .= '<p class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></p>'."<p class='clearBlock'></p>\n";				
+						$output .= '<p class="WPtitleSearch"><a href="'.get_permalink($key['ID']).'">'.$key['post_title'].'</a></p>'."<p class='clearBlock'></p>\n";				
 						$output .= '</div>'."\n";
 					} else if($select->TitleOK == true && $select->NumberOK == false) {
 						$output .= '<div class="WPFirstSearch">'."\n";
-						$output .= '<p class="WPtitleSearch"><a href="'.$key['guid'].'">'.$key['post_title'].'</a></p>'."\n";				
+						$output .= '<p class="WPtitleSearch"><a href="'.get_permalink($key['ID']).'">'.$key['post_title'].'</a></p>'."\n";				
 						$output .= '</div>'."\n";
 					} else if($select->TitleOK == false && $select->NumberOK == true) {
 						$output .= '<div class="WPFirstSearch">'."\n";
@@ -369,11 +370,11 @@ function WP_Advanced_Search() {
 							// Affichage conditionné des commentaires
 							if($select->CommentOK == true) {
 								if($key['comment_count'] == 0) {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.__('Aucun commentaire','wp-advanced-search').'</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.get_permalink($key['ID']).'#comments">'.__('Aucun commentaire','wp-advanced-search').'</a></span>'."\n";
 								} else if($key['comment_count'] == 1) {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' '.__('commentaire','wp-advanced-search').'</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.get_permalink($key['ID']).'#comments">'.$key['comment_count'].' '.__('commentaire','wp-advanced-search').'</a></span>'."\n";
 								} else {
-									$output .= '<span class="WPcommentSearch"><a href="'.$key['guid'].'#comments">'.$key['comment_count'].' '.__('commentaires','wp-advanced-search').'</a></span>'."\n";
+									$output .= '<span class="WPcommentSearch"><a href="'.get_permalink($key['ID']).'#comments">'.$key['comment_count'].' '.__('commentaires','wp-advanced-search').'</a></span>'."\n";
 								}
 							}
 
@@ -392,7 +393,7 @@ function WP_Advanced_Search() {
 						} else if($select->ArticleOK == "excerptmore") {
 							$output .= '<div class="WPtextSearch">'."\n";
 							$output .= $key['post_excerpt'];
-							$output .= '<p class="WPReadMoreSearch"><a href="'.$key['guid'].'">'.__('Lire la suite...','wp-advanced-search').'</a></p>'."\n";
+							$output .= '<p class="WPReadMoreSearch"><a href="'.get_permalink($key['ID']).'">'.__('Lire la suite...','wp-advanced-search').'</a></p>'."\n";
 							$output .= '</div>'."\n";							
 						} else {
 							$output .= '<div class="WPtextSearch">'.$key['post_content'].'</div>'."\n";
@@ -411,7 +412,7 @@ function WP_Advanced_Search() {
 						} else if($select->ArticleOK == "excerptmore") {
 							$output .= '<div class="WPtextSearch">'."\n";
 							$output .= $key['post_excerpt'];
-							$output .= '<p class="WPReadMoreSearch"><a href="'.$key['guid'].'">'.__('Lire la suite...','wp-advanced-search').'</a></p>'."\n";
+							$output .= '<p class="WPReadMoreSearch"><a href="'.get_permalink($key['ID']).'">'.__('Lire la suite...','wp-advanced-search').'</a></p>'."\n";
 							$output .= '</div>'."\n";							
 						} else {
 							$output .= '<div class="WPtextSearch">'.$key['post_content'].'</div>'."\n";
