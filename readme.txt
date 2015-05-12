@@ -27,7 +27,7 @@ Quelques exemples d'options existantes :
 <li>Autocompl&eacute;tion et ajout automatique de mots dans l'index</li>
 <li>Gestion des blocs &agrave; afficher dans les r&eacute;sultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
-<li>Possibilit&eacute; de rechercher une expression précise (mots entre guillemets)</li>
+<li>Possibilit&eacute; de rechercher une expression pr&eacute;cise (mots entre guillemets)</li>
 <li>Possibilit&eacute; de rechercher des articles plac&eacute;s dans des cat&eacute;gories pr&eacute;cises</li>
 <li>...</li>
 </ul>
