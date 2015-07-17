@@ -16,5 +16,5 @@
 .advanced-search-admin .block .tr img {width:100%; border:1px solid #ddd;}
 .advanced-search-admin .block .tr p:hover {background-color:#e5e5e5; box-shadow:1px 1px 4px #777;}
 .advanced-search-admin .block .tr-info {padding:0 1em; font-size:.9em; font-style:italic;}
-.advanced-search-admin .block .autoCompleteDelete {text-indent:2em; background:url(../img/warning.png) no-repeat left center; color:#ffa221;}
+.advanced-search-admin .block .autoCompleteDelete,.advanced-search-admin .block .autoCorrectDelete {text-indent:2em; background:url(../img/warning.png) no-repeat left center; color:#ffa221;}
 .advanced-search-admin #deleteSelect {width:60%; font-size:.9em}

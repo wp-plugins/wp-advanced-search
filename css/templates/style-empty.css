@@ -1,6 +1,12 @@
 .clearBlock{clear:both}
+.WPAdvancedSearch{}
+.WPBlockSearch{}
+.WPbeforeResults{}
 .WPAdvancedSearch h3{}
 .searchNbResults {}
+.WPcorrections {}
+.WPcorrections a{}
+.WPcorrections a:hover{}
 .WPFirstSearch a{}
 .WPFirstSearch a:hover,.WPcommentSearch a:hover,.WPReadMoreSearch a:hover,.WPtextSearch a:hover{}
 .WPSecondSearch{}

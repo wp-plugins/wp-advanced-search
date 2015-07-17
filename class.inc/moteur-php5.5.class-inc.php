@@ -3,56 +3,13 @@
 Class Name: SearchEnginePOO WordPress
 Creator: Mathieu Chartier
 Website: http://blog.internet-formation.fr/2013/09/moteur-de-recherche-php-objet-poo-complet-pagination-surlignage-fulltext/
-Version: 2.2
 Note: PHP 5.5 compatible
-Date: 10 octobre 2014
+Version: 2.4
+Date: 15 juillet 2015
 */
 ?>
 
 <?php
-/*------------------------------------------------------------------------*/
-/*----------------- Class pour créer les index FullText ------------------*/
-/*-- 1. Lancer $alterTable = new alterTableFullText(); -------------------*/
-/*-- 2. Trois paramères : nom de la base, de la table puis des colonnes --*/
-/*-- N.B. : la fonction modifie la table en MyISAM (pour les FullText) ---*/
-/*------------------------------------------------------------------------*/
-class alterTableFullText {
-	private $db; // Variable de connexion (mysqli en objet !)
-
-	public function __construct($bdd, $nomBDD, $table, $colonnes) {
-		$this->db = $bdd;
-		// Vérification du type de table SQL pour savoir si c'est en MyISAM
-		$engineSQL = $this->db->get_results("SHOW TABLE STATUS FROM $nomBDD LIKE '".$table."'", ARRAY_A);
-		$engine = $engineSQL;
-		
-		// Modification de la table en MyISAM si nécessaire (compatibilité FULLTEXT)
-		if($engine["Engine"] != "MyISAM") {
-			$MyISAMConverter = $this->db->query("ALTER TABLE $table ENGINE=MYISAM") or die("Erreur : ".$this->db->show_errors());
-		}	
-		// Création des index FULLTEXT dans les colonnes s'ils n'existent pas déjà...
-		if (is_array($colonnes)) {
-			foreach($colonnes as $colonne) {
-				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
-				$fullTextExists = $ifFullTextExists;
-				if($fullTextExists['Index_type'] != 'FULLTEXT') {
-					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
-				}
-			}
-		} else {
-
-			$colonnes = str_ireplace(' ', '', $colonnes);
-			$SQLFields = explode(',',$colonnes);
-			foreach($SQLFields as $colonne) {
-				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
-				$fullTextExists = $ifFullTextExists;
-				if($fullTextExists['Index_type'] != 'FULLTEXT') {
-					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
-				}
-			}
-		}
-	}
-}
-
 /*--------------------------------------------------------------------------*/
 /*--------------------- Class du moteur de recherche -----------------------*/
 /*-- 1. Lancer $moteur = new moteurRecherche(args); ------------------------*/
@@ -67,12 +24,19 @@ class moteurRecherche {
 	private $encode;			// Type d'encodage ("utf-8" ou "iso-8859-1" notamment)
 	private $searchType;		// Type de recherche ("like", "regexp" ou "fulltext")
 	private $exactmatch;		// Méthode de recherche (précise ou approchante --> true ou false)
-	private $exclusion;			// Taille minimale des mots exclus
+	private $stopWords;			// Tableau des stopwords
+	private $exclusion;			// Nombre de lettres minimum pour les mots (exclusion en-dessous)
+	private $accents;			// Recherche avec ou sans accent (true ou false)
 	private $colonnesWhere;		// Tableau contenant les colonnes dans lesquelles la recherche est effectuée
 	private $algoRequest;		// Tableau contenant chaque mot ou expression clé (après découpage)
 	private $request;			// Tableau contenant chaque mot ou expression clé (après découpage)
+	private $allExpressions;	// Tableau contenant chaque mot ou expression clé (avant nettoyage)
 	private $motsExpressions;	// Tableau contenant chaque mot ou expression clé (après nettoyage)
 	private $condition;			// Ensemble du WHERE de la requête finale
+	
+	private $tableIndex;		// Nom de la table de l'index des mots corrects (pour la correction automatique)
+	public $motsCorriges;		// Tableau des mots corrigés (si la méthode est utilisée)
+	public $requeteCorrigee;	// Requête complète mais corrigée
 	
 	private $orderBy;			// Tableau des composantes du ORDER BY pesonnalisé (si fonction Callback)
 	private $limitMinMax;		// Tableau des composantes du LIMIT pesonnalisé (si fonction Callback)
@@ -106,7 +70,9 @@ class moteurRecherche {
 		$this->encode		= strtolower($encoding);
 		$this->searchType	= $typeRecherche;
 		$this->exactmatch	= $exact;
+		$this->stopWords	= $stopWords;
 		$this->exclusion	= $exclusion;
+		$this->accents		= $accent;
 
 		// Suppression des balises HTML (sécurité)
 		if($this->encode == 'latin1' || $this->encode == 'Latin1' || $this->encode == 'latin-1' || $this->encode == 'Latin-1') {
@@ -128,10 +94,24 @@ class moteurRecherche {
 			}
 			// Récupère les mots qui ne sont pas entre guillemets dans un tableau
 			$sansExpressions = str_ireplace($entreGuillemets[0],"",$champ);
-			$motsSepares = explode(" ",$sansExpressions);		
+			$motsSepares = explode(" ",$sansExpressions);	
+
+			// Récupération des mots pour la correction des résultats !
+			$totalResults = array_merge($entreGuillemets[0], $motsSepares);			
 		} else {
 			$motsSepares = explode(" ",$champ);
+			$totalResults = explode(" ",$champ); // Utile pour la correction des résultats !
 		}
+
+		// Enregistre la liste des mots avant "nettoyage" de la requête (stop words, etc.)
+		foreach($totalResults as $key => $value) {
+			// Supprime les chaines vides du tableau (et donc les mots exclus)
+			if(empty($value)) {
+				unset($totalResults[$key]);
+			}
+			$this->allExpressions = $totalResults;
+		}
+
 		// Supprimer les clés vides du tableau (à cause des espaces de trop et strip_tags)
 		foreach($motsSepares as $key => $value) {
 			// Remplace les mots exclus (trop courts) par des chaines vides
@@ -171,15 +151,13 @@ class moteurRecherche {
 					$recherche[] = str_ireplace($withaccent, $withnoaccent, htmlspecialchars(trim(strip_tags($expression))));
 				}
 			}
-			$this->algoRequest = $recherche; // Tableau contenant les mots et expression de la requête (doublon utile !)			
-			$this->request = $recherche; // Tableau contenant les mots et expression de la requête de l'utilisateur
-			$this->countWords = count($recherche,1); // nombre de mots contenus dans la requête
 		} else {
 			$recherche = array('');
-			$this->algoRequest = $recherche; // Tableau contenant les mots et expression de la requête (doublon utile !)
-			$this->request = $recherche; // Tableau contenant les mots et expression de la requête de l'utilisateur
-			$this->countWords = count($recherche,1); // nombre de mots contenus dans la requête	
 		}
+
+		$this->algoRequest = $recherche; // Tableau contenant les mots et expressions de la requête (doublon utile !)
+		$this->request = $recherche; // Tableau contenant les mots et expressions de la requête de l'utilisateur
+		$this->countWords = count($recherche,1); // nombre de mots contenus dans la requête
 	}
 
 	/*--------------------------------------------------------------------------------*/
@@ -484,6 +462,289 @@ class moteurRecherche {
 			echo "<p>Attention ! Aucune fonction de rappel appelée pour afficher les résultats</p>";	
 		}
 	}
+
+	/*----------------------------------------------------------------------------------------------------*/
+	/*------------------------------------- Correction des résultats -------------------------------------*/
+	/*-- 1 paramètre $tableIndex (table contenant les mots corrigés) -------------------------------------*/
+	/*-- 2 paramètre GET de la recherche (par défaut : "s") ----------------------------------------------*/
+	/*-- 3 $select = true si la comparaison des mots s'effectue via la table de l'index ------------------*/
+	/*----------------------------------------------------------------------------------------------------*/
+	public function getCorrection($tableIndex = "", $parametre = "s", $select = true) {
+		// Vérifie si l'index existe
+		if(empty($tableIndex)) {
+			$tableIndex = $this->tableIndex;
+		}
+	
+		// Tableau des mots à vérifier
+		$indexinverse = $this->db->get_results("SELECT * FROM ".$tableIndex, ARRAY_A);
+
+		// Initialisation des informations utiles
+		$queryTotal = array();
+		$correction = array();
+		$nb = 0;
+
+		if(!empty($indexinverse) && !empty($_GET[$parametre])) {
+			// Pour chaque mot de la requête, on teste les correspondances (distance de Levenshtein)
+			foreach($this->allExpressions as $mot) {
+				// Valeur metaphone et soundex d'un mot
+				$metaphone = metaphone($mot);
+				$soundex = soundex($mot);
+
+				// Boucle du tableau des mots pour comparer les valeurs
+				foreach($indexinverse as $word) {
+					if($select !== true) {
+						$metaphoneCompare = metaphone($word['word']);
+						$soundexCompare = soundex($word['word']);
+					} else {
+						$metaphoneCompare = $word['metaphone'];
+						$soundexCompare = $word['soundex'];
+					}
+
+					// On ne garde que les mots dont les métaphone ou soundex se valent
+					if($mot != $word['word'] && ($metaphone == $metaphoneCompare || $soundex == $soundexCompare)) {
+						$queryTotal[$nb] = "<strong>".$word['word']."</strong>";
+						$newWords[$nb] = $word['word']; // Tableau des mots (sans mise en gras, etc.)
+						$correction[] = true; // Permet de préciser qu'une correction a eu lieu (pour conditionner l'affichage)
+						break;
+					}
+				}
+				
+				// On enregistre aussi les mots non "corrigés" pour reconstituer la requête complète
+				if(empty($queryTotal[$nb])) {
+					$queryTotal[$nb] = $mot;
+					$newWords[$nb] = $mot; // Tableau des mots (sans mise en gras, etc.)
+					$correction[] = false; // Permet de préciser qu'une correction n'a pas eu lieu (pour conditionner l'affichage)
+				}
+				$nb++;
+			}
+			// Formatage de la requête corrigée complète
+			$recherche = implode(" ", $queryTotal);
+			
+			// Récupération du tableau des mots corrigés (si besoin externe)
+			$this->motsCorriges = $newWords;
+			
+			// Récupération de la requête corrigée
+			$this->requeteCorrigee = implode(" ", $newWords);
+			
+			// On retourne le résultat s'il y a eu au moins une correction ($correction avec au moins un "true")
+			if(in_array(true, $correction)) {
+				return $this->queryStringToLink($recherche, $parametre);
+			}
+		}
+	}
+
+	// Méthode privée pour faire un lien vers la requête contenant les mots corrigés
+	private function queryStringToLink($string, $queryArg = "q") {
+		// Récupération des mots clés dans les Query String
+		$queryString = urlencode($_GET[$queryArg]);
+
+		// Adresse web courante avec Query String
+		$url = $_SERVER['SCRIPT_NAME']."?".$_SERVER['QUERY_STRING'];
+
+		// Remplacement des espaces par des "+"
+		$stringFormat = urlencode(strip_tags($string));
+
+		// Modification des Query String
+		$fixedUrl = str_ireplace($queryString, $stringFormat, $url);
+
+		// Formatage du lien final
+		$link = "<a href=".$fixedUrl.">".$string."</a>";
+		
+		return $link;
+	}
+	
+	// Méthode pour récupérer les résultats de la requête corrigée automatiquement
+	public function getCorrectedResults() {
+		// Récupère les mots corrigés (sans mise en gras, etc.)
+		$this->setQuery($this->requeteCorrigee);
+
+		// Relance la requête avec les "nouveaux mots"
+		$this->moteurRequetes($this->colonnesWhere);
+		
+		// Vérifie que c'est bon
+		return true;
+	}
+
+	// Setter pour modifier la requête à la volée (accesseur utile pour la correction automatique)
+	public function setQuery($query) {
+		$this->getCleanQuery($query);
+	}
+	
+	// Méthode pour créer un index inversé (si inexistant) et ajouter des mots à l'intérieur
+	public function createIndex($tableName = '') {
+		// Vérifie si l'index existe
+		if(empty($tableIndex)) {
+			$tableName = $this->tableIndex;
+		} else {
+			$this->tableIndex = $tableName;
+		}
+	
+		if(!empty($tableName)) {
+			$createSQL = "CREATE TABLE IF NOT EXISTS ".$tableName." (
+						 idWord INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						 word VARCHAR(200) NOT NULL,
+						 metaphone VARCHAR(200) NOT NULL,
+						 soundex VARCHAR(200) NOT NULL,
+						 theme VARCHAR(200) NOT NULL,
+						 coefficient FLOAT(4,1) NOT NULL DEFAULT '1.0')
+						 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
+			$this->db->query($createSQL) or die("Erreur de création de l'index inversé (méthode createIndex)");
+		}
+	}
+	
+	// Méthode pour ajouter les mots dans l'index avec des informations complémentaires
+	public function setIndex($arrayWords = array(), $tableIndex = '') {
+		// Vérifie si l'index existe
+		if(empty($tableIndex)) {
+			$tableIndex = $this->tableIndex;
+		}
+	
+		// Récupération des mots dans l'index (pour éviter les doublons)	
+		$selectWords = $this->db->get_results("SELECT word FROM ".$tableIndex, ARRAY_A);
+		$selected = array();
+		foreach($selectWords as $w) {
+			$selected[] = $w['word'];
+		}
+	
+		// Ajoute les mots un par un dans l'index de mots corrects avec leurs valeurs correspondantes
+		foreach($arrayWords as $word) {
+			// Adapte les expressions précises pour les ajouter comme prévu dans l'index
+			if(preg_match("#[[:blank:]]+#i", trim($word))) {
+				$word = '"'.$word.'"';
+			}
+			
+			// N'ajoute que si le mot ou l'expression n'existe pas
+			if(!in_array($word, $selected)) {
+				// Mesure les valeurs "métaphone" et "soundex" pour chaque mot
+				$metaphone = metaphone($word);
+				$soundex = soundex($word);
+				
+				// Ajoute les données dans la table de l'index
+				$prepare = $this->db->prepare("INSERT INTO ".$tableIndex." (word, metaphone, soundex) VALUES (%s, %s, %s)", array($word, $metaphone, $soundex));
+				$this->db->query($prepare);
+			}
+		}
+	}
+	
+	// Récupère la liste des données de l'index de mots corrects (mots, métaphones, soundex...)
+	public function getIndex($tableIndex = "") {
+		// Vérifie si l'index existe
+		if(empty($tableIndex)) {
+			$tableIndex = $this->tableIndex;
+		}
+
+		// Sélectionne la totalité de l'index
+		$selectAll = $this->db->query("SELECT * FROM ".$tableIndex) or die("Erreur : ".$this->db->error);
+		
+		// Liste tous les résultats
+		$all = mysqli_fetch_all($selectAll, MYSQLI_ASSOC);
+		$index = array();
+		foreach($all as $word) {
+			$index[] = $word;
+		}
+		
+		// Retourne le résultat
+		return $index;
+	}
+	
+	// Vérifie l'existence ou non de la table contenant les mots corrects (2 paramètres : nom de la table, nom de la base de données)
+	public function isIndex($tableIndex, $databaseName) {
+		$this->tableIndex = $tableIndex;
+		
+		$getSQL = "SHOW TABLES FROM ".$databaseName." LIKE '".$tableIndex."'";
+		$result = $this->db->query($getSQL);
+		return $result->num_rows;
+	}
+
+	// Méthode de nettoyage d'une requête (doublon pour la correction)
+	private function getCleanQuery($query = "") {
+		// Suppression des balises HTML (sécurité)
+		if($this->encode == 'latin1' || $this->encode == 'Latin1' || $this->encode == 'latin-1' || $this->encode == 'Latin-1') {
+			$mb_encode = "ISO-8859-1";
+		} elseif($this->encode == 'utf8' || $this->encode == 'UTF8' || $this->encode == 'utf-8' || $this->encode == 'UTF-8') {
+			$mb_encode = "UTF-8";
+		} else {
+			$mb_encode = $encoding;	
+		}
+		$champ = mb_strtolower(strip_tags($query), $mb_encode);
+
+		// 1. si une expression est entre guillemets, on cherche l'expression complète (suite de mots)
+		// 2. si les mots clés sont hors des guillemets, la recherche mot par mot est activée
+		if(preg_match_all('/["]{1}([^"]+[^"]+)+["]{1}/i', $champ, $entreGuillemets)) {
+			// Ajoute toutes les expressions entre guillemets dans un tableau
+			foreach($entreGuillemets[1] as $expression) {
+				$results[] = $expression;
+			}
+			// Récupère les mots qui ne sont pas entre guillemets dans un tableau
+			$sansExpressions = str_ireplace($entreGuillemets[0],"",$champ);
+			$motsSepares = explode(" ",$sansExpressions);
+
+			// Récupération des mots pour la correction des résultats !
+			$totalResults = array_merge($entreGuillemets[0], $motsSepares);
+		} else {
+			$motsSepares = explode(" ",$champ);
+			$totalResults = explode(" ",$champ); // Utile pour la correction des résultats !
+		}
+		
+		// Enregistre la liste des mots avant "nettoyage" de la requête (stop words, etc.)
+		foreach($totalResults as $key => $value) {
+			// Supprime les chaines vides du tableau (et donc les mots exclus)
+			if(empty($value)) {
+				unset($totalResults[$key]);
+			}
+			$this->allExpressions = $totalResults;
+		}
+		
+		// Supprimer les clés vides du tableau (à cause des espaces de trop et strip_tags)
+		foreach($motsSepares as $key => $value) {
+			// Remplace les mots exclus (trop courts) par des chaines vides
+			if(!empty($this->exclusion)) {
+				if(strlen($value) <= $this->exclusion) {
+					$value = '';
+				}
+			}
+			// Supprime les stops words s'ils existent
+			if(!empty($this->stopWords)) {
+				if(in_array($value, $this->stopWords)) {
+					$value = '';
+				}
+			}
+			// Supprime les chaines vides du tableau (et donc les mots exclus)
+			if(empty($value)) {
+				unset($motsSepares[$key]);
+			}
+		}
+		// Ajoute chaque mot unique dans la liste des mots à chercher
+		foreach($motsSepares as $motseul) {
+			$results[] = $motseul;
+		}
+		
+		// Si le tableau des mots et expressions n'est pas vide, alors on cherche... (sinon pas de résultats !)
+		if(!empty($results)) {
+			// Nettoie chaque champ pour éviter les risques de piratage...
+			for($y=0; $y < count($results); $y++) {
+				$expression = $results[$y];
+				
+				// Recherche les mots-clés originaux ou sans accent si l'option est activée
+				if($this->accents == false) {
+					$recherche[] = htmlspecialchars(trim(strip_tags($expression)));
+				} else {
+					$withaccent = array('à','á','â','ã','ä','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ','À','Á','Â','Ã','Ä','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ñ','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý');
+					$withnoaccent = array('a','a','a','a','a','c','e','e','e','e','i','i','i','i','n','o','o','o','o','o','u','u','u','u','y','y','A','A','A','A','A','C','E','E','E','E','I','I','I','I','N','O','O','O','O','O','U','U','U','U','Y');
+					$recherche[] = str_ireplace($withaccent, $withnoaccent, htmlspecialchars(trim(strip_tags($expression))));
+				}
+			}
+		} else {
+			$recherche = array('');
+		}
+		
+		$this->algoRequest = $recherche; // Tableau contenant les mots et expressions de la requête (doublon utile !)
+		$this->request = $recherche; // Tableau contenant les mots et expressions de la requête de l'utilisateur
+		$this->countWords = count($recherche,1); // nombre de mots contenus dans la requête
+	}
+	/*----------------------------------------------------------------------------------------------------*/
+	/*-------------------------- Fin des méthodes pour la correction des résultats -----------------------*/
+	/*----------------------------------------------------------------------------------------------------*/
 
 	/*----------------------------------------------------------------------------------------------------*/
 	/*--------------------------------------- Fonction de pagination -------------------------------------*/
@@ -897,4 +1158,47 @@ class autoCompletion {
 		}
 	}
 } // Fin de la class d'autocomplétion
+
+/*------------------------------------------------------------------------*/
+/*----------------- Class pour créer les index FullText ------------------*/
+/*-- 1. Lancer $alterTable = new alterTableFullText(); -------------------*/
+/*-- 2. Trois paramères : nom de la base, de la table puis des colonnes --*/
+/*-- N.B. : la fonction modifie la table en MyISAM (pour les FullText) ---*/
+/*------------------------------------------------------------------------*/
+class alterTableFullText {
+	private $db; // Variable de connexion (mysqli en objet !)
+
+	public function __construct($bdd, $nomBDD, $table, $colonnes) {
+		$this->db = $bdd;
+		// Vérification du type de table SQL pour savoir si c'est en MyISAM
+		$engineSQL = $this->db->get_results("SHOW TABLE STATUS FROM $nomBDD LIKE '".$table."'", ARRAY_A);
+		$engine = $engineSQL;
+		
+		// Modification de la table en MyISAM si nécessaire (compatibilité FULLTEXT)
+		if($engine["Engine"] != "MyISAM") {
+			$MyISAMConverter = $this->db->query("ALTER TABLE $table ENGINE=MYISAM") or die("Erreur : ".$this->db->show_errors());
+		}	
+		// Création des index FULLTEXT dans les colonnes s'ils n'existent pas déjà...
+		if (is_array($colonnes)) {
+			foreach($colonnes as $colonne) {
+				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
+				$fullTextExists = $ifFullTextExists;
+				if($fullTextExists['Index_type'] != 'FULLTEXT') {
+					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
+				}
+			}
+		} else {
+
+			$colonnes = str_ireplace(' ', '', $colonnes);
+			$SQLFields = explode(',',$colonnes);
+			foreach($SQLFields as $colonne) {
+				$ifFullTextExists = $this->db->get_results("SHOW INDEX FROM $table WHERE column_name = '$colonne' AND Index_type = 'FULLTEXT'", ARRAY_A);
+				$fullTextExists = $ifFullTextExists;
+				if($fullTextExists['Index_type'] != 'FULLTEXT') {
+					$alterTableFullText = $this->db->query("ALTER TABLE $table ADD FULLTEXT($colonne)") or die("Erreur : ".$this->db->show_errors());
+				}
+			}
+		}
+	}
+}
 ?>

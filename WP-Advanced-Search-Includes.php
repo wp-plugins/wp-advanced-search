@@ -33,8 +33,6 @@ add_action('wp_footer', 'addAutoCompletion');
 function WP_Advanced_Search_AutoCompletion() {
 	$urlstyle = plugins_url('class.inc/autocompletion/jquery.autocomplete.css',__FILE__);
 	wp_enqueue_style('autocomplete', $urlstyle, false, '1.0');
-	//$urljquery = plugins_url('class.inc/autocompletion/jquery.js',__FILE__);
-	//wp_enqueue_script('jquery2',$urljquery,false);	
 	$url = plugins_url('class.inc/autocompletion/jquery.autocomplete.js',__FILE__);
 	wp_enqueue_script('autocomplete', $url, array('jquery'), '1.0');
 }
@@ -48,7 +46,7 @@ include_once('class.inc/ajaxResults.php'); // Fichier d'affichage Ajax des résu
 
 // Fonction du trigger
 function WP_Advanced_Search_Trigger() {
-	global $wpdb, $table_WP_Advanced_Search;
+	global $wpdb, $table_WP_Advanced_Search, $moteur;
 	
 	//Récupération des variables utiles dynamiquement
 	$select		= $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
@@ -56,10 +54,13 @@ function WP_Advanced_Search_Trigger() {
 	$imgUrl		= plugins_url('img/loadingGrey.gif',__FILE__);	// URL des images choisies
 	$duration	= $select->paginationDuration;					// temps d'attente avant la réponse
 	$limitR		= $select->paginationNbLimit;					// Pallier d'affichage des résultats
-	if(isset($_GET[$nameSearch])) {
+
+	if(isset($moteur->requeteCorrigee)) {
+		$queryAS = $moteur->requeteCorrigee;
+	} elseif(isset($_GET[$nameSearch])) {
 		$queryAS = stripslashes($_GET[$nameSearch]);
 	}
-	
+
 	// Tableau des données envoyées au script
 	$scriptData = array(
 		'ajaxurl' => admin_url('/admin-ajax.php'),
@@ -77,15 +78,18 @@ function WP_Advanced_Search_Trigger() {
 }
 // Fonction de l'infinite scroll
 function WP_Advanced_Search_InfiniteScroll() {
-	global $wpdb, $table_WP_Advanced_Search;
+	global $wpdb, $table_WP_Advanced_Search, $moteur;
 	
 	//Récupération des variables utiles dynamiquement
 	$select		= $wpdb->get_row("SELECT * FROM $table_WP_Advanced_Search WHERE id=1");
 	$nameSearch = $select->nameField;			// Nom du champ
 	$duration	= $select->paginationDuration;	// temps d'attente avant la réponse
 	$limitR		= $select->paginationNbLimit;	// Pallier d'affichage des résultats
-	if(isset($_GET[$nameSearch])) {
-		//$queryAS = stripslashes($_GET[$nameSearch]);
+
+	if(isset($moteur->requeteCorrigee)) {
+		$queryAS = $moteur->requeteCorrigee;
+	} elseif(isset($_GET[$nameSearch])) {
+		$queryAS = stripslashes($_GET[$nameSearch]);
 	}
 
 	// Tableau des données envoyées au script

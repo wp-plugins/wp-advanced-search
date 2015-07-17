@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-advanced-search\n"
-"POT-Creation-Date: 2015-01-26 08:59+0100\n"
-"PO-Revision-Date: 2015-01-26 08:59+0100\n"
+"POT-Creation-Date: 2015-07-16 19:27+0200\n"
+"PO-Revision-Date: 2015-07-16 19:27+0200\n"
 "Last-Translator: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language-Team: Mathieu Chartier <mathieu.chartier@internet-formation.fr>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.2\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -17,7 +17,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../WP-Advanced-Search-Autocompletion.php:6
-#: ../WP-Advanced-Search-Autocompletion.php:96
+#: ../WP-Advanced-Search-Autocompletion.php:97
+#: ../WP-Advanced-Search-Autocorrection.php:6
+#: ../WP-Advanced-Search-Autocorrection.php:85
 #: ../WP-Advanced-Search-Options.php:90 ../WP-Advanced-Search-Options.php:325
 #: ../WP-Advanced-Search-Pagination.php:7
 #: ../WP-Advanced-Search-Pagination.php:115 ../WP-Advanced-Search-Styles.php:7
@@ -36,6 +38,7 @@ msgid ""
 msgstr ""
 
 #: ../WP-Advanced-Search-Autocompletion.php:43
+#: ../WP-Advanced-Search-Autocorrection.php:46
 msgid "Modifiez les options pour obtenir un résultat adéquat."
 msgstr ""
 
@@ -45,9 +48,13 @@ msgstr ""
 
 #: ../WP-Advanced-Search-Autocompletion.php:55
 #: ../WP-Advanced-Search-Autocompletion.php:67
-#: ../WP-Advanced-Search-Autocompletion.php:107
-#: ../WP-Advanced-Search-Autocompletion.php:128
-#: ../WP-Advanced-Search-Autocompletion.php:138
+#: ../WP-Advanced-Search-Autocompletion.php:108
+#: ../WP-Advanced-Search-Autocompletion.php:129
+#: ../WP-Advanced-Search-Autocompletion.php:139
+#: ../WP-Advanced-Search-Autocorrection.php:58
+#: ../WP-Advanced-Search-Autocorrection.php:74
+#: ../WP-Advanced-Search-Autocorrection.php:96
+#: ../WP-Advanced-Search-Autocorrection.php:107
 #: ../WP-Advanced-Search-Options.php:239 ../WP-Advanced-Search-Options.php:246
 #: ../WP-Advanced-Search-Options.php:279 ../WP-Advanced-Search-Options.php:317
 #: ../WP-Advanced-Search-Pagination.php:31
@@ -62,9 +69,13 @@ msgstr ""
 
 #: ../WP-Advanced-Search-Autocompletion.php:56
 #: ../WP-Advanced-Search-Autocompletion.php:68
-#: ../WP-Advanced-Search-Autocompletion.php:108
-#: ../WP-Advanced-Search-Autocompletion.php:129
-#: ../WP-Advanced-Search-Autocompletion.php:139
+#: ../WP-Advanced-Search-Autocompletion.php:109
+#: ../WP-Advanced-Search-Autocompletion.php:130
+#: ../WP-Advanced-Search-Autocompletion.php:140
+#: ../WP-Advanced-Search-Autocorrection.php:59
+#: ../WP-Advanced-Search-Autocorrection.php:75
+#: ../WP-Advanced-Search-Autocorrection.php:97
+#: ../WP-Advanced-Search-Autocorrection.php:108
 #: ../WP-Advanced-Search-Options.php:240 ../WP-Advanced-Search-Options.php:247
 #: ../WP-Advanced-Search-Options.php:280 ../WP-Advanced-Search-Options.php:318
 #: ../WP-Advanced-Search-Pagination.php:32
@@ -130,97 +141,176 @@ msgstr ""
 msgid "Type d'utilisation des auto-suggestions"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:99
+#: ../WP-Advanced-Search-Autocompletion.php:100
+#: ../WP-Advanced-Search-Autocorrection.php:88
 msgid "Personnalisation technique (optionnel)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:110
+#: ../WP-Advanced-Search-Autocompletion.php:111
 msgid "Créer la table de l'index inversé ?"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:111
+#: ../WP-Advanced-Search-Autocompletion.php:112
+#: ../WP-Advanced-Search-Autocorrection.php:100
 msgid ""
 "Cette option s'active uniquement quand l'index inversé n'est pas créé "
 "(recommandé)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:115
+#: ../WP-Advanced-Search-Autocompletion.php:116
 msgid "Nom de la table de l'index inversé"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:119
+#: ../WP-Advanced-Search-Autocompletion.php:120
 msgid "Nom de la colonne de l'index inversé"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:131
+#: ../WP-Advanced-Search-Autocompletion.php:132
 msgid "Supprimer la table de l'index inversé ?"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:132
+#: ../WP-Advanced-Search-Autocompletion.php:133
+#: ../WP-Advanced-Search-Autocorrection.php:111
 msgid ""
 "Cette option s'active uniquement si l'index inversé existe (déconseillé)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:141
+#: ../WP-Advanced-Search-Autocompletion.php:142
 msgid "Générer automatiquement l'index inversé ?"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:142
+#: ../WP-Advanced-Search-Autocompletion.php:143
 msgid ""
 "Ajoute automatiquement de nouvelles suggestions au fur et à mesure des "
 "recherches des internautes pour compléter l'index de mots clés existant"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:147
+#: ../WP-Advanced-Search-Autocompletion.php:148
 msgid " lettres"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:150
+#: ../WP-Advanced-Search-Autocompletion.php:151
 msgid "Taille minimale des mots ajoutés"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:152
+#: ../WP-Advanced-Search-Autocompletion.php:153
 msgid "Ajout de mots et expressions"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:154
+#: ../WP-Advanced-Search-Autocompletion.php:155
 msgid "Ajouter des mots et expressions dans l'index (optionnel)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:156
+#: ../WP-Advanced-Search-Autocompletion.php:157
+#: ../WP-Advanced-Search-Autocorrection.php:117
 msgid ""
 "Séparez les mots ou expressions par des virgules !<br/>Exemple --> moteur, "
 "moteur de recherche, recherche, advanced, search<br/>N.B. : les doublons ne "
 "s'ajoutent pas..."
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:157
+#: ../WP-Advanced-Search-Autocompletion.php:158
+#: ../WP-Advanced-Search-Autocorrection.php:118
 msgid "Ajouter à l'index"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:159
+#: ../WP-Advanced-Search-Autocompletion.php:160
 msgid "Gestion de l'index existant"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:161
+#: ../WP-Advanced-Search-Autocompletion.php:162
+#: ../WP-Advanced-Search-Autocorrection.php:121
 msgid "Supprimer des mots et expressions dans l'index (si nécessaire)"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:172
+#: ../WP-Advanced-Search-Autocompletion.php:173
+#: ../WP-Advanced-Search-Autocorrection.php:141
 msgid ""
 "Sélectionner les mots et expressions qui ne vous conviennent pas et "
 "supprimer-les..."
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:173
+#: ../WP-Advanced-Search-Autocompletion.php:174
+#: ../WP-Advanced-Search-Autocorrection.php:142
 msgid "&Ecirc;tes-vous sûrs de vouloir supprimer ces mots et expressions ?"
 msgstr ""
 
-#: ../WP-Advanced-Search-Autocompletion.php:173
+#: ../WP-Advanced-Search-Autocompletion.php:174
+#: ../WP-Advanced-Search-Autocorrection.php:142
 msgid "Supprimer de l'index"
 msgstr ""
 
-#: ../WP-Advanced-Search-Documentation.php:15 ../WP-Advanced-Search.php:319
+#: ../WP-Advanced-Search-Autocorrection.php:43
+msgid "Gestion des corrections automatiques des recherches"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:45
+msgid ""
+"<strong>WP-Advanced-Search</strong> dispose d'un système de correction "
+"orthographique automatique pour vos recherches."
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:55
+msgid "Options générales"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:61
+msgid "Activer la correction automatique ?"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:65
+msgid "Proposition des corrections"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:66
+msgid "Pages de résultats corrigées"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:67
+msgid "Corrections + SERP corrigées"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:69
+msgid "Choix de l'affichage final des corrections"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:70
+msgid ""
+"Affiche la requête corrigée, les résultats de recherche corrigés (SERP) ou "
+"les deux options en même temps"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:77
+msgid "Utiliser les correspondances directes ?"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:78
+msgid ""
+"L'option permet d'améliorer les performances quand l'index inversé est bien "
+"rempli"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:82
+msgid "Phrase qui précède la requête corrigée"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:99
+msgid "Créer l'index inversé ?"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:110
+msgid "Supprimer l'index inversé ?"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:113
+msgid "Gestion des mots et expressions"
+msgstr ""
+
+#: ../WP-Advanced-Search-Autocorrection.php:115
+msgid "Ajouter des mots et expressions bien orthographiés dans l'index"
+msgstr ""
+
+#: ../WP-Advanced-Search-Documentation.php:15 ../WP-Advanced-Search.php:364
 msgid "Documentation"
 msgstr ""
 
@@ -477,80 +567,91 @@ msgid ""
 "dorénavant..."
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:116
-#: ../WP-Advanced-Search-Function.php:118
+#: ../WP-Advanced-Search-Function.php:135
+#: ../WP-Advanced-Search-Function.php:137
+#: ../WP-Advanced-Search-Function.php:141
+#: ../WP-Advanced-Search-Function.php:143
 msgid "résultat"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:116
-#: ../WP-Advanced-Search-Function.php:118
+#: ../WP-Advanced-Search-Function.php:135
+#: ../WP-Advanced-Search-Function.php:137
+#: ../WP-Advanced-Search-Function.php:141
+#: ../WP-Advanced-Search-Function.php:143
 msgid "résultats"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:116
-#: ../WP-Advanced-Search-Function.php:118
-msgid "pour votre recherche"
+#: ../WP-Advanced-Search-Function.php:135
+#: ../WP-Advanced-Search-Function.php:141
+msgid "avec la correction automatique de la recherche"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:116
-#: ../WP-Advanced-Search-Function.php:118
+#: ../WP-Advanced-Search-Function.php:135
+#: ../WP-Advanced-Search-Function.php:137
+#: ../WP-Advanced-Search-Function.php:141
+#: ../WP-Advanced-Search-Function.php:143
 msgid " à "
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:167 ../class.inc/ajaxResults.php:117
+#: ../WP-Advanced-Search-Function.php:137
+#: ../WP-Advanced-Search-Function.php:143
+msgid "pour votre recherche"
+msgstr ""
+
+#: ../WP-Advanced-Search-Function.php:193 ../class.inc/ajaxResults.php:117
 msgid "Publié "
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:174
-#: ../WP-Advanced-Search-Function.php:207
-#: ../WP-Advanced-Search-Function.php:266
-#: ../WP-Advanced-Search-Function.php:280
-#: ../WP-Advanced-Search-Function.php:325
-#: ../WP-Advanced-Search-Function.php:365 ../class.inc/ajaxResults.php:124
+#: ../WP-Advanced-Search-Function.php:200
+#: ../WP-Advanced-Search-Function.php:233
+#: ../WP-Advanced-Search-Function.php:292
+#: ../WP-Advanced-Search-Function.php:306
+#: ../WP-Advanced-Search-Function.php:351
+#: ../WP-Advanced-Search-Function.php:391 ../class.inc/ajaxResults.php:124
 #: ../class.inc/ajaxResults.php:157 ../class.inc/ajaxResults.php:216
 #: ../class.inc/ajaxResults.php:230 ../class.inc/ajaxResults.php:275
 #: ../class.inc/ajaxResults.php:315
 msgid "le "
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:180
-#: ../WP-Advanced-Search-Function.php:232
-#: ../WP-Advanced-Search-Function.php:241
-#: ../WP-Advanced-Search-Function.php:274
-#: ../WP-Advanced-Search-Function.php:331
-#: ../WP-Advanced-Search-Function.php:359 ../class.inc/ajaxResults.php:130
+#: ../WP-Advanced-Search-Function.php:206
+#: ../WP-Advanced-Search-Function.php:258
+#: ../WP-Advanced-Search-Function.php:267
+#: ../WP-Advanced-Search-Function.php:300
+#: ../WP-Advanced-Search-Function.php:357
+#: ../WP-Advanced-Search-Function.php:385 ../class.inc/ajaxResults.php:130
 #: ../class.inc/ajaxResults.php:182 ../class.inc/ajaxResults.php:191
 #: ../class.inc/ajaxResults.php:224 ../class.inc/ajaxResults.php:281
 #: ../class.inc/ajaxResults.php:309
 msgid "par "
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:186
 #: ../WP-Advanced-Search-Function.php:212
-#: ../WP-Advanced-Search-Function.php:247
-#: ../WP-Advanced-Search-Function.php:285
-#: ../WP-Advanced-Search-Function.php:306
-#: ../WP-Advanced-Search-Function.php:339 ../class.inc/ajaxResults.php:136
+#: ../WP-Advanced-Search-Function.php:238
+#: ../WP-Advanced-Search-Function.php:273
+#: ../WP-Advanced-Search-Function.php:311
+#: ../WP-Advanced-Search-Function.php:332
+#: ../WP-Advanced-Search-Function.php:365 ../class.inc/ajaxResults.php:136
 #: ../class.inc/ajaxResults.php:162 ../class.inc/ajaxResults.php:197
 #: ../class.inc/ajaxResults.php:235 ../class.inc/ajaxResults.php:256
 #: ../class.inc/ajaxResults.php:289
 msgid "dans "
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:372 ../class.inc/ajaxResults.php:322
+#: ../WP-Advanced-Search-Function.php:398 ../class.inc/ajaxResults.php:322
 msgid "Aucun commentaire"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:374 ../class.inc/ajaxResults.php:324
+#: ../WP-Advanced-Search-Function.php:400 ../class.inc/ajaxResults.php:324
 msgid "commentaire"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:376 ../class.inc/ajaxResults.php:326
+#: ../WP-Advanced-Search-Function.php:402 ../class.inc/ajaxResults.php:326
 msgid "commentaires"
 msgstr ""
 
-#: ../WP-Advanced-Search-Function.php:395
-#: ../WP-Advanced-Search-Function.php:414 ../class.inc/ajaxResults.php:345
+#: ../WP-Advanced-Search-Function.php:421
+#: ../WP-Advanced-Search-Function.php:440 ../class.inc/ajaxResults.php:345
 #: ../class.inc/ajaxResults.php:364
 msgid "Lire la suite..."
 msgstr ""
@@ -1118,14 +1219,34 @@ msgstr ""
 msgid "Numéroter les résultats ?"
 msgstr ""
 
-#: ../WP-Advanced-Search.php:316
+#: ../WP-Advanced-Search.php:151
+msgid "Afficher plus de résultats"
+msgstr ""
+
+#: ../WP-Advanced-Search.php:154
+msgid "Résultats de la recherche :"
+msgstr ""
+
+#: ../WP-Advanced-Search.php:155
+msgid "Aucun résultat, veuillez effectuer une autre recherche !"
+msgstr ""
+
+#: ../WP-Advanced-Search.php:170 ../WP-Advanced-Search.php:324
+msgid "Tentez avec une autre orthographe : "
+msgstr ""
+
+#: ../WP-Advanced-Search.php:360
 msgid "Thèmes et styles"
 msgstr ""
 
-#: ../WP-Advanced-Search.php:317
+#: ../WP-Advanced-Search.php:361
 msgid "Options des SERP"
 msgstr ""
 
-#: ../WP-Advanced-Search.php:318
+#: ../WP-Advanced-Search.php:362
+msgid "Correction automatique"
+msgstr ""
+
+#: ../WP-Advanced-Search.php:363
 msgid "Autocomplétion"
 msgstr ""

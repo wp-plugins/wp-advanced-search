@@ -24,6 +24,9 @@
 		// Variable globale pour récupérer l'élément sur lequel est appliqué le plugin
 		loader = this;
 
+		// Pas de chargement pas défaut
+		var load = false;
+			
 		// Lancement de la fonction (au scroll ou autre)
 		loader.bind(args.evt, function(e) {
 			// Récupération des variables utiles pour développer le nombre de résultats affiché
@@ -46,8 +49,8 @@
 			};
 			
 			// Liste étendue de paramètres implicites à rajouter si besoin
-			options = $.extend(options, params);			
-	
+			options = $.extend(options, params);
+			
 			// On affiche l'image de chargement...
 			if(params.nb >= params.limit) {
 				$(args.loadMore).show();
@@ -61,6 +64,7 @@
 				//if((stopping < parseInt(params.limit)) || (parseInt(params.nb) > stopping)) {
 					$(args.loadMore).remove();
 					loader.unbind(args.evt);
+					load = true;
 				}
 			} else {
 				var stopping = parseInt(args.nbResult);
@@ -68,18 +72,25 @@
 				//if((stopping < parseInt(params.limit)) || (parseInt(params.nb) > stopping)) {
 					$(args.loadMore).remove();
 					loader.unbind(args.evt);
+					load = true;
 				}
 			}
 			
+			var classOffset = parseInt($(args.classLast+':last').offset().top);
+			
 			// Si on arrive en bas de la fenêtre, le scroll actif déclenche la fonction
-			if(($(window).scrollTop() == $(document).height() - $(window).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
+			if((classOffset - $(window).height() <= $(window).scrollTop()) && load === false && (params.nb >= params.limit) && (params.nb <= stopping)) {
+			// if(($(window).scrollTop() >= $(document).height() - $(window).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
 			// Alternative : if(((loader.scrollTop() + $(window).height()) == $(document).height()) && (params.nb >= params.limit) && (params.nb <= stopping)) {
+				// la valeur passe à vrai, on va charger
+				load = true;
+
 				// Appel Ajax
 				$.ajax({
 					url: args.target+'?'+options.queryNameAS,
 					data: options,
 					// Si Ajax répond bien !
-					success: function(data) {
+					success: function(data) {						
 						// Effet sur le bloc d'image de chargement
 						$(args.loadMore).fadeOut(args.duration);
 						
@@ -88,9 +99,12 @@
 							// Ajoute les nouveaux résultats
 							$(args.classLast+':last').after(data);
 						}, args.duration);
+						
+						load = false;
 					},
 					// En cas d'erreur Ajax
 					error: function(req, err) {
+						alert(options.queryNameAS);
 						console.log('Error: '+err);
 					}
 				});

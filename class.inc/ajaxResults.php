@@ -65,7 +65,7 @@ function WP_Advanced_Search_Ajax_Results() {
 	// Affichage des résultats si le moteur est en marche !
 	if(isset($moteur)) {
 		function affichage($query, $nbResults, $words) {
-			global $select, $wpdb, $moteur, $wp_rewrite;
+			global $select, $wpdb, $moteur, $wp_rewrite, $correctionsmoteur, $autocorrect;
 
 			$nb = $_GET['nb'];
 
@@ -377,8 +377,23 @@ function WP_Advanced_Search_Ajax_Results() {
 					$output .= '<p class="clearBlock"></p>'."\n";
 					$output .= '</div>'."\n";
 				}
-				$output .= "</div>\n";
+
+				// Style perso en "n" columns
+				if($select->Style == "twocol" || $select->Style == "threecol") {
+					if($select->Style == "twocol") {
+						$denominateur = 2;
+					}
+					if($select->Style == "threecol") {
+						$denominateur = 3;
+					}
+					
+					if(($nb % $denominateur) == 0) {
+						$output .= "<div class=\"clearBlock\"></div>\n";
+					}
+				}
 				
+				$output .= "</div>\n";
+					
 				// Utilisation ou non du surlignage
 				if($select->strongWords != 'aucun') {
 					$strong = new surlignageMot($words, $output, $select->strongWords, $select->exactSearch, $select->typeSearch);

@@ -53,6 +53,9 @@ function WP_Advanced_Search_Callback_Pagination() {
                         <option value="flat-2" <?php if($select->paginationStyle == "flat-2") { echo 'selected="selected"'; } ?>><?php _e('Sober flat design blue','wp-advanced-search'); ?></option>
                         <option value="flat-color" <?php if($select->paginationStyle == "flat-color") { echo 'selected="selected"'; } ?>><?php _e('Colored flat design','wp-advanced-search'); ?></option>
 						<option value="orange-grey" <?php if($select->paginationStyle == "orange-grey") { echo 'selected="selected"'; } ?>><?php _e('New Orange Grey','wp-advanced-search'); ?></option>
+						<option value="google" <?php if($select->paginationStyle == "google") { echo 'selected="selected"'; } ?>><?php _e('Google style','wp-advanced-search'); ?></option>
+						<option value="twocol" <?php if($select->paginationStyle == "twocol") { echo 'selected="selected"'; } ?>><?php _e('2 columns style','wp-advanced-search'); ?></option>
+						<option value="threecol" <?php if($select->paginationStyle == "threecol") { echo 'selected="selected"'; } ?>><?php _e('3 columns style','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_pagination_style"><strong><?php _e('Style CSS pour la pagination','wp-advanced-search'); ?></strong></label>
                 </p>

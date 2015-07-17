@@ -7,7 +7,7 @@ Tags: advanced, search, advanced search, recherche, moteur, search engine, engin
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 4.2.2
-Stable Tag: 2.8.1
+Stable Tag: 3.0
 
 "WP-Advanced-Search" est un moteur de recherche complet et puissant pour WordPress enti&egrave;rement modulable.
 
@@ -22,8 +22,9 @@ Quelques exemples d'options existantes :
 <li>Choix des colonnes de recherche</li>
 <li>Ordre des r&eacute;sultats modulable</li>
 <li>Utilisation d'un algorithme de pertinence pour le classement final</li>
-<li>Plusieurs paginations (classique, par clic avec "trigger" ou scroll infini)</li>
+<li>Plusieurs types de pagination (classique, par clic avec "trigger" ou scroll infini)</li>
 <li>Mise en surbrillance ou non des mots recherch&eacute;s</li>
+<li>Correction automatique des recherches</li>
 <li>Autocompl&eacute;tion et ajout automatique de mots dans l'index</li>
 <li>Gestion des blocs &agrave; afficher dans les r&eacute;sultats</li>
 <li>Plusieurs th&egrave;mes disponibles</li>
@@ -44,6 +45,7 @@ Some examples of existing options:
 <li>Using a relevance algorithm for the final classification</li>
 <li>Several system to display results (pagination, trigger or infinite scroll)</li>
 <li>Highlight search terms, or not</li>
+<li>Automatic correction of searches</li>
 <li>Autocomplete option and automatic addition of words in the index</li>
 <li>Manage blocks to display in the SERP</li>
 <li>Several templates for result pages</li>
@@ -79,8 +81,16 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 6. Options d'autosuggestion (autosuggest options).
 7. Exemple d'autocompl&eacute;tion (example for autocomplete query).
 8. Usage du trigger pour afficher les r&eacute;sultats (example with trigger to display results).
+9. Th&egrave;me graphique complet "Google style" (complete template 'Google style').
+10. Th&egrave;me graphique en 2 ou 3 colonnes (template with 2 or 3 columns).
 
 == Changelog ==
+
+= Version 3.0 (16/07/2015) =
+
+- Ajout de la correction automatique des recherches (Added automatic correction of searches)
+- Ajout de trois th&egrave;mes graphiques (Added three new themes)
+- Am&eacute;lioration et d&eacute;bogage du scroll infini (Improvement and debugging infinite scroll)
 
 = Version 2.8.1 (12/05/2015) =
 
@@ -90,7 +100,7 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 = Version 2.8 (21/02/2015) =
 
 - Correction d'un souci de disparition des boutons d'enregistrement (Fixed a problem with the display of the 'save' button)
-- Ajout d'un shortcode pour g&eacute;rer l'affichage des r&eacute;sultats de recherche (Adding a shortcode to display the result page)
+- Ajout d'un shortcode [advanced-search] pour g&eacute;rer l'affichage des r&eacute;sultats de recherche (Adding a shortcode [advanced-search] to display the result page)
 - Gestion des expressions pr&eacute;cises dans le syst&egrave;me d'autocompl&eacute;tion (Management of the exact expressions in autocompletion)
 
 = Version 2.7.1 (26/01/2015) =

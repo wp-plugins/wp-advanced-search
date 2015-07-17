@@ -1,4 +1,4 @@
-.pagination-block {margin:1.5em 0 0 0;line-height:2em}
+.pagination-block {margin:1.5em 0 0 0;line-height:2em;text-align:center}
 .pagination-block a, .pagination-block span {padding:0.2em 0.5em 0.3em}
 .pagination-block a {border:1px solid #ff5000;border-radius:5px;color:#fff;background:#ff5000;text-decoration:none}
 .pagination-block a:hover {border:1px solid #ff5000;background:#ff7232;color:#fff}

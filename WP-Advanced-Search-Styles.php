@@ -104,6 +104,9 @@ function WP_Advanced_Search_Callback_Styles() {
                         <option value="flat-2" <?php if($select->Style == "flat-2") { echo 'selected="selected"'; } ?>><?php _e('Sober flat design blue','wp-advanced-search'); ?></option>
                         <option value="flat-color" <?php if($select->Style == "flat-color") { echo 'selected="selected"'; } ?>><?php _e('Colored flat design','wp-advanced-search'); ?></option>
 						<option value="o-grey" <?php if($select->Style == "o-grey") { echo 'selected="selected"'; } ?>><?php _e('New Orange Grey','wp-advanced-search'); ?></option>
+						<option value="google" <?php if($select->Style == "google") { echo 'selected="selected"'; } ?>><?php _e('Google style','wp-advanced-search'); ?></option>
+						<option value="twocol" <?php if($select->Style == "twocol") { echo 'selected="selected"'; } ?>><?php _e('2 columns style','wp-advanced-search'); ?></option>
+						<option value="threecol" <?php if($select->Style == "threecol") { echo 'selected="selected"'; } ?>><?php _e('3 columns style','wp-advanced-search'); ?></option>
                     </select>
                     <label for="wp_advanced_search_style"><strong><?php _e('Style CSS pour les blocs','wp-advanced-search'); ?></strong></label>
                 </p>

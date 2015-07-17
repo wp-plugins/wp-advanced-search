@@ -35,14 +35,6 @@ function WP_Advanced_Search() {
 	
 	// Inclusion des class du moteur de recherche
 	include_once('class.inc/moteur-php5.5.class-inc.php');
-
-	// Lancement de la fonction de scroll infini ou de trigger si active...
-	if($select->paginationType == "trigger") {
-		WP_Advanced_Search_Trigger();
-	}
-	if($select->paginationType == "infinite") {
-		WP_Advanced_Search_InfiniteScroll();
-	}
 	
 	// Lancement de la fonctionb d'autocomplétion si active...
 	if($select->autoCompleteActive == 1) {
@@ -64,7 +56,7 @@ function WP_Advanced_Search() {
 	if($select->stopWords == true) {
 		// Récupération de la langue par défaut et des stopwords adaptés
 		if(!defined(WPLANG)) {
-			$lang = "fr_FR";
+			$lang = "en_GB";
 		} else {
 			$lang = WPLANG;
 		}
@@ -87,19 +79,47 @@ function WP_Advanced_Search() {
 	// Lancement du moteur de recherche
 	$moteur = new moteurRecherche($wpdb, stripslashes($_GET[$nameSearch]), $table, $typeRecherche, $stopwords, $exclusion, $encoding, $exact, $accent);
 	$moteur->moteurRequetes($colonnesWhere);
+	
+	// Affichage de la correction des résultats
+	global $correctionsmoteur, $autocorrect; // Nécessaire pour récupérer le résultat dans la fonction d'affichage
+	if($select->autoCorrectActive == true) {
+		$correctionsmoteur = $moteur->getCorrection($wpdb->prefix."autocorrectindex", "s", $select->autoCorrectMethod);
+		
+		if($select->autoCorrectType == 1 || $select->autoCorrectType == 2) {
+			$autocorrect = $moteur->getCorrectedResults();
+		}
+	}
+
+	// Lancement de la fonction de scroll infini ou de trigger si active (obligatoirement placé après $moteur et $correctionsmoteur !)
+	if($select->paginationType == "trigger") {
+		WP_Advanced_Search_Trigger();
+	}
+	if($select->paginationType == "infinite") {
+		WP_Advanced_Search_InfiniteScroll();
+	}
 
 	// Affichage des résultats si le moteur est en marche !
 	if(isset($moteur)) {
 		function affichage($query, $nbResults, $words) {
-			global $select, $wpdb, $moteur, $wp_rewrite;
+			global $select, $wpdb, $moteur, $wp_rewrite, $correctionsmoteur, $autocorrect;
 
 			$outputBeg = '<div class="WPAdvancedSearch" id="'.$nbResults.'">'."\n";
-		
+			
+			$outputBeg .= '<div class="WPbeforeResults">'."\n";
+			
 			if(!empty($select->ResultText)) {
 				$outputBeg .= '<h3>'.trim(__($select->ResultText,'wp-advanced-search')).' <em>'.htmlspecialchars($moteur->requete).'</em></h3>'."\n";
 			}
 			
+			// Affichage conditionnel des corrections
+			if($select->autoCorrectActive == true && ($select->autoCorrectType == 0 || $select->autoCorrectType == 2)) {
+				if(!empty($correctionsmoteur)) {
+					$outputBeg .= "<p class=\"WPcorrections\">".$select->autoCorrectString.$correctionsmoteur."</p>\n";
+				}
+			}
+
 			if($nbResults == 0) {
+				$outputBeg .= "</div>\n";
 				$output = "<div class=\"WPBlockSearch\">\n";	
 				$output .= '<p class="WPErrorSearch">'.__($select->ErrorText,'wp-advanced-search').'</p>'."\n";
 				$output .= "</div>\n";
@@ -114,12 +134,21 @@ function WP_Advanced_Search() {
 				if($select->nbResultsOK == true) {
 					$affichageResultats = new affichageResultats();
 					if($select->NumberPerPage == 0 || $select->paginationType != 'classic') {
-						$outputBeg .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						if($select->autoCorrectActive == true && !empty($correctionsmoteur) && $autocorrect) {
+							$outputBeg .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('avec la correction automatique de la recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						} else {
+							$outputBeg .= $affichageResultats->nbResultats(true, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						}
 					} else {
-						$outputBeg .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						if($select->autoCorrectActive == true && !empty($correctionsmoteur) && $autocorrect) {
+							$outputBeg .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('avec la correction automatique de la recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						} else {
+							$outputBeg .= $affichageResultats->nbResultats(false, array(__('résultat','wp-advanced-search'), __('résultats','wp-advanced-search')), __('pour votre recherche','wp-advanced-search'), __(' à ','wp-advanced-search'));
+						}
 					}
 				}
-
+				$outputBeg .= "</div>\n";
+				
 				foreach($query as $key) { // On lance la boucle d'affichage des résultats (version WordPress)
 					// Récupération du numéro du résultat
 					$nb++;
@@ -154,7 +183,7 @@ function WP_Advanced_Search() {
 						$output .= '</div>'."\n";
 					} else if($select->TitleOK == true && $select->NumberOK == false) {
 						$output .= '<div class="WPFirstSearch">'."\n";
-						$output .= '<p class="WPtitleSearch"><a href="'.get_permalink($key['ID']).'">'.$key['post_title'].'</a></p>'."\n";				
+						$output .= '<p class="WPtitleSearch"><a href="'.get_permalink($key['ID']).'">'.$key['post_title'].'</a></p>'."\n";
 						$output .= '</div>'."\n";
 					} else if($select->TitleOK == false && $select->NumberOK == true) {
 						$output .= '<div class="WPFirstSearch">'."\n";
@@ -423,12 +452,40 @@ function WP_Advanced_Search() {
 					// Affichage conditionné de l'image à la Une sans titre ou extrait (déconseillé)
 					} else if($select->ArticleOK == "aucun" && $select->ImageOK == true) {
 						$output .= '<div class="WPBlockContent">'."\n";
-						
 						$output .= get_the_post_thumbnail($key['ID'],'thumbnail');
 						$output .= '<div class="clearBlock"></div>'."\n";
 						$output .= '</div>'."\n";
 					}
+
+					// Style perso en "n" columns
+					if($select->Style == "twocol" || $select->Style == "threecol") {
+						if($select->Style == "twocol") {
+							$denominateur = 2;
+						}
+						if($select->Style == "threecol") {
+							$denominateur = 3;
+						}
+						
+						if(($nb % $denominateur) == 0) {
+							$output .= "<div class=\"clearBlock\"></div>\n";
+						}
+					}
+					
 					$output .= "</div>\n";
+					
+					// Style perso en "n" columns
+					if($select->Style == "twocol" || $select->Style == "threecol") {
+						if($select->Style == "twocol") {
+							$denominateur = 2;
+						}
+						if($select->Style == "threecol") {
+							$denominateur = 3;
+						}
+						
+						if(($nb % $denominateur) == 0) {
+							$output .= "<div class=\"clearBlock\"></div>\n";
+						}
+					}
 				}
 				// Utilisation ou non du surlignage
 				if($select->strongWords != 'aucun') {
@@ -436,7 +493,8 @@ function WP_Advanced_Search() {
 					$output = $strong->contenu;
 				}
 			}
-			$outputEnd = "</div>\n";
+			$outputEnd = "<div class=\"clearBlock\"></div>\n";
+			$outputEnd.= "</div>\n"; // Fin de BlockSearch
 			
 			// Ajoute le texte du trigger si l'option est active
 			if($select->paginationType == "trigger" && $select->paginationActive == true) {
