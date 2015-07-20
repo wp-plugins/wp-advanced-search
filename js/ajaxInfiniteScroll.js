@@ -75,8 +75,8 @@
 					load = true;
 				}
 			}
-			
-			var classOffset = parseInt($(args.classLast+':last').offset().top);
+
+			var classOffset = parseInt($("#loadMoreIS").offset().top);
 			
 			// Si on arrive en bas de la fenêtre, le scroll actif déclenche la fonction
 			if((classOffset - $(window).height() <= $(window).scrollTop()) && load === false && (params.nb >= params.limit) && (params.nb <= stopping)) {
@@ -90,7 +90,7 @@
 					url: args.target+'?'+options.queryNameAS,
 					data: options,
 					// Si Ajax répond bien !
-					success: function(data) {						
+					success: function(data) {
 						// Effet sur le bloc d'image de chargement
 						$(args.loadMore).fadeOut(args.duration);
 						
@@ -100,11 +100,17 @@
 							$(args.classLast+':last').after(data);
 						}, args.duration);
 						
-						load = false;
+						
+					},
+					complete: function(req, status) {
+						setTimeout(function() {
+							if(status == "success") {
+								load = false;
+							}
+						}, args.duration);
 					},
 					// En cas d'erreur Ajax
 					error: function(req, err) {
-						alert(options.queryNameAS);
 						console.log('Error: '+err);
 					}
 				});

@@ -86,7 +86,9 @@ function WP_Advanced_Search() {
 		$correctionsmoteur = $moteur->getCorrection($wpdb->prefix."autocorrectindex", "s", $select->autoCorrectMethod);
 		
 		if($select->autoCorrectType == 1 || $select->autoCorrectType == 2) {
-			$autocorrect = $moteur->getCorrectedResults();
+			if($moteur->getIndex($wpdb->prefix."autocorrectindex")) {
+				$autocorrect = $moteur->getCorrectedResults();
+			}
 		}
 	}
 
