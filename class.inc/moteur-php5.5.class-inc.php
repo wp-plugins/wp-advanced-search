@@ -492,6 +492,9 @@ class moteurRecherche {
 
 				// Boucle du tableau des mots pour comparer les valeurs
 				foreach($indexinverse as $word) {
+					// Suppression de la casse pour éviter les problèmes de lecture
+					$word['word'] = strtolower($word['word']);
+				
 					if($select !== true) {
 						$metaphoneCompare = metaphone($word['word']);
 						$soundexCompare = soundex($word['word']);
