@@ -492,6 +492,9 @@ class moteurRecherche {
 
 				// Boucle du tableau des mots pour comparer les valeurs
 				foreach($indexinverse as $word) {
+					// Suppression de la casse pour éviter les problèmes de lecture
+					$word['word'] = strtolower($word['word']);
+				
 					if($select !== true) {
 						$metaphoneCompare = metaphone($word['word']);
 						$soundexCompare = soundex($word['word']);
@@ -634,17 +637,20 @@ class moteurRecherche {
 		}
 
 		// Sélectionne la totalité de l'index
-		$selectAll = $this->db->query("SELECT * FROM ".$tableIndex) or die("Erreur : ".$this->db->error);
+		$all = $this->db->get_results("SELECT * FROM ".$tableIndex, ARRAY_A);
 		
 		// Liste tous les résultats
-		$all = mysqli_fetch_all($selectAll, MYSQLI_ASSOC);
 		$index = array();
 		foreach($all as $word) {
 			$index[] = $word;
 		}
-		
+
 		// Retourne le résultat
-		return $index;
+		if(!empty($index)) {
+			return $index;
+		} else {
+			return false;
+		}
 	}
 	
 	// Vérifie l'existence ou non de la table contenant les mots corrects (2 paramètres : nom de la table, nom de la base de données)
