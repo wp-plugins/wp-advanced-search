@@ -92,7 +92,7 @@ function WP_Advanced_Search_install() {
 		autoCorrectType TINYINT,
 		autoCorrectMethod BOOLEAN NOT NULL,
 		autoCorrectString TEXT NOT NULL,
-		autoCorrectCreate BOOLEAN NOT NULL,
+		autoCorrectCreate BOOLEAN NOT NULL
 		) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
 	require_once(ABSPATH.'wp-admin/includes/upgrade.php');
 	dbDelta($sql);

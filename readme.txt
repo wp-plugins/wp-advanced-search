@@ -3,7 +3,7 @@ Contributors: Mathieu Chartier
 Donate link: http://www.mathieu-chartier.com
 Author URI: http://blog.internet-formation.fr/2013/07/wp-advanced-search/
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-wp-advanced-search/
-Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest, infinite scroll, trigger, scroll, infini, clic, click, placeholder
+Tags: advanced, search, advanced search, recherche, moteur, search engine, engine, seo, form, formulaire, moteur de recherche, recherches, moteurs, algorithme, algorithm, algo, stop words, stopwords, words, fulltext, like, regexp, exclusion, pagination, pages, searchform, search form, search.php, avanc&eacute;, modulable, php, class, poo, programmation, objet, object, full text, exacte, strong, bold, gras, surbrillance, relevance, relevance algorithm, automatic, highlight, autosuggest, suggestion, autocomplete, auto-complete, auto-suggest, suggest, infinite scroll, trigger, scroll, infini, clic, click, placeholder, autocorrect, correction, correction automatique, correction orthographique, orthographe
 License: GPLv2 or later
 Requires at least: 2.5
 Tested up to: 4.2.2
@@ -86,11 +86,12 @@ NB: Remember to install the FULLTEXT index if you use this method of research (l
 
 == Changelog ==
 
-= Version 3.0 (16/07/2015) =
+= Version 3.0.2 (27/07/2015) =
 
 - Ajout de la correction automatique des recherches (Added automatic correction of searches)
 - Ajout de trois th&egrave;mes graphiques (Added three new themes)
 - Am&eacute;lioration et d&eacute;bogage du scroll infini (Improvement and debugging infinite scroll)
+- Quelques bugs r&eacute;par&eacute;s (Fixed some bugs)
 
 = Version 2.8.1 (12/05/2015) =
 
